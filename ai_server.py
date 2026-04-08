@@ -12,7 +12,7 @@ CORS(app)
 API_KEY = os.environ.get("GEMINI_API_KEY")
 client = genai.Client(api_key=API_KEY)
 
-# --- 2. DAS EXPERTEN-WISSEN (verbesserte Version 2026 mit Off-Topic-Handling) ---
+# --- 2. DAS EXPERTEN-WISSEN (verbesserte Version 2026 mit Off-Topic-Handlling) ---
 SYSTEM_INSTRUCTION = """
 Du bist der BeamTech KI-Experte für die EU-KI-Verordnung (Verordnung (EU) 2024/1689 – KI-VO).
 
