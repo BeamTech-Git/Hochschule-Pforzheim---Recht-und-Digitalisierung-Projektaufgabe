@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentenablage mit Upload</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS: Das Design bleibt gleich --- */
+ body {
+    margin: 0;
+    padding: 0;
+    font-family: 'DM Sans', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;             /* Ändert das Layout zu Flexbox */
+    flex-direction: column;    /* Ordnet die Elemente untereinander an */
+    min-height: 100vh;         /* Erzwingt, dass die Seite MINDESTENS 100% der Fensterhöhe einnimmt */
+    padding-top: 92px;
+}
+
+.doc-container {
+    background-color: #ffffff;
+    width: 95%;
+    max-width: 860px; /* Breite an AI-Kompass angepasst für Konsistenz */
+
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+    margin: 40px auto; /* Zentriert die Box und sorgt für Abstand zum Footer */
+}
+
+        .doc-header {
+            background-color: #143c7b;
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .doc-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .doc-header svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        /* Aus dem div wurde ein label, das Styling bleibt aber identisch! */
+        .upload-area {
+            display: block; /* Wichtig für das Label */
+            border: 2px dashed #143c7b;
+            border-radius: 8px;
+            margin: 20px 25px; 
+            padding: 30px 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .upload-area:hover {
+            background-color: #e9ecef;
+            border-color: #0f2a54;
+        }
+
+        .upload-area svg {
+            width: 40px;
+            height: 40px;
+            fill: #143c7b;
+            margin-bottom: 10px;
+        }
+
+        .upload-area p {
+            margin: 0;
+            color: #333;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .upload-area span {
+            display: block;
+            color: #777;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .file-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            border-bottom: 1px solid #eeeeee;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .file-icon {
+            font-size: 1.8rem;
+            margin-right: 15px;
+        }
+
+        .file-name {
+            flex-grow: 1;
+            font-size: 1.1rem;
+            color: #333333;
+            font-weight: 500;
+        }
+
+        .file-meta {
+            color: #888888;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #143c7b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast-message.show {
+            opacity: 1;
+        }
+
+        /* ══════════════════════════════════════════
+           NAVIGATION
+        ══════════════════════════════════════════ */
+        :root {
+            --accent: #f59e0b;
+            --white: #ffffff;
+        }
+
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 60px; height: 72px;
+            background: rgba(13,31,60,0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+        }
+        .nav-left { display: flex; align-items: center; gap: 50px; }
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
+            color: var(--white); letter-spacing: 3px;
+            display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer;
+        }
+        .nav-logo .bolt { color: var(--accent); font-size: 1.4rem; }
+        .nav-links { display: flex; gap: 35px; list-style: none; }
+        .nav-links a {
+            color: rgba(255,255,255,0.65); text-decoration: none;
+            font-size: 0.82rem; font-weight: 500; letter-spacing: 0.8px;
+            text-transform: uppercase; transition: color 0.2s;
+            padding-bottom: 2px; border-bottom: 2px solid transparent;
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a.active { color: var(--white); border-bottom-color: var(--accent); }
+        .nav-right { display: flex; align-items: center; gap: 25px; }
+        .nav-badge {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3);
+            border-radius: 24px; padding: 6px 16px;
+            color: var(--accent); font-size: 0.78rem; font-weight: 600;
+            letter-spacing: 0.8px; text-transform: uppercase;
+        }
+        .nav-profile { display: flex; align-items: center; gap: 12px; }
+        .nav-profile-avatar {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, #3b9de3, #1e5fa8);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--white); font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.95rem; letter-spacing: 1px; flex-shrink: 0;
+        }
+        .nav-profile-info { display: flex; flex-direction: column; line-height: 1.2; }
+        .nav-profile-name { color: var(--white); font-size: 0.82rem; font-weight: 500; }
+        .nav-profile-logout {
+            color: rgba(255,255,255,0.45); font-size: 0.7rem;
+            text-decoration: none; transition: color 0.2s;
+        }
+        .nav-profile-logout:hover { color: var(--accent); }
+
+        body {
+            padding-top: 92px;
+        }
+
+        /* ══════════════════════════════════════════
+      /* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+    background: #060d1a;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 18px 60px;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    margin-top: auto; /* Das ist der magische Trick: Schiebt den Footer automatisch ganz nach unten! */
+}
+		
+    </style>
+</head>
+<body>
+
+    <!-- ══ NAVIGATION ══ -->
+    <nav class="nav" id="main-nav">
+        <div class="nav-left">
+            <a href="dashboard.html" class="nav-logo">
+                <i class="fa-solid fa-bolt bolt"></i>BEAMTECH
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="aikompass.html">AI-Kompass</a></li>
+                <li><a href="chat.html">BeamTechGPT</a></li>
+                <li><a href="dokumentenablage.html" class="active">Dokumente</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="nav-profile">
+                <div class="nav-profile-avatar">MM</div>
+                <div class="nav-profile-info">
+                    <span class="nav-profile-name">Martin Müller</span>
+                    <a href="login.html" class="nav-profile-logout">Abmelden</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="doc-container">
+        <div class="doc-header">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM112 256H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+            <h2>Zentrale Dokumentenablage</h2>
+        </div>
+
+        <label class="upload-area" for="file-upload">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M288 109.3V352c0 17.7-14.3 32-32 32s-32-14.3-32-32V109.3l-73.4 73.4c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l128-128c12.5-12.5 32.8-12.5 45.3 0l128 128c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L288 109.3zM64 352H192c0 35.3 28.7 64 64 64s64-28.7 64-64H448c35.3 0 64 28.7 64 64v32c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V416c0-35.3 28.7-64 64-64zM432 456a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"/></svg>
+            <p>Klicke hier, um ein neues Dokument hochzuladen</p>
+           
+            
+            <input type="file" id="file-upload" style="display: none;" onchange="handleFileUpload(event)">
+        </label>
+
+        <ul class="file-list" id="file-list">
+            <li class="file-item" onclick="toggleFolder(this, 'folder-hr')">
+                <div class="file-icon">📁</div>
+                <div class="file-name">HR &amp; Benefits</div>
+                <div class="file-meta">Ordner <i class="fa-solid fa-chevron-right" style="font-size:0.75rem;margin-left:6px;transition:transform 0.2s;"></i></div>
+            </li>
+            <ul id="folder-hr" class="file-list folder-contents" style="display:none; padding-left:20px; border-left:3px solid #e8f0fb; margin-left:25px;">
+                <li class="file-item" onclick="toggleFolder(this, 'folder-hr-urlaub')">
+                    <div class="file-icon">📁</div>
+                    <div class="file-name">Urlaubsanträge</div>
+                    <div class="file-meta">Ordner <i class="fa-solid fa-chevron-right" style="font-size:0.75rem;margin-left:6px;"></i></div>
+                </li>
+                <ul id="folder-hr-urlaub" class="file-list folder-contents" style="display:none; padding-left:20px; border-left:3px solid #e8f0fb; margin-left:25px;">
+                    <li class="file-item" onclick="simulateAction('Download', 'Urlaubsantrag_Vorlage_2024.pdf')">
+                        <div class="file-icon">📄</div>
+                        <div class="file-name">Urlaubsantrag_Vorlage_2024.pdf</div>
+                        <div class="file-meta">145 KB &bull; 2024</div>
+                    </li>
+                </ul>
+                <li class="file-item" onclick="simulateAction('Download', 'Mitarbeiterhandbuch_v3.pdf')">
+                    <div class="file-icon">📄</div>
+                    <div class="file-name">Mitarbeiterhandbuch_v3.pdf</div>
+                    <div class="file-meta">3.4 MB &bull; Jan 2024</div>
+                </li>
+                <li class="file-item" onclick="simulateAction('Download', 'Benefits_Übersicht_2024.pdf')">
+                    <div class="file-icon">📄</div>
+                    <div class="file-name">Benefits_Übersicht_2024.pdf</div>
+                    <div class="file-meta">890 KB &bull; Feb 2024</div>
+                </li>
+            </ul>
+
+            <li class="file-item" onclick="toggleFolder(this, 'folder-legal')">
+                <div class="file-icon">📁</div>
+                <div class="file-name">Legal &amp; Compliance</div>
+                <div class="file-meta">Ordner <i class="fa-solid fa-chevron-right" style="font-size:0.75rem;margin-left:6px;transition:transform 0.2s;"></i></div>
+            </li>
+            <ul id="folder-legal" class="file-list folder-contents" style="display:none; padding-left:20px; border-left:3px solid #e8f0fb; margin-left:25px;">
+                <li class="file-item">
+                    <div class="file-icon">📄</div>
+                    <div class="file-name"><a href="EU_KI_VO_Leitfaden.pdf" target="_blank" style="color:#143c7b;text-decoration:none;font-weight:600;">EU_KI_VO_Leitfaden.pdf</a></div>
+                    <div class="file-meta">2.1 MB &bull; Mär 2024</div>
+                </li>
+                <li class="file-item">
+                    <div class="file-icon">📄</div>
+                    <div class="file-name"><a href="Datenschutzrichtlinie_intern.pdf" target="_blank" style="color:#143c7b;text-decoration:none;font-weight:600;">Datenschutzrichtlinie_intern.pdf</a></div>
+                    <div class="file-meta">1.5 MB &bull; Jan 2024</div>
+                </li>
+                <li class="file-item">
+                    <div class="file-icon">📄</div>
+                    <div class="file-name"><a href="Compliance_Checkliste_2024.pdf" target="_blank" style="color:#143c7b;text-decoration:none;font-weight:600;">Compliance_Checkliste_2024.pdf</a></div>
+                    <div class="file-meta">780 KB &bull; Apr 2024</div>
+                </li>
+            </ul>
+
+            <li class="file-item" onclick="toggleFolder(this, 'folder-it')">
+                <div class="file-icon">📁</div>
+                <div class="file-name">IT &amp; Infrastruktur</div>
+                <div class="file-meta">Ordner <i class="fa-solid fa-chevron-right" style="font-size:0.75rem;margin-left:6px;transition:transform 0.2s;"></i></div>
+            </li>
+            <ul id="folder-it" class="file-list folder-contents" style="display:none; padding-left:20px; border-left:3px solid #e8f0fb; margin-left:25px;">
+                <li class="file-item" onclick="simulateAction('Download', 'VPN_Einrichtung_Anleitung.pdf')">
+                    <div class="file-icon">📄</div>
+                    <div class="file-name">VPN_Einrichtung_Anleitung.pdf</div>
+                    <div class="file-meta">560 KB &bull; Nov 2023</div>
+                </li>
+                <li class="file-item" onclick="simulateAction('Download', 'IT_Sicherheitsrichtlinie.pdf')">
+                    <div class="file-icon">📄</div>
+                    <div class="file-name">IT_Sicherheitsrichtlinie.pdf</div>
+                    <div class="file-meta">1.1 MB &bull; Dez 2023</div>
+                </li>
+                <li class="file-item" onclick="simulateAction('Download', 'Software_Lizenzen_Übersicht.xlsx')">
+                    <div class="file-icon">📊</div>
+                    <div class="file-name">Software_Lizenzen_Übersicht.xlsx</div>
+                    <div class="file-meta">230 KB &bull; Feb 2024</div>
+                </li>
+            </ul>
+
+            <li class="file-item" onclick="simulateAction('Download', 'Einführung_AI_Kompass.pdf')">
+                <div class="file-icon">📄</div>
+                <div class="file-name">Einführung_AI_Kompass.pdf</div>
+                <div class="file-meta">1.2 MB &bull; Gestern</div>
+            </li>
+        </ul>
+    </div>
+
+    <div id="toast" class="toast-message">Aktion wird ausgeführt...</div>
+
+    <script>
+        function toggleFolder(listItem, folderId) {
+            const contents = document.getElementById(folderId);
+            const chevron = listItem.querySelector('.fa-chevron-right, .fa-chevron-down');
+            const isOpen = contents.style.display !== 'none';
+
+            if (isOpen) {
+                contents.style.display = 'none';
+                if (chevron) { chevron.classList.remove('fa-chevron-down'); chevron.classList.add('fa-chevron-right'); }
+            } else {
+                contents.style.display = 'block';
+                if (chevron) { chevron.classList.remove('fa-chevron-right'); chevron.classList.add('fa-chevron-down'); }
+            }
+        }
+
+        function simulateAction(actionType, itemName) {
+            showToast(`${actionType === 'Ordner' ? 'Öffne Ordner' : 'Lade Datei herunter'}: "${itemName}" ...`);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        function handleFileUpload(event) {
+            const fileInput = event.target;
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                showToast(`Wird hochgeladen: "${fileName}" ...`);
+
+                setTimeout(() => {
+                    const fileList = document.getElementById('file-list');
+                    const newFileItem = document.createElement('li');
+                    newFileItem.className = 'file-item';
+                    
+                    newFileItem.onclick = () => simulateAction('Download', fileName);
+                    
+                    newFileItem.innerHTML = `
+                        <div class="file-icon">🆕</div>
+                        <div class="file-name">${fileName}</div>
+                        <div class="file-meta">Gerade eben</div>
+                    `;
+                    
+                    fileList.insertBefore(newFileItem, fileList.children[2]); 
+                    showToast(`Upload von "${fileName}" abgeschlossen!`);
+                    
+                    fileInput.value = ''; 
+                }, 1500); 
+            }
+        }
+    </script>
+
+    <!-- ══ FOOTER ══ -->
+    <footer>
+            © 2026 <span>BeamTech</span> GmbH & Co. KG —
+            <a href="impressum.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Impressum</a>·
+            <a href="datenschutz.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Datenschutz</a>·
+            <a href="AGB.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">AGB</a>·
+            <a href="cookies.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Cookies</a>
+        </footer>
+
+</body>
+</html>

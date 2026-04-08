@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Kompass – BeamTech Compliance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy:      #0d1f3c;
+            --navy-mid:  #143c7b;
+            --navy-light:#1e4f9f;
+            --accent:    #f59e0b;
+            --accent-dk: #d97706;
+            --green:     #15803d;
+            --green-bg:  #f0fdf4;
+            --green-bd:  #bbf7d0;
+            --red:       #b91c1c;
+            --red-bg:    #fef2f2;
+            --red-bd:    #fecaca;
+            --orange-bg: #fffbeb;
+            --orange-bd: #fde68a;
+            --orange-tx: #92400e;
+            --blue-bg:   #eff6ff;
+            --blue-bd:   #bfdbfe;
+            --blue-tx:   #1e40af;
+            --gray-50:   #f9fafb;
+            --gray-100:  #f3f4f6;
+            --gray-200:  #e5e7eb;
+            --gray-400:  #9ca3af;
+            --gray-600:  #4b5563;
+            --gray-800:  #1f2937;
+            --white:     #ffffff;
+            --text:      #111827;
+            --radius:    10px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,.10), 0 1px 2px rgba(0,0,0,.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,.07), 0 10px 15px rgba(0,0,0,.10);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,.12), 0 20px 48px rgba(0,0,0,.10);
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--gray-100);
+            color: var(--text);
+            line-height: 1.65;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* NAV */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 60px; height: 72px;
+            background: rgba(13,31,60,0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+        }
+        .nav-left { display: flex; align-items: center; gap: 50px; }
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
+            color: var(--white); letter-spacing: 3px;
+            display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer;
+        }
+        .nav-logo .bolt { color: var(--accent); font-size: 1.4rem; }
+        .nav-links { display: flex; gap: 35px; list-style: none; }
+        .nav-links a {
+            color: rgba(255,255,255,0.65); text-decoration: none;
+            font-size: 0.82rem; font-weight: 500; letter-spacing: 0.8px;
+            text-transform: uppercase; transition: color 0.2s;
+            padding-bottom: 2px; border-bottom: 2px solid transparent;
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a.active { color: var(--white); border-bottom-color: var(--accent); }
+        .nav-right { display: flex; align-items: center; gap: 25px; }
+        .nav-badge {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3);
+            border-radius: 24px; padding: 6px 16px;
+            color: var(--accent); font-size: 0.78rem; font-weight: 600;
+            letter-spacing: 0.8px; text-transform: uppercase;
+        }
+        .nav-profile { display: flex; align-items: center; gap: 12px; }
+        .nav-profile-avatar {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, #3b9de3, #1e5fa8);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--white); font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.95rem; letter-spacing: 1px; flex-shrink: 0;
+        }
+        .nav-profile-info { display: flex; flex-direction: column; line-height: 1.2; }
+        .nav-profile-name { color: var(--white); font-size: 0.82rem; font-weight: 500; }
+        .nav-profile-logout {
+            color: rgba(255,255,255,0.45); font-size: 0.7rem;
+            text-decoration: none; transition: color 0.2s;
+        }
+        .nav-profile-logout:hover { color: var(--accent); }
+
+        /* HERO */
+        .page-hero {
+            margin-top: 72px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+            padding: 48px 48px 40px; position: relative; overflow: hidden;
+        }
+        .page-hero::before {
+            content: ''; position: absolute; top: -60px; right: -60px;
+            width: 340px; height: 340px; border-radius: 50%;
+            background: rgba(245,158,11,0.08); pointer-events: none;
+        }
+        .hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(245,158,11,0.18); border: 1px solid rgba(245,158,11,0.35);
+            color: var(--accent); font-size: 0.73rem; font-weight: 700;
+            letter-spacing: 1.2px; text-transform: uppercase;
+            padding: 5px 13px; border-radius: 20px; margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem;
+            color: var(--white); letter-spacing: 2px; line-height: 1.1; margin-bottom: 14px;
+        }
+        .hero-title span { color: var(--accent); }
+        .hero-desc { color: rgba(255,255,255,0.65); font-size: 0.97rem; max-width: 640px; line-height: 1.7; margin-bottom: 28px; }
+        .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+        .hero-tag { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.55); font-size: 0.8rem; font-weight: 500; }
+        .hero-tag i { color: var(--accent); font-size: 0.85rem; }
+
+        /* LAYOUT */
+        .main-wrapper { max-width: 860px; margin: 36px auto 60px; padding: 0 24px; width: 100%; }
+
+        /* PROGRESS */
+        .progress-container {
+            background: var(--white); border-radius: var(--radius);
+            padding: 22px 28px; margin-bottom: 20px;
+            box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200);
+        }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .progress-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); }
+        .progress-bar-track { height: 4px; background: var(--gray-200); border-radius: 99px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--navy-mid), var(--accent)); border-radius: 99px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+        .phase-pills { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+        .phase-pill {
+            font-size: 0.73rem; font-weight: 600; padding: 4px 11px; border-radius: 99px;
+            letter-spacing: 0.5px; border: 1px solid var(--gray-200);
+            color: var(--gray-400); background: var(--gray-50); transition: all var(--transition);
+        }
+        .phase-pill.current  { background: var(--navy-mid); color: var(--white); border-color: var(--navy-mid); }
+        .phase-pill.done-phase { background: var(--green-bg); color: var(--green); border-color: var(--green-bd); }
+
+        /* QUIZ CARD */
+        .quiz-card {
+            background: var(--white); border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md); border: 1px solid var(--gray-200);
+            overflow: hidden; animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .quiz-card-header { padding: 28px 36px 0; }
+        .step-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-family: 'DM Mono', monospace; font-size: 0.72rem; font-weight: 500;
+            color: var(--navy-mid); background: var(--blue-bg); border: 1px solid var(--blue-bd);
+            padding: 4px 11px; border-radius: 99px; margin-bottom: 14px; letter-spacing: 0.5px;
+        }
+        .quiz-card h2 { font-size: 1.32rem; font-weight: 700; color: var(--navy); line-height: 1.35; margin-bottom: 6px; }
+        .legal-ref {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-family: 'DM Mono', monospace; font-size: 0.7rem; font-weight: 500;
+            background: var(--orange-bg); border: 1px solid var(--orange-bd);
+            color: var(--orange-tx); padding: 3px 9px; border-radius: 4px; margin-top: 10px;
+        }
+        .quiz-card-divider { height: 1px; background: var(--gray-100); margin: 22px 0; }
+        .quiz-card-body { padding: 0 36px 28px; }
+        .question-text { font-size: 1.02rem; color: var(--gray-800); line-height: 1.7; }
+        .question-text strong { color: var(--navy); font-weight: 600; }
+        .criteria-list { margin-top: 18px; display: flex; flex-direction: column; gap: 9px; }
+        .criteria-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.93rem; color: var(--gray-600); line-height: 1.55; }
+        .ci-icon {
+            flex-shrink: 0; margin-top: 3px; width: 18px; height: 18px; border-radius: 50%;
+            background: var(--blue-bg); border: 1px solid var(--blue-bd);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.6rem; color: var(--blue-tx);
+        }
+        .example-box {
+            margin-top: 18px; background: var(--gray-50); border: 1px solid var(--gray-200);
+            border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 18px;
+        }
+        .example-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-dk); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+        .example-text { font-size: 0.9rem; color: var(--gray-600); line-height: 1.6; }
+        .warning-box { margin-top: 16px; background: var(--red-bg); border: 1px solid var(--red-bd); border-radius: var(--radius); padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start; }
+        .warning-box .wi { color: var(--red); font-size: 1.1rem; margin-top: 2px; }
+        .warning-box .wt { font-size: 0.88rem; color: var(--red); line-height: 1.6; font-weight: 500; }
+
+        /* BUTTONS */
+        .btn-area { padding: 8px 36px 32px; display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 13px 28px; font-family: 'DM Sans', sans-serif;
+            font-size: 0.97rem; font-weight: 600; border: none; border-radius: var(--radius);
+            cursor: pointer; transition: all var(--transition); letter-spacing: 0.2px;
+            flex: 1; min-width: 140px; justify-content: center;
+        }
+        .btn-yes { background: var(--green); color: var(--white); box-shadow: 0 2px 8px rgba(21,128,61,0.25); }
+        .btn-yes:hover { background: #166534; box-shadow: 0 4px 16px rgba(21,128,61,0.35); transform: translateY(-1px); }
+        .btn-no  { background: var(--red); color: var(--white); box-shadow: 0 2px 8px rgba(185,28,28,0.25); }
+        .btn-no:hover { background: #991b1b; box-shadow: 0 4px 16px rgba(185,28,28,0.35); transform: translateY(-1px); }
+        .btn-next { background: var(--navy-mid); color: var(--white); box-shadow: 0 2px 8px rgba(20,60,123,0.25); }
+        .btn-next:hover { background: var(--navy); transform: translateY(-1px); }
+        .btn-restart { background: var(--gray-100); color: var(--gray-600); border: 1px solid var(--gray-200); }
+        .btn-restart:hover { background: var(--gray-200); transform: translateY(-1px); }
+
+        /* RESULT */
+        .result-card { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; animation: slideUp 0.4s cubic-bezier(0.4,0,0.2,1); }
+        .result-header { padding: 36px 36px 28px; display: flex; align-items: flex-start; gap: 20px; }
+        .result-icon { width: 64px; height: 64px; flex-shrink: 0; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+        .result-title { font-size: 1.5rem; font-weight: 700; line-height: 1.25; margin-bottom: 6px; }
+        .result-subtitle { font-size: 0.9rem; opacity: 0.75; }
+        .result-safe   .result-icon { background: var(--green-bg); color: var(--green); }
+        .result-safe   .result-header { border-bottom: 3px solid var(--green); }
+        .result-safe   .result-title { color: var(--green); }
+        .result-banned .result-icon { background: var(--red-bg); color: var(--red); }
+        .result-banned .result-header { border-bottom: 3px solid var(--red); }
+        .result-banned .result-title { color: var(--red); }
+        .result-high   .result-icon { background: #fff7ed; color: #c2410c; }
+        .result-high   .result-header { border-bottom: 3px solid #f97316; }
+        .result-high   .result-title { color: #c2410c; }
+        .result-noki   .result-icon { background: var(--gray-100); color: var(--gray-600); }
+        .result-noki   .result-header { border-bottom: 3px solid var(--gray-400); }
+        .result-noki   .result-title { color: var(--gray-600); }
+        .result-body { padding: 28px 36px; }
+        .result-desc { font-size: 1rem; line-height: 1.7; color: var(--gray-800); margin-bottom: 22px; }
+        .action-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+        .action-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: var(--radius); border: 1px solid var(--gray-200); font-size: 0.9rem; line-height: 1.55; }
+        .action-item i { flex-shrink: 0; margin-top: 2px; font-size: 0.95rem; }
+        .action-item.action-stop { background: var(--red-bg);   border-color: var(--red-bd);   color: var(--red); }
+        .action-item.action-warn { background: #fff7ed;          border-color: #fed7aa;          color: #9a3412; }
+        .action-item.action-ok   { background: var(--green-bg);  border-color: var(--green-bd);  color: var(--green); }
+        .action-item.action-info { background: var(--blue-bg);   border-color: var(--blue-bd);   color: var(--blue-tx); }
+/* Grüner Erfolgszustand für den Modal-Button */
+.btn-modal-submit.success {
+    background: var(--green) !important;
+    box-shadow: 0 4px 14px rgba(21, 128, 61, 0.3);
+    cursor: default;
+    transform: none !important;
+}
+
+        /* LEGAL SEND BUTTON */
+        .btn-legal {
+            display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+            width: 100%; padding: 13px 24px; margin-top: 12px;
+            background: var(--navy-mid); color: var(--white);
+            border: none; border-radius: var(--radius); cursor: pointer;
+            font-family: 'DM Sans', sans-serif; font-size: 0.97rem; font-weight: 600;
+            letter-spacing: 0.2px; transition: all var(--transition);
+            box-shadow: 0 2px 8px rgba(20,60,123,0.22);
+        }
+        .btn-legal:hover:not(:disabled) { background: var(--navy); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(20,60,123,0.32); }
+        .btn-legal:disabled { cursor: not-allowed; opacity: 0.8; }
+        .btn-legal.sent {
+            background: var(--green) !important; box-shadow: 0 2px 8px rgba(21,128,61,0.3);
+            transform: none !important; cursor: default;
+        }
+        .btn-legal .spinner {
+            width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.35);
+            border-top-color: white; border-radius: 50%;
+            animation: spin 0.7s linear infinite; display: none; flex-shrink: 0;
+        }
+        .btn-legal.loading .spinner { display: block; }
+        .btn-legal.loading .btn-legal-icon { display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* MILESTONE */
+        .milestone-card {
+            background: var(--white); border-radius: var(--radius-lg);
+            padding: 36px; box-shadow: var(--shadow-md); border: 1px solid var(--gray-200);
+            animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+        .milestone-badge {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: var(--green-bg); border: 1px solid var(--green-bd); color: var(--green);
+            font-size: 0.73rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+            padding: 5px 13px; border-radius: 20px; margin-bottom: 16px;
+        }
+        .milestone-card h2 { font-size: 1.4rem; color: var(--navy); margin-bottom: 10px; }
+        .milestone-card p  { font-size: 0.97rem; color: var(--gray-600); line-height: 1.7; }
+        .next-phase-box {
+            margin-top: 20px; background: var(--blue-bg); border: 1px solid var(--blue-bd);
+            border-radius: var(--radius); padding: 16px 20px;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .next-phase-box i { color: var(--navy-mid); font-size: 1.5rem; flex-shrink: 0; }
+        .np-title { font-weight: 700; color: var(--navy); font-size: 0.95rem; margin-bottom: 3px; }
+        .np-desc  { font-size: 0.85rem; color: var(--blue-tx); }
+
+        /* ══════════════════════════════════════════
+           SUBMISSION MODAL
+        ══════════════════════════════════════════ */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 2000;
+            background: rgba(7, 16, 32, 0.72);
+            backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.28s cubic-bezier(0.4,0,0.2,1);
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .modal {
+            background: var(--white); border-radius: 20px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.28), 0 0 0 1px rgba(20,60,123,0.08);
+            width: 100%; max-width: 600px; max-height: 90vh;
+            overflow-y: auto; overflow-x: hidden;
+            transform: translateY(24px) scale(0.97);
+            transition: transform 0.28s cubic-bezier(0.34,1.2,0.64,1);
+        }
+        .modal-overlay.active .modal { transform: translateY(0) scale(1); }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+            padding: 28px 32px 24px;
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+            position: sticky; top: 0; z-index: 1;
+        }
+        .modal-header-left {}
+        .modal-header-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.4);
+            color: var(--accent); font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 1.2px; text-transform: uppercase;
+            padding: 4px 11px; border-radius: 20px; margin-bottom: 10px;
+        }
+        .modal-header h3 {
+            font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem;
+            color: var(--white); letter-spacing: 1.5px; line-height: 1.1;
+        }
+        .modal-header h3 span { color: var(--accent); }
+        .modal-header p { color: rgba(255,255,255,0.6); font-size: 0.83rem; margin-top: 6px; line-height: 1.5; }
+        .modal-close {
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.8); width: 34px; height: 34px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 0.9rem; flex-shrink: 0;
+            transition: all 0.18s;
+        }
+        .modal-close:hover { background: rgba(255,255,255,0.2); color: var(--white); }
+
+        /* Risk summary inside modal */
+        .modal-risk-strip {
+            margin: 0 32px;
+            padding: 13px 16px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            display: flex; align-items: center; gap: 12px;
+            font-size: 0.88rem; font-weight: 600;
+            margin-top: 24px; margin-bottom: 4px;
+        }
+        .modal-risk-strip i { font-size: 1.1rem; }
+        .modal-risk-strip .strip-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; margin-bottom: 2px; }
+        .modal-risk-strip.strip-VERBOTEN  { background: var(--red-bg); border-color: var(--red-bd); color: var(--red); }
+        .modal-risk-strip.strip-HOCHRISIKO{ background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+        .modal-risk-strip.strip-safe      { background: var(--green-bg); border-color: var(--green-bd); color: var(--green); }
+        .modal-risk-strip.strip-noki      { background: var(--gray-100); border-color: var(--gray-200); color: var(--gray-600); }
+
+        .modal-body { padding: 20px 32px 32px; }
+
+        /* Form elements */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label {
+            font-size: 0.77rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.8px; color: var(--gray-600);
+            display: flex; align-items: center; gap: 5px;
+        }
+        .form-label .req { color: var(--accent-dk); }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; padding: 10px 14px;
+            border: 1.5px solid var(--gray-200); border-radius: var(--radius);
+            font-family: 'DM Sans', sans-serif; font-size: 0.93rem;
+            color: var(--text); background: var(--white);
+            transition: border-color 0.18s, box-shadow 0.18s;
+            outline: none;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--navy-mid);
+            box-shadow: 0 0 0 3px rgba(20,60,123,0.1);
+        }
+        .form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+        /* File upload zone */
+        .file-upload-zone {
+            border: 2px dashed var(--gray-200); border-radius: var(--radius);
+            padding: 22px; text-align: center; cursor: pointer;
+            transition: all 0.2s; position: relative;
+            background: var(--gray-50);
+        }
+        .file-upload-zone:hover, .file-upload-zone.drag-over {
+            border-color: var(--navy-mid);
+            background: var(--blue-bg);
+        }
+        .file-upload-zone input[type="file"] {
+            position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+        }
+        .file-upload-icon { font-size: 1.8rem; color: var(--gray-400); margin-bottom: 8px; }
+        .file-upload-zone:hover .file-upload-icon, .file-upload-zone.drag-over .file-upload-icon { color: var(--navy-mid); }
+        .file-upload-title { font-size: 0.88rem; font-weight: 600; color: var(--gray-800); margin-bottom: 3px; }
+        .file-upload-sub { font-size: 0.77rem; color: var(--gray-400); }
+        .file-selected {
+            display: none; align-items: center; gap: 10px;
+            background: var(--green-bg); border: 1px solid var(--green-bd);
+            border-radius: 8px; padding: 10px 14px; margin-top: 10px;
+            font-size: 0.85rem; color: var(--green);
+        }
+        .file-selected.show { display: flex; }
+        .file-selected i { flex-shrink: 0; }
+        .file-selected-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .file-selected-size { font-size: 0.75rem; color: #166534; flex-shrink: 0; }
+        .file-remove {
+            margin-left: auto; flex-shrink: 0;
+            background: none; border: none; color: var(--green);
+            cursor: pointer; font-size: 0.8rem; padding: 2px 4px;
+            border-radius: 4px; transition: background 0.15s;
+        }
+        .file-remove:hover { background: rgba(21,128,61,0.15); }
+
+        /* Modal actions */
+        .modal-actions {
+            display: flex; gap: 12px; margin-top: 24px;
+            padding-top: 22px; border-top: 1px solid var(--gray-100);
+        }
+        .btn-modal-cancel {
+            flex: 1; padding: 12px 20px; border: 1.5px solid var(--gray-200);
+            background: var(--white); color: var(--gray-600);
+            border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
+            font-size: 0.93rem; font-weight: 600; cursor: pointer; transition: all 0.18s;
+        }
+        .btn-modal-cancel:hover { background: var(--gray-100); border-color: var(--gray-300); }
+        .btn-modal-submit {
+            flex: 2; padding: 12px 24px;
+            background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+            color: var(--white); border: none;
+            border-radius: var(--radius); font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem; font-weight: 700; cursor: pointer;
+            transition: all 0.18s; letter-spacing: 0.2px;
+            box-shadow: 0 2px 10px rgba(20,60,123,0.25);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-modal-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(20,60,123,0.32); }
+        .btn-modal-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .btn-modal-submit .btn-spinner {
+            width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.35);
+            border-top-color: white; border-radius: 50%;
+            animation: spin 0.7s linear infinite; display: none; flex-shrink: 0;
+        }
+        .btn-modal-submit.loading .btn-spinner { display: block; }
+        .btn-modal-submit.loading .submit-text { display: none; }
+
+        /* Validation errors */
+        .field-error { font-size: 0.74rem; color: var(--red); font-weight: 500; display: none; }
+        .field-error.show { display: block; }
+        .form-input.error, .form-select.error, .form-textarea.error {
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px rgba(185,28,28,0.08);
+        }
+
+        /* FOOTER */
+        footer { background: #060d1a; color: rgba(255,255,255,0.5); padding: 56px 48px 0; margin-top: auto; }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .footer-brand .logo-f { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; color: white; letter-spacing: 3px; display: flex; align-items: center; gap: 9px; margin-bottom: 16px; }
+        .footer-brand .logo-f .bolt { color: var(--accent); }
+        .footer-brand p { font-size: 0.85rem; line-height: 1.8; max-width: 270px; color: rgba(255,255,255,0.4); }
+        .footer-col h5 { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: white; margin-bottom: 18px; }
+        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .footer-col ul a { color: rgba(255,255,255,0.42); text-decoration: none; font-size: 0.85rem; transition: color var(--transition); }
+        .footer-col ul a:hover { color: white; }
+        .footer-bottom { max-width: 1200px; margin: 0 auto; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; flex-wrap: wrap; gap: 10px; }
+        .footer-bottom-links { display: flex; gap: 22px; }
+        .footer-bottom-links a { color: rgba(255,255,255,0.38); text-decoration: none; transition: color var(--transition); }
+        .footer-bottom-links a:hover { color: white; }
+        .disclaimer-strip { background: rgba(245,158,11,0.08); border-top: 1px solid rgba(245,158,11,0.18); padding: 10px 48px; font-size: 0.74rem; color: rgba(245,158,11,0.75); display: flex; align-items: center; gap: 8px; }
+    </style>
+</head>
+<body>
+
+    <!-- ══ SUBMISSION MODAL ══ -->
+    <div class="modal-overlay" id="submitModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <div class="modal-header-badge"><i class="fa-solid fa-paper-plane"></i> Einreichung</div>
+                    <h3 id="modal-title">Ticket an<br><span>Rechtsabteilung</span></h3>
+                    <p>Ergänzen Sie die Projektinformationen für eine vollständige juristische Prüfung.</p>
+                </div>
+                <button class="modal-close" id="modalCloseBtn" aria-label="Schließen"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Risk context strip -->
+            <div class="modal-risk-strip" id="modalRiskStrip">
+                <i class="fa-solid fa-circle-info"></i>
+                <div>
+                    <div class="strip-label">Ergebnis der Prüfung</div>
+                    <div id="modalRiskLabel">—</div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-grid">
+
+                   <div class="form-group full">
+    <label class="form-label" for="f-projekt">Projektname <span class="req">*</span></label>
+    <input class="form-input" id="f-projekt" type="text" placeholder="z.B. KI-Bewerberscreening 2025" autocomplete="off">
+    <span class="field-error" id="err-projekt">Bitte geben Sie einen Projektnamen ein.</span>
+</div>
+
+                    <div class="form-group full">
+                        <label class="form-label" for="f-datenquellen">Geplante Datenquellen <span class="req">*</span></label>
+                        <select class="form-select" id="f-datenquellen">
+                            <option value="">— Bitte wählen —</option>
+                            <option value="Kundendaten">Kundendaten</option>
+                            <option value="Interne Daten">Interne Daten</option>
+                            <option value="Öffentliche Daten">Öffentliche Daten</option>
+                            <option value="Kundendaten + Interne Daten">Kundendaten + Interne Daten</option>
+                            <option value="Alle Quellen">Alle Quellen (Kunden-, interne & öffentliche Daten)</option>
+                        </select>
+                        <span class="field-error" id="err-datenquellen">Bitte wählen Sie eine Datenquelle.</span>
+                    </div>
+
+                    <div class="form-group full">
+                        <label class="form-label" for="f-beschreibung">Projektbeschreibung <span class="req">*</span></label>
+                        <textarea class="form-textarea" id="f-beschreibung" placeholder="Beschreiben Sie das KI-Vorhaben, den geplanten Einsatzbereich und eventuelle besondere Merkmale..." rows="4"></textarea>
+                        <span class="field-error" id="err-beschreibung">Bitte beschreiben Sie das Projekt (mind. 20 Zeichen).</span>
+                    </div>
+
+                    <div class="form-group full">
+                        <label class="form-label"><i class="fa-solid fa-paperclip" style="color:var(--navy-mid);"></i> Anhang (optional)</label>
+                        <div class="file-upload-zone" id="fileZone">
+                            <input type="file" id="f-datei" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.xls,.xlsx" title="">
+                            <div class="file-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                            <div class="file-upload-title">Datei hochladen oder hier ablegen</div>
+                            <div class="file-upload-sub">PDF, Bild, Word, Excel – max. 5 MB</div>
+                        </div>
+                        <div class="file-selected" id="fileSelectedInfo">
+                            <i class="fa-solid fa-file-circle-check"></i>
+                            <span class="file-selected-name" id="fileNameDisplay"></span>
+                            <span class="file-selected-size" id="fileSizeDisplay"></span>
+                            <button class="file-remove" id="fileRemoveBtn" type="button" title="Anhang entfernen"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <span class="field-error" id="err-datei"></span>
+                    </div>
+
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-modal-cancel" id="modalCancelBtn">Abbrechen</button>
+                    <button class="btn-modal-submit" id="modalSubmitBtn">
+                        <span class="btn-spinner"></span>
+                        <span class="submit-text"><i class="fa-solid fa-paper-plane"></i> Ticket einreichen</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="dashboard.html" class="nav-logo">
+                <i class="fa-solid fa-bolt bolt"></i>BEAMTECH
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="aikompass.html" class="active">AI-Kompass</a></li>
+                <li><a href="chat.html">BeamTechGPT</a></li>
+                <li><a href="dokumentenablage.html">dokumentenablage</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            
+            <div class="nav-profile">
+                <div class="nav-profile-avatar">MM</div>
+                <div class="nav-profile-info">
+                    <span class="nav-profile-name">Martin Müller</span>
+                    <a href="login.html" class="nav-profile-logout">Abmelden</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-hero">
+        <div class="hero-inner">
+            <div class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Compliance Self-Service</div>
+            <h1 class="hero-title">AI-Kompass:<br><span>KI-VO Entscheidungsbaum</span></h1>
+            <p class="hero-desc">Prüfen Sie in wenigen Schritten, ob Ihr KI-Vorhaben unter die KI-Verordnung fällt und welche Pflichten daraus entstehen.</p>
+            <div class="hero-meta">
+                <span class="hero-tag"><i class="fa-solid fa-gavel"></i> Basis: KI-VO </span>
+                <span class="hero-tag"><i class="fa-solid fa-clock"></i> Dauer: ca. 3–5 Minuten</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="progress-container">
+            <div class="progress-header">
+                <span class="progress-label" id="progress-text">Prüfung starten</span>
+            </div>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="phase-pills">
+                <span class="phase-pill" id="pill-a">Teil A: KI-Definition</span>
+                <span class="phase-pill" id="pill-b">Teil B: Verbotene Praktiken</span>
+                <span class="phase-pill" id="pill-c">Teil C: Hochrisiko-KI</span>
+            </div>
+        </div>
+
+        <div id="quiz-area"></div>
+    </div>
+
+    <div class="disclaimer-strip">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span><strong>Hinweis:</strong> Dieses Tool dient der Orientierung und ersetzt keine Rechtsberatung. Bei Unklarheiten wenden Sie sich an die Rechtsabteilung oder den Datenschutzbeauftragten.</span>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo-f"><span class="bolt"><i class="fa-solid fa-bolt"></i></span> BeamTech</div>
+                <p>BeamTech GmbH entwickelt und vertreibt seit 1998 professionelle Projektionstechnologie. Made in Germany — für die Welt.</p>
+            </div>
+            <div class="footer-col"><h5>Produkte</h5><ul><li><a href="beamtech-website.html#produkte">BT-Pro 6000</a></li><li><a href="beamtech-website.html#produkte">BT-Event 20K</a></li><li><a href="beamtech-website.html#produkte">BT-Edu Compact</a></li><li><a href="beamtech-website.html#produkte">BT-Dome 360</a></li></ul></div>
+            <div class="footer-col"><h5>Unternehmen</h5><ul><li><a href="beamtech-website.html#unternehmen">Über uns</a></li><li><a href="beamtech-website.html#team">Team</a></li><li><a href="beamtech-website.html">Karriere</a></li><li><a href="beamtech-website.html#kontakt">Kontakt</a></li></ul></div>
+            <div class="footer-col"><h5>Rechtliches</h5><ul><li><a href="impressum.html">Impressum</a></li><li><a href="datenschutz.html">Datenschutzerklärung</a></li><li><a href="AGB.html">AGB</a></li><li><a href="cookies.html">Cookie-Einstellungen</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 BeamTech GmbH & Co. KG – Alle Rechte vorbehalten</span>
+            
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // ══ DECISION TREE ═══════════════════════════════════════════════════════
+        const tree = {
+            'a1': {
+                phase:'a', step:1, total:6,
+                badge:'Teil A · Schritt 1/6',
+                title:'Ist es ein technisches System?',
+                question:'Besteht das Vorhaben aus Software- und/oder Hardwarekomponenten, die auf einem Computer oder technischem Gerät betrieben werden?',
+                criteria:['Läuft das System auf einem Computer, Server oder eingebetteten Gerät?','Es handelt sich um Software (App, Algorithmus, Modell, API).','Die Verarbeitung erfolgt maschinell und nicht rein manuell durch Menschen.'],
+                example:{label:'BeamTech-Beispiel', text:'Ein Excel-Sheet mit manuellen Formeln → kein technisches System im KI-VO-Sinne. Ein Python-Skript, das auf einem Server läuft → technisches System.'},
+                legalRef:'Art. 3 Abs. 1 KI-VO',
+                yesNext:'a2', noNext:'end_no_ki'
+            },
+            'a2': {
+                phase:'a', step:2, total:6,
+                badge:'Teil A · Schritt 2/6',
+                title:'Maschinelles Lernen oder wissensbasierte Ansätze?',
+                question:'Nutzt das System Techniken des maschinellen Lernens, tiefe neuronale Netze, statistische Methoden oder wissensbasierte Ansätze (z. B. Expertensysteme, Logikprogrammierung)?',
+                criteria:['Machine Learning (supervised, unsupervised, reinforcement learning).','Deep Learning / neuronale Netze (CNN, RNN, Transformer, LLMs).','Statistische Modelle mit Lernkomponente (Regression mit Feature-Engineering, Bayessche Netze).','Wissensbasierte Systeme: Regelengines, Ontologien, Fuzzy Logic.'],
+                example:{label:'BeamTech-Beispiel', text:'Predictive Maintenance mit Random Forest → ML-Technik. Einfache regelbasierte Wenn-Dann-Logik ohne Lernfähigkeit → kein KI-Ansatz im Sinne der VO.'},
+                legalRef:'Art. 3 Abs. 1 i.V.m. Anhang I KI-VO',
+                yesNext:'a3', noNext:'end_no_ki'
+            },
+            'a3': {
+                phase:'a', step:3, total:6,
+                badge:'Teil A · Schritt 3/6',
+                title:'Autonome Inferenz aus Daten?',
+                question:'Leitet das System selbstständig Muster, Strukturen oder Entscheidungsregeln aus Daten ab — ohne, dass jede Regel explizit von einem Menschen programmiert wurde?',
+                criteria:['Das System "lernt" Zusammenhänge aus historischen Daten.','Modellparameter werden durch Training, nicht durch manuelle Programmierung bestimmt.','Das System kann auf neue, ungesehene Daten generalisieren.'],
+                example:{label:'BeamTech-Beispiel', text:'Kreditrisikomodell, das aus 50.000 historischen Kreditentscheidungen Muster extrahiert → autonome Inferenz. Lookup-Table mit manuell definierten Schwellenwerten → keine autonome Inferenz.'},
+                legalRef:'Art. 3 Abs. 1 KI-VO',
+                yesNext:'a4', noNext:'end_no_ki'
+            },
+            'a4': {
+                phase:'a', step:4, total:6,
+                badge:'Teil A · Schritt 4/6',
+                title:'Verarbeitet es Eingabedaten?',
+                question:'Erhält das System strukturierte oder unstrukturierte Eingaben — wie Text, Bilder, Audio, Video, Sensordaten oder tabellarische Daten — und verarbeitet diese zur Ausgabegenerierung?',
+                criteria:['Strukturierte Daten (Tabellen, Datenbanken, JSON, CSV).','Unstrukturierte Daten (Texte, Bilder, Audio, Video, Sprache).','Sensordaten (IoT, Temperatur, Bewegung, biometrische Messwerte).','Kombination mehrerer Datentypen (multimodale Systeme).'],
+                example:{label:'BeamTech-Beispiel', text:'Dokumentenklassifikation empfängt PDFs → Eingabedaten: unstrukturierter Text/Bild. Reine Datenspeicherung ohne Analyse → keine relevante Datenverarbeitung für KI-VO.'},
+                legalRef:'Art. 3 Abs. 1 KI-VO',
+                yesNext:'a5', noNext:'end_no_ki'
+            },
+            'a5': {
+                phase:'a', step:5, total:6,
+                badge:'Teil A · Schritt 5/6',
+                title:'Erzeugt es verwertbare Outputs?',
+                question:'Produziert das System Ergebnisse, die für Entscheidungen, Inhalte oder Empfehlungen verwendet werden?',
+                criteria:['Vorhersagen (z. B. "Ausfallwahrscheinlichkeit: 78 %")','Empfehlungen (z. B. "Zeige diesem Nutzer Produkt X")','Entscheidungen (z. B. "Kreditantrag abgelehnt")','Generierte Inhalte (Texte, Bilder, Code, Sprache)'],
+                example:{label:'BeamTech-Beispiel', text:'System analysiert Support-Tickets und schlägt Antwort-Templates vor → Output: Empfehlung. Reine Datenspeicherung ohne nachgelagerte Nutzung → kein relevanter Output.'},
+                legalRef:'Art. 3 Abs. 1 KI-VO',
+                yesNext:'a6', noNext:'end_no_ki'
+            },
+            'a6': {
+                phase:'a', step:6, total:6,
+                badge:'Teil A · Schritt 6/6',
+                title:'Beeinflussen die Outputs reale oder digitale Umgebungen?',
+                question:'Wirken sich die Outputs auf physische oder digitale Umgebungen aus — z. B. durch Steuerung von Prozessen, Anzeige von Inhalten oder Entscheidungsunterstützung?',
+                criteria:['Reale Welt: Roboterbewegung, Vertragsentscheidung, Zulassung/Ablehnung von Personen.','Digitale Welt: Rankings, Anzeigenauswahl, Zugriffssperrungen, Content-Filterung.','Geschäftsprozesse: Automatische Weiterleitung, Priorisierung, Risikoklassifizierung.'],
+                example:{label:'BeamTech-Beispiel', text:'KI-Priorisierung von Serviceanfragen → beeinflusst digitalen Arbeitsablauf. Internes Logging ohne Auswirkung auf Entscheidungen oder Prozesse → kein relevanter Einfluss.'},
+                legalRef:'Art. 3 Abs. 1 KI-VO',
+                yesNext:'part_b_start', noNext:'end_no_ki'
+            },
+
+            'part_b_start': {
+                type:'milestone', phase:'b',
+                title:'✓ KI-System nach Art. 3 Abs. 1 KI-VO bestätigt',
+                text:'Ihr Vorhaben erfüllt alle Definitionsmerkmale eines KI-Systems. Jetzt prüfen wir, ob es sich um eine <strong>verbotene Praktik nach Art. 5 KI-VO</strong> handelt — diese sind ohne Ausnahme untersagt.',
+                nextPhaseTitle:'Teil B: Verbotene Praktiken (Art. 5 KI-VO)',
+                nextPhaseDesc:'6 Prüfschritte — Manipulation, Diskriminierung, Überwachung',
+                next:'b1'
+            },
+
+            'b1': {
+                phase:'b', step:1, total:6,
+                badge:'Teil B · Schritt 1/6 – Verbotene Praktiken',
+                title:'Manipulative Beeinflussung?',
+                question:'Setzt das System unterschwellige Techniken ein, die das Verhalten von Personen steuern — ohne dass sie es bemerken oder sich dagegen wehren können?',
+                criteria:['Einsatz von Subliminal Techniques jenseits bewusster Wahrnehmung.','Ausnutzung kognitiver Schwächen oder Vorurteile zur Entscheidungslenkung.','Dark Patterns, die Nutzer zu schädigenden Handlungen verleiten.'],
+                example:{label:'Verbotenes Beispiel', text:'Chatbot drängt vulnerable Nutzer durch emotionale Manipulation zu teuren Käufen. Oder: KI-Bilder in Werbung, die unbewusste Angst auslösen, um Kaufentscheidungen zu erzwingen.'},
+                warning:'Auch geringer Schaden genügt. Die Absicht zur Manipulation reicht für den Verbotstatbestand aus.',
+                legalRef:'Art. 5 Abs. 1 lit. a KI-VO',
+                yesNext:'end_verboten', noNext:'b2'
+            },
+            'b2': {
+                phase:'b', step:2, total:6,
+                badge:'Teil B · Schritt 2/6 – Verbotene Praktiken',
+                title:'Ausnutzung von Vulnerabilität?',
+                question:'Nutzt das System gezielt Schwächen bestimmter Personengruppen aus — z. B. aufgrund von Alter, Behinderung oder wirtschaftlicher Notlage?',
+                criteria:['Ältere oder kognitiv eingeschränkte Personen als gezielte Zielgruppe.','Personen in wirtschaftlicher Not oder sozialer Abhängigkeit.','Minderjährige als Zielgruppe für manipulative Inhalte.'],
+                example:{label:'BeamTech-Beispiel', text:'KI erkennt technikunsichere, ältere Nutzer auf der Webseite und blendet ihnen gezielt Fake-Rabatte ein, um Kaufentscheidungen zu manipulieren → Klarer Verstoß gegen Art. 5 Abs. 1 lit. b.'},
+                legalRef:'Art. 5 Abs. 1 lit. b KI-VO',
+                yesNext:'end_verboten', noNext:'b3'
+            },
+            'b3': {
+                phase:'b', step:3, total:6,
+                badge:'Teil B · Schritt 3/6 – Verbotene Praktiken',
+                title:'Social Scoring?',
+                question:'Bewertet das System Personen anhand ihres sozialen Verhaltens und leitet daraus Nachteile in anderen, unzusammenhängenden Lebensbereichen ab?',
+                criteria:['Langfristige Bewertung auf Basis von Verhalten, sozialen Interaktionen oder persönlichen Merkmalen.','Pauschal-Scoring führt zu Benachteiligungen in nicht verbundenen Bereichen.','Automatische Verschlechterung von Konditionen ohne transparente Einzelfallprüfung.'],
+                example:{label:'BeamTech-Beispiel', text:'KI-Score kombiniert Retourenquote, Social-Media-Aktivität und Zahlungshistorie und verschlechtert automatisch Zahlungsfristen → Social Scoring, verboten nach Art. 5 Abs. 1 lit. c.'},
+                legalRef:'Art. 5 Abs. 1 lit. c KI-VO',
+                yesNext:'end_verboten', noNext:'b4'
+            },
+            'b4': {
+                phase:'b', step:4, total:6,
+                badge:'Teil B · Schritt 4/6 – Verbotene Praktiken',
+                title:'Massenhafte biometrische Datenerfassung (Scraping)?',
+                question:'Sammelt das System ungefragt Gesichtsbilder oder andere biometrische Daten aus dem Internet oder Videoaufzeichnungen, um eine Erkennungsdatenbank aufzubauen?',
+                criteria:['Automatisiertes Einlesen von Fotos aus Social Media, Nachrichtenportalen oder Kameraaufnahmen.','Ziel: Erstellung oder Erweiterung einer biometrischen Datenbank.','Keine Einwilligung der betroffenen Personen.'],
+                example:{label:'BeamTech-Beispiel', text:'Webcrawler, der LinkedIn-Profilbilder von Messeinteressenten sammelt, um Personen auf dem Messegelände per Kamera zu identifizieren → Verboten, auch ohne staatlichen Auftrag.'},
+                legalRef:'Art. 5 Abs. 1 lit. e KI-VO',
+                yesNext:'end_verboten', noNext:'b5'
+            },
+            'b5': {
+                phase:'b', step:5, total:6,
+                badge:'Teil B · Schritt 5/6 – Verbotene Praktiken',
+                title:'Emotionserkennung am Arbeitsplatz oder in Bildungseinrichtungen?',
+                question:'Erkennt und wertet das System Emotionen von Mitarbeitern oder Lernenden aus — über Mimik, Stimme oder physiologische Signale?',
+                criteria:['KI-gestützte Analyse von Gesichtsausdrücken, Stimmlage oder Körpersprache.','Einsatz in beruflichen Kontexten (Meetings, Bewerbungsgespräche, Produktionsstätten).','Einsatz in Lehreinrichtungen (Schulen, Universitäten, Online-Kurse).'],
+                example:{label:'BeamTech-Beispiel', text:'KI analysiert in Videokonferenzen Mimik und Stimme von Mitarbeitenden, um "Stress-Level" zu ermitteln und an Vorgesetzte zu melden → Verboten, unabhängig von Einwilligungserklärungen.'},
+                warning:'Ausnahme: Enge medizinische oder sicherheitsrelevante Kontexte. Im Zweifel immer Rechtsabteilung konsultieren.',
+                legalRef:'Art. 5 Abs. 1 lit. f KI-VO',
+                yesNext:'end_verboten', noNext:'b6'
+            },
+            'b6': {
+                phase:'b', step:6, total:6,
+                badge:'Teil B · Schritt 6/6 – Verbotene Praktiken',
+                title:'Biometrische Kategorisierung nach sensiblen Merkmalen?',
+                question:'Klassifiziert das System Personen automatisch anhand biometrischer Merkmale nach Ethnizität, Religion, politischer Meinung, sexueller Orientierung oder ähnlichen Kategorien?',
+                criteria:['Ableitung von Ethnie, Herkunft oder Nationalität aus Körpermerkmalen.','Kategorisierung nach religiösen oder politischen Überzeugungen via biometrische Analyse.','Schlussfolgerungen auf sexuelle Orientierung oder Identität aus Kamera- oder Audiodaten.'],
+                example:{label:'BeamTech-Beispiel', text:'System auf dem Messegelände, das Besuchende anhand des Gesichtsbilds als "konservativ" oder "progressiv" einordnet und Marketingbotschaften entsprechend anpasst → Verboten.'},
+                legalRef:'Art. 5 Abs. 1 lit. g KI-VO',
+                yesNext:'end_verboten', noNext:'part_c_start'
+            },
+
+            'part_c_start': {
+                type:'milestone', phase:'c',
+                title:'✓ Keine verbotene Praktik festgestellt',
+                text:'Ihr KI-Vorhaben verstößt nicht gegen Art. 5 KI-VO. Nun prüfen wir, ob es als <strong>Hochrisiko-KI-System nach Anhang III</strong> einzustufen ist — mit entsprechend erhöhten Sorgfaltspflichten.',
+                nextPhaseTitle:'Teil C: Hochrisiko-KI (Anhang III KI-VO)',
+                nextPhaseDesc:'Prüfung kritischer Einsatzbereiche mit erhöhten Dokumentations- und Aufsichtspflichten',
+                next:'c1'
+            },
+
+            'c1': {
+                phase:'c', step:1, total:2,
+                badge:'Teil C · Schritt 1/2 – Hochrisiko-KI',
+                title:'Biometrie-Anwendung?',
+                question:'Dient das System der Fernidentifizierung, biometrischen Kategorisierung oder Emotionserkennung von natürlichen Personen?',
+                criteria:['Fernbiometrische Identifizierung (live oder aufgezeichnet).','Biometrische Kategorisierung nach persönlichen Merkmalen (außerhalb des Verbots aus Teil B).','Emotionserkennung in nicht verbotenen Kontexten (z. B. mit nachgewiesener Einwilligung und engem Zweck).'],
+                example:{label:'BeamTech-Beispiel', text:'System vergleicht Messebesuchende mit einer Whitelist autorisierter Geschäftspartner per Kamerabild → Hochrisiko (Anhang III Nr. 1). Erfordert: Konformitätsbewertung, technische Dokumentation und Transparenzpflichten.'},
+                legalRef:'Anhang III Nr. 1 KI-VO',
+                yesNext:'end_hochrisiko', noNext:'c2'
+            },
+            'c2': {
+                phase:'c', step:2, total:2,
+                badge:'Teil C · Schritt 2/2 – Hochrisiko-KI',
+                title:'Beschäftigung & Personalmanagement?',
+                question:'Wird das System für Entscheidungen in HR-Prozessen eingesetzt — und geht dabei über bloße administrative Unterstützung hinaus?',
+                criteria:['Bewerberauswahl: automatische Vorauswahl, Scoring oder Ablehnung von Kandidaten.','Leistungsbewertung: KI-gestützte Bewertung von Mitarbeiter-KPIs mit Handlungsfolgen.','Beförderungsentscheidungen: KI-generierte Ranglisten oder Empfehlungen.','Verhaltensüberwachung zur Steuerung von Mitarbeitenden.'],
+                example:{label:'BeamTech-Beispiel', text:'KI scannt Lebensläufe, erstellt verbindliche Kandidaten-Rankings und empfiehlt "Nicht einladen" für 80 % der Bewerbungen → Hochrisiko (Anhang III Nr. 4). Reine Spamfilterung im Bewerbungspostfach → kein Hochrisiko.'},
+                legalRef:'Anhang III Nr. 4 KI-VO',
+                yesNext:'end_hochrisiko', noNext:'end_safe'
+            },
+
+            'end_no_ki': {
+                type:'result', resultClass:'result-noki', icon:'fa-circle-xmark',
+                title:'Kein KI-System nach KI-VO',
+                subtitle:'Die KI-Verordnung ist nicht anwendbar.',
+                desc:'Ihr Vorhaben erfüllt nicht die Tatbestandsmerkmale eines KI-Systems im Sinne von Art. 3 Abs. 1 KI-VO. Die KI-Verordnung findet keine Anwendung und es bestehen keine spezifischen KI-Compliance-Pflichten.',
+                actions:[
+                    {type:'ok',   icon:'fa-check',       text:'Keine Pflichten aus der KI-VO. Das Vorhaben kann ohne KI-spezifische Compliance-Maßnahmen umgesetzt werden.'},
+                    {type:'info', icon:'fa-circle-info',  text:'Prüfen Sie ggf. andere anwendbare Vorschriften: DSGVO, Produkthaftungsrichtlinie oder branchenspezifische Regulierungen.'}
+                ]
+            },
+            'end_verboten': {
+                type:'result', resultClass:'result-banned', icon:'fa-ban',
+                title:'Verbotene Praktik — Einsatz unzulässig',
+                subtitle:'Art. 5 KI-VO: Absolutes Verbot ohne Ausnahmen.',
+                desc:'Ihr KI-Vorhaben fällt unter die verbotenen Praktiken des Art. 5 KI-VO. Der Einsatz ist unabhängig von Einwilligungserklärungen, Geschäftszweck oder technischen Schutzmaßnahmen rechtlich nicht gestattet.',
+                actions:[
+                    {type:'stop', icon:'fa-ban',                 text:'Sofortiger Stopp: Das System darf nicht eingesetzt, erworben oder in Auftrag gegeben werden.'},
+                    {type:'warn', icon:'fa-triangle-exclamation', text:'Sanktionen: Verstöße können Bußgelder von bis zu 35 Mio. EUR oder 7 % des weltweiten Jahresumsatzes nach sich ziehen (Art. 99 Abs. 3 KI-VO).'},
+                    {type:'info', icon:'fa-phone',                text:'Nächster Schritt: Kontaktieren Sie umgehend die Rechtsabteilung und informieren Sie Ihren Vorgesetzten über den Sachverhalt.'}
+                ]
+            },
+            'end_hochrisiko': {
+                type:'result', resultClass:'result-high', icon:'fa-triangle-exclamation',
+                title:'Hochrisiko-KI-System',
+                subtitle:'Anhang III KI-VO: Erhöhte Sorgfalts- und Dokumentationspflichten.',
+                desc:'Ihr System ist als Hochrisiko-KI nach Anhang III KI-VO einzustufen. Der Einsatz ist grundsätzlich möglich — jedoch nur bei vollständiger Erfüllung der Anforderungen nach Art. 8–25 KI-VO.',
+                actions:[
+                    {type:'warn', icon:'fa-file-contract',        text:'Technische Dokumentation: Vollständige Risikoanalyse, Systemdokumentation und Konformitätsbewertung erforderlich (Art. 9, 11, 43 KI-VO).'},
+                    {type:'warn', icon:'fa-database',              text:'Datenqualität: Trainingsdaten müssen auf Bias geprüft, bereinigt und dokumentiert werden (Art. 10 KI-VO).'},
+                    {type:'warn', icon:'fa-person-chalkboard',     text:'Menschliche Aufsicht: Mechanismen zur menschlichen Kontrolle und Eingriffsmöglichkeit müssen implementiert und dokumentiert sein (Art. 14 KI-VO).'},
+                    {type:'info', icon:'fa-circle-info',           text:'Nächster Schritt: Beauftragen Sie das Compliance-Team mit einer vollständigen Konformitätsbewertung, bevor das System in Betrieb geht.'}
+                ]
+            },
+            'end_safe': {
+                type:'result', resultClass:'result-safe', icon:'fa-circle-check',
+                title:'Einsatz grundsätzlich möglich',
+                desc:'Ihr KI-System ist weder verboten noch als Hochrisiko-System nach Anhang III KI-VO einzustufen. Der Einsatz ist unter Einhaltung der allgemeinen Transparenzpflichten zulässig.',
+                actions:[
+                    {type:'ok',   icon:'fa-check-circle',         text:'Grünes Licht: Kein spezifisches Verbot, keine Hochrisiko-Pflichten. Die Umsetzung kann geplant werden.'},
+                    {type:'info', icon:'fa-eye',                   text:'Transparenzpflicht (Art. 50): Sofern das System mit Menschen interagiert, muss die KI-Natur offengelegt werden (z. B. Chatbot-Kennzeichnung).'},
+                    {type:'info', icon:'fa-arrow-rotate-right',    text:'Empfehlung: Führen Sie diese Prüfung erneut durch, wenn sich Funktion, Einsatzbereich oder Datenbasis des Systems wesentlich ändern.'}
+                ]
+            }
+        };
+
+        const totalSteps = { a:6, b:6, c:2 };
+        const phaseOrder = ['a','b','c'];
+        let visitedPhases = new Set();
+        let donePhases    = new Set();
+
+        const quizArea  = document.getElementById('quiz-area');
+        const fillBar   = document.getElementById('progress-fill');
+        const progText  = document.getElementById('progress-text');
+
+        // Current result context for modal
+        let currentRiskLabel = '';
+        let currentResultTitle = '';
+
+        function phaseLabel(ph) {
+            return {a:'Teil A: KI-Definition', b:'Teil B: Verbotene Praktiken', c:'Teil C: Hochrisiko-KI'}[ph]||'';
+        }
+
+        function updateProgress(node) {
+            if (!node || node.type==='result') return;
+            if (node.type==='milestone') {
+                const prev = phaseOrder[phaseOrder.indexOf(node.phase)-1];
+                if (prev) donePhases.add(prev);
+                visitedPhases.add(node.phase);
+            } else {
+                visitedPhases.add(node.phase);
+            }
+            ['a','b','c'].forEach(ph => {
+                const pill = document.getElementById('pill-'+ph);
+                if (donePhases.has(ph))        pill.className='phase-pill done-phase';
+                else if (visitedPhases.has(ph)) pill.className='phase-pill current';
+                else                            pill.className='phase-pill';
+            });
+            let pct = 0;
+            donePhases.forEach(ph => pct += totalSteps[ph]);
+            if (node.step) pct += node.step - 1;
+            const maxSteps = totalSteps.a + totalSteps.b + totalSteps.c;
+            fillBar.style.width = Math.min(100, Math.round((pct/maxSteps)*100))+'%';
+            progText.textContent = node.step
+                ? `Schritt ${node.step} von ${node.total} — ${phaseLabel(node.phase)}`
+                : phaseLabel(node.phase);
+        }
+
+        function loadStep(id) {
+            const node = tree[id];
+            updateProgress(node);
+            quizArea.innerHTML = '';
+            if (node.type==='result')    renderResult(node);
+            else if (node.type==='milestone') renderMilestone(node);
+            else renderQuestion(node);
+        }
+
+        function renderQuestion(node) {
+            const criteriaHTML = (node.criteria||[]).map(c=>`
+                <div class="criteria-item">
+                    <div class="ci-icon"><i class="fa-solid fa-check"></i></div>
+                    <span>${c}</span>
+                </div>`).join('');
+
+            const exampleHTML = node.example ? `
+                <div class="example-box">
+                    <div class="example-label"><i class="fa-solid fa-lightbulb"></i> ${node.example.label}</div>
+                    <div class="example-text">${node.example.text}</div>
+                </div>` : '';
+
+            const warningHTML = node.warning ? `
+                <div class="warning-box">
+                    <i class="fa-solid fa-circle-exclamation wi"></i>
+                    <div class="wt">${node.warning}</div>
+                </div>` : '';
+
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            card.innerHTML = `
+                <div class="quiz-card-header">
+                    <div class="step-badge"><i class="fa-solid fa-scale-balanced"></i> ${node.badge}</div>
+                    <h2>${node.title}</h2>
+                    <div class="legal-ref"><i class="fa-solid fa-book-open"></i> ${node.legalRef}</div>
+                </div>
+                <div class="quiz-card-divider"></div>
+                <div class="quiz-card-body">
+                    <div class="question-text">${node.question}</div>
+                    <div class="criteria-list">${criteriaHTML}</div>
+                    ${exampleHTML}
+                    ${warningHTML}
+                </div>
+                <div class="btn-area">
+                    <button class="btn btn-yes" id="bY"><i class="fa-solid fa-check"></i> Ja, trifft zu</button>
+                    <button class="btn btn-no"  id="bN"><i class="fa-solid fa-xmark"></i> Nein, trifft nicht zu</button>
+                </div>`;
+            quizArea.appendChild(card);
+            card.querySelector('#bY').onclick = () => loadStep(node.yesNext);
+            card.querySelector('#bN').onclick  = () => loadStep(node.noNext);
+        }
+
+        function renderMilestone(node) {
+            const card = document.createElement('div');
+            card.className = 'milestone-card';
+            card.innerHTML = `
+                <div class="milestone-badge"><i class="fa-solid fa-circle-check"></i> Zwischenergebnis</div>
+                <h2>${node.title}</h2>
+                <p>${node.text}</p>
+                <div class="next-phase-box">
+                    <i class="fa-solid fa-arrow-right-long"></i>
+                    <div>
+                        <div class="np-title">${node.nextPhaseTitle}</div>
+                        <div class="np-desc">${node.nextPhaseDesc}</div>
+                    </div>
+                </div>
+                <div class="btn-area" style="padding:20px 0 0;">
+                    <button class="btn btn-next" id="bC"><i class="fa-solid fa-forward-step"></i> Weiter zur nächsten Prüfung</button>
+                </div>`;
+            quizArea.appendChild(card);
+            card.querySelector('#bC').onclick = () => loadStep(node.next);
+        }
+
+       function renderResult(node) {
+            const actionsHTML = (node.actions||[]).map(a=>`
+                <div class="action-item action-${a.type}">
+                    <i class="fa-solid ${a.icon}"></i>
+                    <span>${a.text}</span>
+                </div>`).join('');
+
+            const riskMap = {
+                'result-banned': 'VERBOTEN',
+                'result-high':   'HOCHRISIKO',
+                'result-safe':   'GERINGES RISIKO',
+                'result-noki':   'KEIN KI-SYSTEM'
+            };
+            currentRiskLabel    = riskMap[node.resultClass] || 'UNBEKANNT';
+            currentResultTitle  = node.title;
+
+            // 🟢 NEU: Logik zum Ausblenden des Buttons bei "Safe" oder "No KI"
+            const showLegalBtn = !(node.resultClass === 'result-safe' || node.resultClass === 'result-noki');
+
+            const card = document.createElement('div');
+            card.className = `result-card ${node.resultClass}`;
+            card.innerHTML = `
+                <div class="result-header">
+                    <div class="result-icon"><i class="fa-solid ${node.icon}"></i></div>
+                    <div>
+                        <div class="result-title">${node.title}</div>
+                        <div class="result-subtitle">${node.subtitle}</div>
+                    </div>
+                </div>
+                <div class="result-body">
+                    <p class="result-desc">${node.desc}</p>
+                    <div class="action-items">${actionsHTML}</div>
+                    
+                    ${showLegalBtn ? `
+                    <button class="btn-legal" id="bLegal">
+                        <div class="spinner"></div>
+                        <i class="fa-solid fa-paper-plane btn-legal-icon"></i>
+                        <span class="btn-legal-label">An Rechtsabteilung senden</span>
+                    </button>
+                    ` : ''}
+
+                    <button class="btn btn-restart" style="width:100%;margin-top:10px;" id="bR">
+                        <i class="fa-solid fa-rotate-left"></i> Neue Prüfung starten
+                    </button>
+                </div>`;
+            quizArea.appendChild(card);
+
+            fillBar.style.width = '100%';
+            progText.textContent = 'Prüfung abgeschlossen';
+            ['a','b','c'].forEach(ph => { document.getElementById('pill-'+ph).className='phase-pill done-phase'; });
+
+            // 🟢 NEU: Event-Listener nur hinzufügen, wenn der Button existiert
+            const legalBtn = card.querySelector('#bLegal');
+            if (legalBtn) {
+                legalBtn.onclick = () => openModal();
+            }
+
+            card.querySelector('#bR').onclick = () => {
+                visitedPhases.clear(); donePhases.clear();
+                fillBar.style.width='0%';
+                progText.textContent='Prüfung starten';
+                ['a','b','c'].forEach(ph => { document.getElementById('pill-'+ph).className='phase-pill'; });
+                loadStep('a1');
+            };
+        }
+
+        // ══ MODAL LOGIC ═══════════════════════════════════════════════════════
+        const overlay      = document.getElementById('submitModal');
+        const modalCloseBtn= document.getElementById('modalCloseBtn');
+        const modalCancelBtn=document.getElementById('modalCancelBtn');
+        const modalSubmitBtn=document.getElementById('modalSubmitBtn');
+        const modalRiskStrip=document.getElementById('modalRiskStrip');
+        const modalRiskLabel=document.getElementById('modalRiskLabel');
+        const fileInput    = document.getElementById('f-datei');
+        const fileZone     = document.getElementById('fileZone');
+        const fileSelectedInfo=document.getElementById('fileSelectedInfo');
+        const fileNameDisplay =document.getElementById('fileNameDisplay');
+        const fileSizeDisplay =document.getElementById('fileSizeDisplay');
+        const fileRemoveBtn   =document.getElementById('fileRemoveBtn');
+
+        let fileBase64   = null;
+        let fileMetaData = null;
+
+        function openModal() {
+            // Reset form
+            resetModal();
+            // Set risk context
+            const riskStyleMap = {
+                'VERBOTEN':       {cls:'strip-VERBOTEN',  icon:'fa-ban'},
+                'HOCHRISIKO':     {cls:'strip-HOCHRISIKO', icon:'fa-triangle-exclamation'},
+                'GERINGES RISIKO':{cls:'strip-safe',       icon:'fa-circle-check'},
+                'KEIN KI-SYSTEM': {cls:'strip-noki',       icon:'fa-circle-xmark'},
+            };
+            const rs = riskStyleMap[currentRiskLabel] || {cls:'strip-noki', icon:'fa-circle-info'};
+            modalRiskStrip.className = 'modal-risk-strip ' + rs.cls;
+            modalRiskStrip.querySelector('i').className = 'fa-solid ' + rs.icon;
+            modalRiskLabel.textContent = currentResultTitle + ' — ' + currentRiskLabel;
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function resetModal() {
+            ['f-projekt','f-beschreibung'].forEach(id => {
+                const el = document.getElementById(id);
+                el.value = '';
+                el.classList.remove('error');
+            });
+            document.getElementById('f-datenquellen').value = '';
+            document.getElementById('f-datenquellen').classList.remove('error');
+            document.querySelectorAll('.field-error').forEach(e => e.classList.remove('show'));
+            clearFile();
+            modalSubmitBtn.classList.remove('loading');
+            modalSubmitBtn.disabled = false;
+        }
+
+        function clearFile() {
+            fileBase64   = null;
+            fileMetaData = null;
+            fileInput.value = '';
+            fileSelectedInfo.classList.remove('show');
+            fileNameDisplay.textContent = '';
+            fileSizeDisplay.textContent = '';
+        }
+
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalCancelBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+        // File upload
+        fileInput.addEventListener('change', handleFileSelect);
+        fileRemoveBtn.addEventListener('click', (e) => { e.stopPropagation(); clearFile(); });
+
+        // Drag & drop visual feedback
+        fileZone.addEventListener('dragover', (e) => { e.preventDefault(); fileZone.classList.add('drag-over'); });
+        fileZone.addEventListener('dragleave', () => fileZone.classList.remove('drag-over'));
+        fileZone.addEventListener('drop', (e) => { e.preventDefault(); fileZone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) { fileInput.files = e.dataTransfer.files; handleFileSelect(); } });
+
+        function handleFileSelect() {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const maxSize = 5 * 1024 * 1024; // 5 MB
+            const errEl = document.getElementById('err-datei');
+            if (file.size > maxSize) {
+                errEl.textContent = 'Die Datei ist zu groß (max. 5 MB).';
+                errEl.classList.add('show');
+                fileInput.value = '';
+                return;
+            }
+            errEl.classList.remove('show');
+
+            const sizeStr = file.size > 1024 * 1024
+                ? (file.size / (1024*1024)).toFixed(1) + ' MB'
+                : (file.size / 1024).toFixed(0) + ' KB';
+
+            fileNameDisplay.textContent = file.name;
+            fileSizeDisplay.textContent = sizeStr;
+            fileSelectedInfo.classList.add('show');
+
+            // Read as Base64
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                fileBase64   = ev.target.result; // data:...;base64,...
+                fileMetaData = { name: file.name, size: file.size, type: file.type, sizeStr };
+            };
+            reader.onerror = () => {
+                document.getElementById('err-datei').textContent = 'Fehler beim Lesen der Datei.';
+                document.getElementById('err-datei').classList.add('show');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Validation
+        function validate() {
+            let valid = true;
+            const fields = [
+                { id: 'f-projekt',      err: 'err-projekt',      check: v => v.trim().length >= 2 },
+          
+                { id: 'f-datenquellen', err: 'err-datenquellen',  check: v => v !== '' },
+                { id: 'f-beschreibung', err: 'err-beschreibung',  check: v => v.trim().length >= 20 },
+            ];
+            fields.forEach(f => {
+                const el  = document.getElementById(f.id);
+                const err = document.getElementById(f.err);
+                if (!f.check(el.value)) {
+                    el.classList.add('error');
+                    err.classList.add('show');
+                    valid = false;
+                } else {
+                    el.classList.remove('error');
+                    err.classList.remove('show');
+                }
+            });
+            return valid;
+        }
+
+     // Submit mit Erfolgsmeldung und verzögerter Weiterleitung
+modalSubmitBtn.addEventListener('click', () => {
+    if (!validate()) return;
+
+    modalSubmitBtn.classList.add('loading');
+    modalSubmitBtn.disabled = true;
+
+    // 1. Phase: Speichern simulieren (900ms)
+    setTimeout(() => {
+        const ticket = {
+            id:           'TKT-' + Date.now(),
+            datum:        new Date().toLocaleString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+            risikoklasse: currentRiskLabel,
+            titel:        currentResultTitle,
+            user:         'Martin Müller',
+            status:       'Offen',
+            projektname:    document.getElementById('f-projekt').value.trim(),
+            abteilung:      '—',
+            datenquellen:   document.getElementById('f-datenquellen').value,
+            beschreibung:   document.getElementById('f-beschreibung').value.trim(),
+            anhang:         fileBase64 || null,
+            anhangMeta:     fileMetaData || null,
+            juristischeBewertung: ''
+        };
+
+        const existing = JSON.parse(localStorage.getItem('legalTickets') || '[]');
+        existing.unshift(ticket);
+        localStorage.setItem('legalTickets', JSON.stringify(existing));
+
+        // 2. Phase: Button auf Erfolg (Grün) umstellen
+        modalSubmitBtn.classList.remove('loading');
+        modalSubmitBtn.classList.add('success');
+        modalSubmitBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> <span class="submit-text">Erfolgreich gesendet!</span>';
+
+        // 3. Phase: 2 Sekunden warten, dann weiterleiten
+        setTimeout(() => {
+            closeModal();
+            window.location.href = 'ai-next-steps.html';
+        }, 2000); 
+
+    }, 900);
+});
+
+        loadStep('a1');
+    });
+    </script>
+
+</body>
+</html>

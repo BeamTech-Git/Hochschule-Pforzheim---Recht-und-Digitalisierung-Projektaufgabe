@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR & Benefits | BeamTech Intranet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary:  #143c7b;
+            --navy:     #0f2a54;
+            --sky:      #3b9de3;
+            --accent:   #f59e0b;
+            --white:    #ffffff;
+            --gray:     #f4f4f4;
+            --text:     #1a1a2e;
+            --muted:    #64748b;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+    font-family: 'DM Sans', sans-serif; 
+    background: var(--gray); 
+    color: var(--text); 
+    padding-top: 72px; 
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+        /* ── NAVIGATION (CI Sync) ── */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; height: 72px; background: rgba(13, 31, 60, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--white); letter-spacing: 3px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .nav-logo .bolt { color: var(--accent); }
+        .nav-links { display: flex; gap: 35px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.88rem; font-weight: 500; text-transform: uppercase; }
+
+        /* ── HERO ── */
+        .page-header { background: linear-gradient(135deg, var(--navy), var(--primary)); color: var(--white); padding: 60px 40px; text-align: center; }
+        .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; letter-spacing: 2px; }
+        .page-header p { opacity: 0.8; font-size: 1.1rem; margin-top: 10px; }
+
+        /* ── BENEFITS GRID ── */
+        .content-container { max-width: 1200px; margin: 40px auto; padding: 0 40px; }
+        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+
+        .perk-card { background: var(--white); border-radius: 16px; padding: 35px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--sky); }
+        .perk-card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .perk-card i { font-size: 3rem; color: var(--sky); margin-bottom: 20px; display: block; }
+        .perk-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--navy); margin-bottom: 15px; }
+        .perk-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+        /* ── SPECIAL AI BUDGET ── */
+        .ai-promo { background: linear-gradient(90deg, #f59e0b, #d97706); border-radius: 16px; padding: 40px; margin-top: 50px; color: var(--navy); display: flex; align-items: center; justify-content: space-between; gap: 30px; box-shadow: 0 10px 30px rgba(245,158,11,0.2); }
+        .ai-promo-content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; margin-bottom: 10px; }
+        .ai-promo-btn { background: var(--navy); color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; }
+
+       /* ── FOOTER ── */
+/* ── FOOTER ── */
+footer {
+    background: #060d1a;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 18px 60px;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    margin-top: auto; 
+}
+
+footer span { 
+    color: var(--accent); 
+}
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <a href="dashboard.html" class="nav-logo">
+            <i class="fa-solid fa-bolt bolt"></i>BEAMTECH
+        </a>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="aikompass.html">AI-Kompass</a></li>
+            <li><a href="dokumentenablage.html">Dokumente</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <h1>HR &amp; Benefits</h1>
+        <p>Weil bei BeamTech der Mensch im Mittelpunkt der Technologie steht.</p>
+    </header>
+
+    <main class="content-container">
+        <div class="benefits-grid">
+            <div class="perk-card">
+                <i class="fa-solid fa-bicycle"></i>
+                <h3>JobRad Leasing</h3>
+                <p>Lease dein Wunschrad über BeamTech und spare bis zu 40% gegenüber dem Barkauf. Gut für dich, gut für die Umwelt.</p>
+            </div>
+            <div class="perk-card">
+                <i class="fa-solid fa-dumbbell"></i>
+                <h3>Fitness & Wellness</h3>
+                <p>Kostenlose Mitgliedschaft bei Urban Sports Club oder Zuschuss zum lokalen Fitnessstudio. Bleib fit für die nächste Innovation.</p>
+            </div>
+            <div class="perk-card">
+                <i class="fa-solid fa-piggy-bank"></i>
+                <h3>Altersvorsorge</h3>
+                <p>Wir denken an morgen. BeamTech bezuschusst deine betriebliche Altersvorsorge mit attraktiven Gruppenkonditionen.</p>
+            </div>
+        </div>
+
+        <div class="ai-promo">
+            <div class="ai-promo-content">
+                <h2>🚀 Neu: Dein KI-Lernbudget 2026</h2>
+                <p>Wir unterstützen deinen Wissensdurst! Jeder Mitarbeiter erhält jährlich 500€ Budget für KI-Zertifizierungen oder Kurse.</p>
+            </div>
+        </div>
+    </main>
+
+     <!-- Footer -->
+        <footer>
+            &copy; 2026 <span>BeamTech</span> GmbH & Co. KG &mdash;
+            <a href="impressum.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Impressum</a>·
+            <a href="datenschutz.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Datenschutz</a>·
+            <a href="AGB.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">AGB</a>·
+            <a href="cookies.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Cookies</a>
+        </footer>
+
+</body>
+</html>

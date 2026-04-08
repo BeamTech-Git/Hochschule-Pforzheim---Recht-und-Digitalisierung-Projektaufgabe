@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News: AI-Kompass ist live | BeamTech Intranet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-blue: #143c7b;
+            --navy-dark: #0d1f3c;
+            --accent: #f59e0b;
+            --bg-gray: #f4f4f4;
+            --white: #ffffff;
+            --text-dark: #1a1a2e;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- NAVIGATION --- */
+        .nav {
+            background: var(--navy-dark);
+            padding: 0 60px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--white);
+            letter-spacing: 3px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo .bolt { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--white); }
+
+        /* --- ARTICLE CONTENT --- */
+        .article-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .article-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--navy-dark));
+            color: var(--white);
+            padding: 40px 50px;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .article-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.8rem;
+            letter-spacing: 1.5px;
+            line-height: 1.1;
+        }
+
+        .article-body {
+            padding: 40px 50px;
+        }
+
+        .article-body p {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.05rem;
+        }
+
+        .article-body h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+            margin: 30px 0 15px;
+            letter-spacing: 1px;
+        }
+
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 25px 0;
+        }
+
+        .highlight-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .highlight-box li {
+            margin-bottom: 8px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: background 0.2s, transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-dark);
+            transform: translateY(-2px);
+        }
+
+        /* --- FOOTER --- */
+    /* ══ FOOTER ══ */
+        footer {
+            background: #060d1a;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+            padding: 18px 60px;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            margin-top: auto;
+        }
+
+        footer span { 
+            color: var(--accent); 
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <a href="dashboard.html" class="nav-logo">
+            <span class="bolt"><i class="fa-solid fa-bolt"></i></span> BEAMTECH
+        </a>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="aikompass.html">AI-Kompass</a>
+            <a href="chat.html">BeamTechGPT</a>
+            <a href="dokumentenablage.html">Dokumente</a>
+            <a href="legal-dashboard.html">Rechtsabteilung</a>
+        </div>
+    </nav>
+
+    <main class="article-container">
+        <header class="article-header">
+            <div class="article-meta">
+                <span><i class="fa-regular fa-calendar"></i> Heute</span>
+                <span><i class="fa-solid fa-user-shield"></i> Compliance Team</span>
+            </div>
+            <h1>Neu: Der AI-Kompass ist jetzt live!</h1>
+        </header>
+
+        <div class="article-body">
+            <p>Liebe Kolleginnen und Kollegen,</p>
+            
+            <p>die neue EU-KI-Verordnung (KI-VO) stellt uns vor neue Herausforderungen, wenn es darum geht, Software und Prozesse rechtssicher zu gestalten. Um euch die Arbeit zu erleichtern, freuen wir uns, heute den <strong>BeamTech AI-Kompass</strong> im Intranet freizuschalten.</p>
+
+            <h2>Was ist der AI-Kompass?</h2>
+            <p>Der AI-Kompass ist ein interaktiver Self-Service-Entscheidungsbaum. Er hilft euch dabei, in wenigen Minuten herauszufinden, ob ein geplantes Software-Tool oder eine neue Funktion unter die strengen Regeln der EU-KI-Verordnung fällt.</p>
+
+            <div class="highlight-box">
+                <strong>Das Tool prüft euer Vorhaben in drei einfachen Phasen:</strong>
+                <ul>
+                    <li><strong>Teil A:</strong> Handelt es sich überhaupt um ein KI-System nach EU-Definition?</li>
+                    <li><strong>Teil B:</strong> Fällt es unter die absolut verbotenen Praktiken (z.B. Manipulation oder Social Scoring)?</li>
+                    <li><strong>Teil C:</strong> Gilt es als Hochrisiko-System (z.B. beim Einsatz im HR-Bereich)?</li>
+                </ul>
+            </div>
+
+            <h2>Neu: Der KI-Compliance-Chat</h2>
+            <p>Zusätzlich zum Entscheidungsbaum haben wir einen intelligenten KI-Chatbot integriert. Dieser "Experte" ist speziell auf die Artikel 5 und 6 der KI-VO trainiert. Wenn ihr euch unsicher seid, könnt ihr euer Projektvorhaben einfach im Chat beschreiben, und unser virtueller Kollege gibt euch eine detaillierte Ersteinschätzung.</p>
+
+            <p>Probiert es direkt aus und sorgt dafür, dass eure Projekte von Tag eins an compliant sind!</p>
+
+            <a href="aikompass.html" class="btn-primary"><i class="fa-solid fa-scale-balanced"></i> Zum AI-Kompass</a>
+            <a href="chat.html" class="btn-primary" style="background: var(--accent); color: var(--navy-dark);"><i class="fa-solid fa-robot"></i> Zum KI-Chat</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 <span>BeamTech</span> GmbH & Co. KG &mdash;
+        <a href="impressum.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Impressum</a>·
+        <a href="datenschutz.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Datenschutz</a>·
+        <a href="AGB.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">AGB</a>·
+        <a href="cookies.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Cookies</a>
+    </footer>
+</body>
+</html>

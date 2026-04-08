@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeamTech | AI-Kompass Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        :root {
+            --primary:  #143c7b;
+            --navy:     #0f2a54;
+            --navy-dark:#0d1f3c;
+            --blue:     #143c7b;
+            --mid:      #1e5fa8;
+            --sky:      #3b9de3;
+            --light:    #e8f0fb;
+            --white:    #ffffff;
+            --gray:     #f4f4f4;
+            --text:     #1a1a2e;
+            --muted:    #64748b;
+            --accent:   #f59e0b;
+            --nav-h:    72px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--gray);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ══════════════════════════════════════════
+           NAVIGATION (exact dashboard copy)
+        ══════════════════════════════════════════ */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            height: var(--nav-h);
+            background: rgba(13, 31, 60, 0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--white);
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-logo .bolt {
+            color: var(--accent);
+            font-size: 1.4rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            transition: color 0.2s;
+            padding-bottom: 2px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a.active {
+            color: var(--white);
+            border-bottom-color: var(--accent);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(245,158,11,0.12);
+            border: 1px solid rgba(245,158,11,0.3);
+            border-radius: 24px;
+            padding: 6px 16px;
+            color: var(--accent);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .nav-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-profile-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--sky), var(--mid));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+        }
+
+        .nav-profile-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .nav-profile-name {
+            color: var(--white);
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .nav-profile-logout {
+            color: rgba(255,255,255,0.45);
+            font-size: 0.7rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-profile-logout:hover { color: var(--accent); }
+
+        /* ══════════════════════════════════════════
+           CHAT LAYOUT
+        ══════════════════════════════════════════ */
+        .chat-shell {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding-top: var(--nav-h);
+        }
+
+        /* Subtle hero strip */
+        .chat-hero {
+            background: linear-gradient(130deg, var(--navy) 0%, var(--mid) 80%, var(--sky) 100%);
+            padding: 18px 60px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .chat-hero-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .chat-hero-text h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            color: var(--white);
+            line-height: 1;
+        }
+
+        .chat-hero-text p {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.55);
+            margin-top: 2px;
+            letter-spacing: 0.3px;
+        }
+
+        /* Status pill */
+        .status-pill {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 0.5px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 6px #22c55e;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* ══════════════════════════════════════════
+           MESSAGE AREA
+        ══════════════════════════════════════════ */
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 0 8px;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(20,60,123,0.2) transparent;
+        }
+
+        .chat-body::-webkit-scrollbar { width: 5px; }
+        .chat-body::-webkit-scrollbar-track { background: transparent; }
+        .chat-body::-webkit-scrollbar-thumb { background: rgba(20,60,123,0.2); border-radius: 10px; }
+
+        .messages-wrap {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Row wrappers */
+        .msg-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            animation: msgIn 0.28s cubic-bezier(0.34,1.56,0.64,1) both;
+        }
+
+        .msg-row.user { flex-direction: row-reverse; }
+        .msg-row.ai   { flex-direction: row; }
+
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(14px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Avatars */
+        .msg-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .msg-avatar.ai-av {
+            background: linear-gradient(135deg, var(--mid), var(--sky));
+            color: white;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.85rem;
+        }
+
+        .msg-avatar.user-av {
+            background: linear-gradient(135deg, var(--sky), var(--mid));
+            color: white;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.85rem;
+        }
+
+        /* Bubbles */
+        .bubble {
+            max-width: 76%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-size: 0.93rem;
+            line-height: 1.65;
+            position: relative;
+        }
+
+        .bubble.user {
+            background: linear-gradient(135deg, var(--blue), var(--mid));
+            color: white;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 18px rgba(20,60,123,0.28);
+        }
+
+        .bubble.ai {
+            background: var(--white);
+            color: var(--text);
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            border: 1px solid rgba(0,0,0,0.07);
+        }
+
+        /* Markdown inside ai bubble */
+        .bubble.ai p { margin-bottom: 10px; }
+        .bubble.ai p:last-child { margin-bottom: 0; }
+        .bubble.ai strong { color: var(--blue); }
+        .bubble.ai h1, .bubble.ai h2, .bubble.ai h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 1px;
+            color: var(--navy);
+            margin: 14px 0 6px;
+            font-weight: 400;
+        }
+        .bubble.ai h3 { font-size: 1.05rem; }
+        .bubble.ai ul, .bubble.ai ol {
+            margin: 8px 0 8px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .bubble.ai li { font-size: 0.91rem; }
+        .bubble.ai hr {
+            border: none;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            margin: 12px 0;
+        }
+        .bubble.ai code {
+            background: var(--light);
+            color: var(--mid);
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-size: 0.85em;
+        }
+
+        /* Verdict chip — auto-styled based on content */
+        .bubble.ai .verdict {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-top: 12px;
+        }
+
+        /* Timestamp */
+        .msg-ts {
+            font-size: 0.67rem;
+            color: var(--muted);
+            margin-bottom: 6px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .msg-row:hover .msg-ts { opacity: 1; }
+        .msg-row.user .msg-ts { text-align: right; }
+
+        .msg-col { display: flex; flex-direction: column; }
+        .msg-row.user .msg-col { align-items: flex-end; }
+        .msg-row.ai  .msg-col { align-items: flex-start; }
+
+        /* ══════════════════════════════════════════
+           TYPING INDICATOR
+        ══════════════════════════════════════════ */
+        .typing-row {
+            display: none;
+            align-items: flex-end;
+            gap: 10px;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .typing-bubble {
+            background: var(--white);
+            border: 1px solid rgba(0,0,0,0.07);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            padding: 14px 20px;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 7px; height: 7px;
+            background: var(--sky);
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        .dot:nth-child(1) { animation-delay: 0s; }
+        .dot:nth-child(2) { animation-delay: 0.18s; }
+        .dot:nth-child(3) { animation-delay: 0.36s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+            40% { transform: translateY(-7px); opacity: 1; }
+        }
+
+        /* ══════════════════════════════════════════
+           STICKY INPUT
+        ══════════════════════════════════════════ */
+        .input-dock {
+            flex-shrink: 0;
+            background: rgba(244,244,244,0.92);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(0,0,0,0.06);
+            padding: 16px 24px 20px;
+        }
+
+        .input-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            background: var(--white);
+            border: 1.5px solid rgba(20,60,123,0.15);
+            border-radius: 16px;
+            padding: 10px 10px 10px 18px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-row:focus-within {
+            border-color: var(--sky);
+            box-shadow: 0 2px 20px rgba(59,157,227,0.18);
+        }
+
+        textarea {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.93rem;
+            color: var(--text);
+            resize: none;
+            min-height: 24px;
+            max-height: 140px;
+            line-height: 1.5;
+            padding: 3px 0;
+        }
+
+        textarea::placeholder { color: #aab4c4; }
+
+        .send-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, var(--blue), var(--mid));
+            color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 3px 12px rgba(20,60,123,0.3);
+        }
+
+        .send-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(20,60,123,0.38); }
+        .send-btn:active { transform: scale(0.95); }
+        .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+        .input-hint {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.3px;
+        }
+
+        /* ══════════════════════════════════════════
+           SUGGESTED PROMPTS (shown initially)
+        ══════════════════════════════════════════ */
+        .suggestions {
+            max-width: 860px;
+            margin: 0 auto 8px;
+            padding: 0 24px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .sug-chip {
+            background: var(--white);
+            border: 1px solid rgba(20,60,123,0.15);
+            border-radius: 20px;
+            padding: 7px 14px;
+            font-size: 0.78rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .sug-chip:hover {
+            background: var(--light);
+            border-color: var(--sky);
+            transform: translateY(-1px);
+        }
+
+        /* ══════════════════════════════════════════
+           FOOTER (exact dashboard copy)
+        ══════════════════════════════════════════ */
+        footer {
+            background: #060d1a;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+            padding: 18px 60px;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+
+        footer span { color: var(--accent); }
+
+        /* ══════════════════════════════════════════
+           EMPTY STATE
+        ══════════════════════════════════════════ */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 40px 24px;
+            text-align: center;
+            gap: 14px;
+        }
+
+        .empty-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--mid), var(--sky));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.9rem;
+            box-shadow: 0 8px 28px rgba(30,95,168,0.3);
+            margin-bottom: 4px;
+        }
+
+        .empty-state h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--navy);
+        }
+
+        .empty-state p {
+            font-size: 0.88rem;
+            color: var(--muted);
+            max-width: 380px;
+            line-height: 1.65;
+        }
+
+        /* Scrollbar micro-style */
+        * { scrollbar-width: thin; }
+    </style>
+</head>
+<body>
+
+    <!-- ══ NAVIGATION (exact dashboard clone) ══ -->
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="dashboard.html" class="nav-logo">
+                <i class="fa-solid fa-bolt bolt"></i>BEAMTECH
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="aikompass.html">AI-Kompass</a></li>
+                <li><a href="chat.html" class="active">BeamTechGPT</a></li>
+                <li><a href="dokumentenablage.html">Dokumente</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+        
+            <div class="nav-profile">
+                <div class="nav-profile-avatar">MM</div>
+                <div class="nav-profile-info">
+                    <span class="nav-profile-name">Martin Müller</span>
+                    <a href="login.html" class="nav-profile-logout">Abmelden</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ══ MAIN CHAT SHELL ══ -->
+    <div class="chat-shell">
+
+        <!-- Hero strip -->
+        <div class="chat-hero">
+            <div class="chat-hero-icon">
+                <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <div class="chat-hero-text">
+                <h2>AI-Kompass</h2>
+                <p>Rechtliche Ersteinschätzung gemäß EU-KI-Verordnung</p>
+            </div>
+            <div class="status-pill">
+                <div class="status-dot"></div>
+                BeamTechGPT · Aktiv
+            </div>
+        </div>
+
+        <!-- Scroll area -->
+        <div class="chat-body" id="chat-body">
+            <div class="messages-wrap" id="messages-wrap">
+
+                <!-- Welcome message -->
+                <div class="msg-row ai" id="welcome-row">
+                    <div class="msg-avatar ai-av">BT</div>
+                    <div class="msg-col">
+                        <div class="msg-ts" id="welcome-ts"></div>
+                        <div class="bubble ai">
+                            <strong>Hallo Martin!</strong><br>
+                            Ich bin dein Compliance-Experte für die <strong>EU-KI-Verordnung</strong>. Beschreibe mir dein KI-Vorhaben — ich erstelle eine rechtliche Ersteinschätzung gemäß Art. 5 &amp; 6 inkl. Risikoklassifizierung und Handlungspflichten.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Typing indicator -->
+            <div class="typing-row" id="typing-row">
+                <div class="msg-avatar ai-av">BT</div>
+                <div class="typing-bubble">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggested prompts -->
+        <div class="suggestions" id="suggestions">
+            <div class="sug-chip" onclick="useSuggestion(this)">📋 Bewerbungs-Screening-Tool prüfen</div>
+            <div class="sug-chip" onclick="useSuggestion(this)">🤖 Chatbot mit Kundendaten analysieren</div>
+            <div class="sug-chip" onclick="useSuggestion(this)">📸 Videoüberwachung mit KI bewerten</div>
+            <div class="sug-chip" onclick="useSuggestion(this)">💡 Was ist Hochrisiko-KI?</div>
+        </div>
+
+        <!-- Sticky input -->
+        <div class="input-dock">
+            <div class="input-inner">
+                <div class="input-row">
+                    <textarea
+                        id="user-input"
+                        placeholder="Schildere dein KI-Vorhaben oder stelle eine Frage zur EU-KI-VO …"
+                        rows="1"
+                        onkeydown="handleKey(event)"
+                        oninput="autoGrow(this)"
+                    ></textarea>
+                    <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Senden">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="input-hint">
+                    <i class="fa-solid fa-lock" style="font-size:0.65rem;"></i>&nbsp;
+                    Eingaben werden nicht gespeichert &middot; Enter zum Senden &middot; Shift+Enter für neue Zeile
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            &copy; 2026 <span>BeamTech</span> GmbH & Co. KG &mdash;
+            <a href="impressum.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Impressum</a>·
+            <a href="datenschutz.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Datenschutz</a>·
+            <a href="AGB.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">AGB</a>·
+            <a href="cookies.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Cookies</a>
+        </footer>
+
+    </div>
+
+    <script>
+        // ── Config ──────────────────────────────────────────
+        const SERVER_URL = 'http://127.0.0.1:5000/ask';
+
+        marked.setOptions({ breaks: true, gfm: true });
+
+        const chatBody     = document.getElementById('chat-body');
+        const messagesWrap = document.getElementById('messages-wrap');
+        const typingRow    = document.getElementById('typing-row');
+        const textarea     = document.getElementById('user-input');
+        const sendBtn      = document.getElementById('send-btn');
+        const suggestions  = document.getElementById('suggestions');
+
+        // Set welcome timestamp
+        document.getElementById('welcome-ts').textContent = now();
+
+        // ── Helpers ─────────────────────────────────────────
+        function now() {
+            return new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function scrollBottom() {
+            chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: 'smooth' });
+        }
+
+        function autoGrow(el) {
+            el.style.height = 'auto';
+            el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+        }
+
+        function handleKey(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function useSuggestion(el) {
+            textarea.value = el.textContent.replace(/^[^\s]+\s/, ''); // strip emoji prefix
+            autoGrow(textarea);
+            textarea.focus();
+            suggestions.style.display = 'none';
+        }
+
+        // ── Append message ───────────────────────────────────
+        function appendMessage(content, role, isMarkdown = false) {
+            const row = document.createElement('div');
+            row.className = `msg-row ${role}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = `msg-avatar ${role === 'user' ? 'user-av' : 'ai-av'}`;
+            avatar.textContent = role === 'user' ? 'MM' : 'BT';
+
+            const col = document.createElement('div');
+            col.className = 'msg-col';
+
+            const ts = document.createElement('div');
+            ts.className = 'msg-ts';
+            ts.textContent = now();
+
+            const bubble = document.createElement('div');
+            bubble.className = `bubble ${role}`;
+
+            if (isMarkdown) {
+                bubble.innerHTML = marked.parse(content);
+                highlightVerdict(bubble);
+            } else {
+                bubble.textContent = content;
+            }
+
+            col.appendChild(ts);
+            col.appendChild(bubble);
+            row.appendChild(avatar);
+            row.appendChild(col);
+
+            messagesWrap.appendChild(row);
+            scrollBottom();
+        }
+
+        // Colour-code verdict lines
+        function highlightVerdict(el) {
+            const strong = el.querySelectorAll('strong');
+            strong.forEach(s => {
+                const t = s.textContent.toUpperCase();
+                if (t.includes('VERBOTEN')) {
+                    s.style.cssText = 'color:#dc2626;background:#fee2e2;padding:2px 10px;border-radius:10px;';
+                } else if (t.includes('HOCHRISIKO')) {
+                    s.style.cssText = 'color:#d97706;background:#fef3c7;padding:2px 10px;border-radius:10px;';
+                } else if (t.includes('BEGRENZTES RISIKO')) {
+                    s.style.cssText = 'color:#2563eb;background:#dbeafe;padding:2px 10px;border-radius:10px;';
+                } else if (t.includes('MINIMALES RISIKO')) {
+                    s.style.cssText = 'color:#16a34a;background:#dcfce7;padding:2px 10px;border-radius:10px;';
+                }
+            });
+        }
+
+        // ── Send ─────────────────────────────────────────────
+        async function sendMessage() {
+            const prompt = textarea.value.trim();
+            if (!prompt) return;
+
+            // Hide suggestions permanently once user sends
+            suggestions.style.display = 'none';
+
+            appendMessage(prompt, 'user');
+            textarea.value = '';
+            textarea.style.height = 'auto';
+            sendBtn.disabled = true;
+
+            // Show typing
+            chatBody.appendChild(typingRow);
+            typingRow.style.display = 'flex';
+            scrollBottom();
+
+            try {
+                const response = await fetch(SERVER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt })
+                });
+
+                const data = await response.json();
+                typingRow.style.display = 'none';
+                appendMessage(data.answer, 'ai', true);
+
+            } catch (error) {
+                typingRow.style.display = 'none';
+                appendMessage(
+                    "❌ **Verbindungsfehler:** Der KI-Server ist nicht erreichbar. Bitte stelle sicher, dass `ai_server.py` auf Port 5000 läuft.",
+                    'ai', true
+                );
+            } finally {
+                sendBtn.disabled = false;
+                textarea.focus();
+                scrollBottom();
+            }
+        }
+    </script>
+</body>
+</html>

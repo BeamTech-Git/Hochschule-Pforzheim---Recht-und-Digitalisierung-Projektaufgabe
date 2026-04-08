@@ -1,0 +1,2903 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeamTech GmbH & Co. KG – Projektionstechnologie der Zukunft</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary:  #143c7b;
+            --navy:    #0f2a54;
+            --blue:    #143c7b;
+            --mid:     #1e5fa8;
+            --sky:     #3b9de3;
+            --light:   #e8f0fb;
+            --white:   #ffffff;
+            --gray:    #f4f4f4;
+            --text:    #1a1a2e;
+            --muted:   #64748b;
+            --accent:  #f59e0b;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ══════════════════════════════════════════
+           NAVIGATION
+        ══════════════════════════════════════════ */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            height: 72px;
+            background: rgba(13, 31, 60, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            transition: opacity 0.4s ease, background 0.3s;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--white);
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-logo .bolt {
+            color: var(--accent);
+            font-size: 1.4rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--white); }
+
+        .nav-cta {
+            background: var(--accent);
+            color: var(--navy) !important;
+            padding: 9px 22px;
+            border-radius: 4px;
+            font-weight: 700 !important;
+            transition: background 0.2s, transform 0.15s !important;
+        }
+
+        .nav-cta:hover { background: #f6ab1a !important; transform: translateY(-1px); }
+
+        /* ══════════════════════════════════════════
+           HERO
+        ══════════════════════════════════════════ */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(130deg, rgba(13,31,60,0.92) 0%, rgba(27,54,100,0.75) 60%, rgba(59,157,227,0.4) 100%),
+                url('https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+        }
+
+        /* Animated beam rays */
+        .hero-rays {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .ray {
+            position: absolute;
+            bottom: -20%;
+            width: 2px;
+            background: linear-gradient(to top, rgba(59,157,227,0.6), transparent);
+            transform-origin: bottom center;
+            animation: rayPulse 4s ease-in-out infinite;
+        }
+
+        .ray:nth-child(1) { left: 30%; height: 70vh; transform: rotate(-15deg); animation-delay: 0s; }
+        .ray:nth-child(2) { left: 50%; height: 80vh; transform: rotate(0deg);   animation-delay: 0.8s; }
+        .ray:nth-child(3) { left: 70%; height: 65vh; transform: rotate(12deg);  animation-delay: 1.6s; }
+        .ray:nth-child(4) { left: 40%; height: 75vh; transform: rotate(-6deg);  animation-delay: 2.4s; opacity: 0.4; }
+
+        @keyframes rayPulse {
+            0%, 100% { opacity: 0.15; }
+            50%       { opacity: 0.55; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 60px;
+            max-width: 800px;
+            animation: heroFadeUp 1s ease both;
+        }
+
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-eyebrow {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3.5rem, 7vw, 7rem);
+            line-height: 0.95;
+            color: var(--white);
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span { color: var(--sky); }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.7;
+            max-width: 540px;
+            margin-bottom: 40px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--sky);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover { background: var(--mid); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59,157,227,0.4); }
+
+        .btn-outline {
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 13px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.08); }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50%       { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ══════════════════════════════════════════
+           SECTIONS SHARED
+        ══════════════════════════════════════════ */
+        section { padding: 100px 60px; }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--sky);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .section-label::before {
+            content: '';
+            display: block;
+            width: 30px;
+            height: 2px;
+            background: var(--sky);
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            line-height: 1.05;
+            color: var(--navy);
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .section-title.light { color: var(--white); }
+
+        .section-sub {
+            font-size: 1.05rem;
+            color: var(--muted);
+            line-height: 1.75;
+            max-width: 580px;
+        }
+
+        .section-sub.light { color: rgba(255,255,255,0.7); }
+
+        /* ══════════════════════════════════════════
+           STATS BAR
+        ══════════════════════════════════════════ */
+        .stats-bar {
+            background: var(--navy);
+            padding: 0 60px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            padding: 45px 20px;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,0.07);
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-item:last-child { border-right: none; }
+
+        .stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.2rem;
+            color: var(--sky);
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        /* ══════════════════════════════════════════
+           PRODUCTS
+        ══════════════════════════════════════════ */
+        #produkte { background: var(--gray); }
+
+        .products-intro {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+        }
+
+        .products-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: default;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+        }
+
+        .product-img {
+            height: 220px;
+            background: var(--navy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: opacity 0.3s, transform 0.5s;
+        }
+
+        .product-card:hover .product-img img {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: var(--accent);
+            color: var(--navy);
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 3px;
+        }
+
+        .product-body {
+            padding: 28px;
+        }
+
+        .product-body h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .product-body p {
+            font-size: 0.92rem;
+            color: var(--muted);
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+
+        .product-specs {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .spec-chip {
+            background: var(--light);
+            color: var(--blue);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ══════════════════════════════════════════
+           ABOUT / ABOUT SPLIT
+        ══════════════════════════════════════════ */
+        #unternehmen {
+            background: var(--navy);
+            padding: 100px 60px;
+        }
+
+        .about-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-img-wrap {
+            position: relative;
+        }
+
+        .about-img-wrap img {
+            width: 100%;
+            border-radius: 10px;
+            display: block;
+        }
+
+        .about-img-accent {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 200px;
+            height: 200px;
+            border: 3px solid var(--sky);
+            border-radius: 8px;
+            z-index: -1;
+        }
+
+        .about-img-tag {
+            position: absolute;
+            bottom: 20px;
+            left: -20px;
+            background: var(--accent);
+            color: var(--navy);
+            padding: 14px 22px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .about-text { color: white; }
+
+        .about-text .section-sub { margin-bottom: 25px; }
+
+        .about-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 30px;
+        }
+
+        .about-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .about-features li .icon {
+            width: 28px;
+            height: 28px;
+            background: rgba(59,157,227,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sky);
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ══════════════════════════════════════════
+           TEAM
+        ══════════════════════════════════════════ */
+        #team { background: white; }
+
+        .team-intro { max-width: 1200px; margin: 0 auto 60px; }
+
+        .team-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+        }
+
+        .team-card {
+            text-align: center;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--gray);
+            transition: transform 0.3s;
+        }
+
+        .team-card:hover { transform: translateY(-6px); }
+
+        .team-photo {
+            height: 260px;
+            overflow: hidden;
+        }
+
+        .team-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            transition: transform 0.5s;
+        }
+
+        .team-card:hover .team-photo img { transform: scale(1.05); }
+
+        .team-info {
+            padding: 22px;
+        }
+
+        .team-info h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .team-info .role {
+            font-size: 0.82rem;
+            color: var(--sky);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ══════════════════════════════════════════
+           KONTAKT
+        ══════════════════════════════════════════ */
+        #kontakt {
+            background: var(--gray);
+        }
+
+        .contact-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: start;
+        }
+
+        .contact-info { }
+
+        .contact-items {
+            list-style: none;
+            margin-top: 35px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .contact-items li {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .contact-items .ci-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-items .ci-text strong {
+            display: block;
+            font-size: 0.82rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 2px;
+        }
+
+        .contact-items .ci-text span {
+            font-size: 0.98rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .contact-form {
+            background: white;
+            border-radius: 14px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+        }
+
+        .contact-form h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            color: var(--navy);
+            margin-bottom: 25px;
+        }
+
+        .cf-group {
+            margin-bottom: 18px;
+        }
+
+        .cf-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 7px;
+        }
+
+        .cf-group input,
+        .cf-group textarea,
+        .cf-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 7px;
+            font-size: 0.92rem;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s;
+            background: white;
+        }
+
+        .cf-group input:focus,
+        .cf-group textarea:focus,
+        .cf-group select:focus {
+            border-color: var(--sky);
+        }
+
+        .cf-group textarea { resize: vertical; min-height: 110px; }
+
+        .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        .cf-submit {
+            background: var(--blue);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 7px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .cf-submit:hover { background: var(--navy); }
+
+        /* ══════════════════════════════════════════
+           MITARBEITER-LOGIN TEASER
+        ══════════════════════════════════════════ */
+        .login-teaser {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, var(--mid) 100%);
+            padding: 80px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-teaser::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(59,157,227,0.2), transparent 70%);
+            pointer-events: none;
+        }
+
+        .login-teaser::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(245,158,11,0.15), transparent 70%);
+            pointer-events: none;
+        }
+
+        .login-teaser-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .login-teaser .icon-big {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 2rem;
+            color: var(--accent);
+            border: 2px solid rgba(255,255,255,0.15);
+        }
+
+        .login-teaser h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.8rem;
+            color: white;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .login-teaser p {
+            color: rgba(255,255,255,0.65);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 35px;
+        }
+
+        .login-teaser-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--accent);
+            color: var(--navy);
+            padding: 16px 40px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .login-teaser-btn:hover {
+            background: #fbbf3a;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(245,158,11,0.4);
+        }
+
+        /* ══════════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════════ */
+        footer {
+            background: #060d1a;
+            color: rgba(255,255,255,0.55);
+            padding: 60px 60px 0;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            padding-bottom: 50px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .footer-brand .logo-f {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: white;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .footer-brand .logo-f .bolt { color: var(--accent); }
+
+        .footer-brand p {
+            font-size: 0.88rem;
+            line-height: 1.75;
+            max-width: 280px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .footer-col h5 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .footer-col ul a {
+            color: rgba(255,255,255,0.45);
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .footer-col ul a:hover { color: white; }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 22px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .footer-bottom-links a:hover { color: white; }
+
+        /* ══════════════════════════════════════════
+           MODAL OVERLAY (Impressum / Datenschutz)
+        ══════════════════════════════════════════ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 13, 26, 0.85);
+            z-index: 5000;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.open { display: flex; }
+
+        .modal-box {
+            background: white;
+            border-radius: 14px;
+            max-width: 760px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            animation: modalIn 0.3s ease both;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-head {
+            background: var(--navy);
+            color: white;
+            padding: 28px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+        }
+
+        .modal-head h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.9rem;
+            letter-spacing: 2px;
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover { background: rgba(255,255,255,0.2); }
+
+        .modal-body {
+            padding: 40px 35px;
+            line-height: 1.8;
+            font-size: 0.93rem;
+            color: #333;
+        }
+
+        .modal-body h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.35rem;
+            letter-spacing: 1px;
+            color: var(--navy);
+            margin: 28px 0 10px;
+        }
+
+        .modal-body h3:first-child { margin-top: 0; }
+
+        .modal-body p { margin-bottom: 14px; }
+
+        .modal-body ul {
+            margin-left: 20px;
+            margin-bottom: 14px;
+        }
+
+        .modal-body ul li { margin-bottom: 6px; }
+
+        /* ══════════════════════════════════════════
+           TOAST
+        ══════════════════════════════════════════ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--navy);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+            z-index: 9999;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ══════════════════════════════════════════
+           RESPONSIVE BASICS
+        ══════════════════════════════════════════ */
+        /* ══════════════════════════════════════════
+           PRODUCT CARDS INTERACTIVE
+        ══════════════════════════════════════════ */
+        .product-card { cursor: pointer; }
+
+        .product-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--sky);
+            letter-spacing: 0.3px;
+            transition: color 0.2s, gap 0.2s;
+        }
+
+        .product-card:hover .product-link {
+            color: var(--mid);
+            gap: 10px;
+        }
+
+        /* ══════════════════════════════════════════
+           PRODUCT DETAIL MODAL
+        ══════════════════════════════════════════ */
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
+            margin-bottom: 30px;
+        }
+
+        .product-detail-img {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .product-detail-img img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-detail-info h3 {
+            margin-top: 0 !important;
+        }
+
+        .product-detail-specs {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .product-detail-specs tr {
+            border-bottom: 1px solid #e8ecf2;
+        }
+
+        .product-detail-specs td {
+            padding: 10px 14px;
+        }
+
+        .product-detail-specs td:first-child {
+            font-weight: 700;
+            color: var(--navy);
+            width: 40%;
+            background: var(--gray);
+        }
+
+        .product-detail-features {
+            list-style: none;
+            margin: 18px 0;
+            padding: 0;
+        }
+
+        .product-detail-features li {
+            padding: 7px 0;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-detail-features li i {
+            color: var(--sky);
+            font-size: 0.8rem;
+        }
+
+        .product-detail-usecases {
+            background: var(--gray);
+            border-radius: 10px;
+            padding: 22px 28px;
+            margin: 20px 0;
+        }
+
+        .product-detail-usecases h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .product-detail-usecases ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .product-detail-price {
+            background: linear-gradient(135deg, var(--navy), var(--blue));
+            color: white;
+            padding: 22px 28px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .product-detail-price span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+
+        .product-detail-price a {
+            background: var(--accent);
+            color: var(--navy);
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .product-detail-price a:hover {
+            background: #fbbf3a;
+            transform: translateY(-2px);
+        }
+
+        /* ══════════════════════════════════════════
+           TEAM CARDS INTERACTIVE
+        ══════════════════════════════════════════ */
+        .team-card { cursor: pointer; }
+
+        .team-detail-grid {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .team-detail-photo {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .team-detail-photo img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+        }
+
+        .team-detail-meta h3 {
+            margin-top: 0 !important;
+            font-size: 1.6rem !important;
+        }
+
+        .team-detail-role {
+            font-size: 0.85rem;
+            color: var(--sky);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .team-detail-quote {
+            background: var(--gray);
+            border-left: 4px solid var(--sky);
+            padding: 18px 22px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            font-style: italic;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .team-detail-highlights {
+            list-style: none;
+            padding: 0;
+            margin: 18px 0;
+        }
+
+        .team-detail-highlights li {
+            padding: 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.92rem;
+        }
+
+        .team-detail-highlights li i {
+            color: var(--accent);
+            font-size: 0.75rem;
+        }
+
+        .team-detail-contact {
+            background: var(--gray);
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .team-detail-contact strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--navy);
+        }
+
+        /* ══════════════════════════════════════════
+           KARRIERE MODAL
+        ══════════════════════════════════════════ */
+        .karriere-job {
+            background: var(--gray);
+            border-radius: 10px;
+            padding: 25px 28px;
+            margin-bottom: 18px;
+            transition: box-shadow 0.2s;
+        }
+
+        .karriere-job:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .karriere-job h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+
+        .karriere-job-meta {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .karriere-job-meta span {
+            font-size: 0.8rem;
+            color: var(--sky);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .karriere-job p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        .karriere-job .btn-small {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            background: var(--blue);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .karriere-job .btn-small:hover { background: var(--navy); }
+
+        /* ══════════════════════════════════════════
+           PRESSE MODAL
+        ══════════════════════════════════════════ */
+        .presse-item {
+            border-bottom: 1px solid #e8ecf2;
+            padding: 22px 0;
+        }
+
+        .presse-item:last-child { border-bottom: none; }
+
+        .presse-item-date {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--sky);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .presse-item h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .presse-item p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        /* ══════════════════════════════════════════
+           WIDE MODAL BOX (for product details)
+        ══════════════════════════════════════════ */
+        .modal-box.modal-wide {
+            max-width: 920px;
+        }
+
+        /* ══════════════════════════════════════════
+           CINEMATIC SCROLL INTRO
+        ══════════════════════════════════════════ */
+        .cinematic-scroll-stage {
+            height: 500vh;
+            position: relative;
+            background: #000;
+        }
+
+        .cinematic-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .cinematic-video-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .cinematic-video-bg video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.55;
+            filter: saturate(1.6) brightness(0.7) contrast(1.1);
+        }
+
+        .cinematic-video-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.88) 100%);
+            z-index: 1;
+        }
+
+        .cinematic-rays {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .cinematic-ray {
+            position: absolute;
+            bottom: -30%;
+            width: 1.5px;
+            height: 140vh;
+            background: linear-gradient(to top, rgba(59,157,227,0.55), rgba(59,157,227,0.06) 55%, transparent);
+            transform-origin: bottom center;
+            opacity: 0.1;
+            will-change: transform, opacity;
+        }
+
+        .cinematic-ray:nth-child(1) { left: 12%; height: 125vh; }
+        .cinematic-ray:nth-child(2) { left: 30%; height: 150vh; }
+        .cinematic-ray:nth-child(3) { left: 50%; height: 160vh; }
+        .cinematic-ray:nth-child(4) { left: 70%; height: 145vh; }
+        .cinematic-ray:nth-child(5) { left: 88%; height: 130vh; }
+
+        .cinematic-ambient {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw;
+            height: 70vh;
+            background: radial-gradient(ellipse, rgba(59,157,227,0.045) 0%, transparent 65%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .cinematic-frame {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            will-change: transform, opacity, filter;
+            padding: 0 6vw;
+            z-index: 3;
+        }
+
+        .cinematic-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 13vw, 13rem);
+            text-align: center;
+            letter-spacing: 10px;
+            color: #fff;
+            line-height: 0.95;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .cinematic-big-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 7.5rem);
+            text-align: center;
+            letter-spacing: 3px;
+            color: #fff;
+            line-height: 1.08;
+            max-width: 1000px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .cinematic-sub-text {
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(0.8rem, 1.1vw, 1.1rem);
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 22px;
+            font-weight: 300;
+        }
+
+        .cinematic-glow-blue {
+            text-shadow: 0 0 60px rgba(59,157,227,0.5), 0 0 120px rgba(59,157,227,0.15), 0 2px 30px rgba(0,0,0,0.8);
+        }
+
+        .cinematic-glow-gold {
+            text-shadow: 0 0 60px rgba(245,158,11,0.5), 0 0 120px rgba(245,158,11,0.15), 0 2px 30px rgba(0,0,0,0.8);
+        }
+
+        .cinematic-accent-line {
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(59,157,227,0.5), transparent);
+            margin-bottom: 28px;
+        }
+
+        .cinematic-scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.2);
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            z-index: 4;
+            animation: cinematicBounce 2.5s ease-in-out infinite;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .cinematic-scroll-hint i { font-size: 0.85rem; }
+
+        @keyframes cinematicBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.2; }
+            50% { transform: translateX(-50%) translateY(10px); opacity: 0.45; }
+        }
+
+        .cinematic-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 0;
+            background: linear-gradient(90deg, var(--sky), var(--accent));
+            z-index: 1001;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+
+        @media (max-width: 900px) {
+            .nav { padding: 0 25px; }
+            .nav-links { display: none; }
+            section { padding: 70px 25px; }
+            .hero-content { padding: 0 25px; }
+            .about-grid, .contact-wrap { grid-template-columns: 1fr; gap: 40px; }
+            .about-img-wrap { display: none; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .footer { padding: 50px 25px 0; }
+            .login-teaser { padding: 70px 25px; }
+            .stats-bar { padding: 0 25px; }
+            .product-detail-grid { grid-template-columns: 1fr; }
+            .team-detail-grid { grid-template-columns: 1fr; }
+            .cinematic-scroll-stage { height: 450vh; }
+            .cinematic-title { letter-spacing: 4px; }
+            .cinematic-sub-text { letter-spacing: 4px; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ CINEMATIC SCROLL INTRO ══ -->
+<div class="cinematic-progress" id="cinematic-progress"></div>
+<div class="cinematic-scroll-stage" id="cinematic-intro" data-testid="cinematic-intro">
+    <div class="cinematic-sticky">
+        <div class="cinematic-video-bg" data-testid="cinematic-video-bg">
+            <video autoplay loop muted playsinline>
+                <source src="cinematic-bg.mp4" type="video/mp4">
+            </video>
+            <div class="cinematic-video-overlay"></div>
+        </div>
+        <div class="cinematic-rays">
+            <div class="cinematic-ray"></div>
+            <div class="cinematic-ray"></div>
+            <div class="cinematic-ray"></div>
+            <div class="cinematic-ray"></div>
+            <div class="cinematic-ray"></div>
+        </div>
+        <div class="cinematic-ambient"></div>
+
+        <div class="cinematic-frame" data-cine-start="0" data-cine-end="0.2" data-testid="cinematic-frame-1">
+            <div class="cinematic-accent-line"></div>
+            <h1 class="cinematic-title cinematic-glow-blue">BEAMTECH</h1>
+            <p class="cinematic-sub-text">Projektionstechnologie seit 1998</p>
+        </div>
+
+        <div class="cinematic-frame" data-cine-start="0.2" data-cine-end="0.4" data-testid="cinematic-frame-2">
+            <h2 class="cinematic-big-text cinematic-glow-blue">LICHT IST NICHT<br>NUR SICHTBAR</h2>
+        </div>
+
+        <div class="cinematic-frame" data-cine-start="0.4" data-cine-end="0.6" data-testid="cinematic-frame-3">
+            <h2 class="cinematic-big-text cinematic-glow-blue">ES IST EMOTION</h2>
+        </div>
+
+        <div class="cinematic-frame" data-cine-start="0.6" data-cine-end="0.8" data-testid="cinematic-frame-4">
+            <h2 class="cinematic-big-text cinematic-glow-gold">ES IST INSZENIERUNG</h2>
+        </div>
+
+        <div class="cinematic-frame" data-cine-start="0.8" data-cine-end="1.0" data-testid="cinematic-frame-5">
+            <div class="cinematic-accent-line"></div>
+            <h1 class="cinematic-title cinematic-glow-blue">BEAMTECH</h1>
+            <p class="cinematic-sub-text">Willkommen in der Zukunft des Lichts</p>
+        </div>
+
+        <div class="cinematic-scroll-hint" id="cinematic-scroll-hint" data-testid="cinematic-scroll-hint">
+            <i class="fa-solid fa-chevron-down"></i>
+            Scroll
+        </div>
+    </div>
+</div>
+
+<!-- ══ NAVIGATION ══ -->
+<nav class="nav" id="main-nav">
+    <a href="#" class="nav-logo"><span class="bolt"><i class="fa-solid fa-bolt"></i></span> BeamTech</a>
+    <ul class="nav-links">
+        <li><a href="#produkte">Produkte</a></li>
+        <li><a href="#unternehmen">Unternehmen</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+        <li><a href="login.html" class="nav-cta"><i class="fa-solid fa-user-lock"></i> Mitarbeiter-Login</a></li>
+    </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-rays">
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+        <div class="ray"></div>
+    </div>
+    <div class="hero-content">
+        <div class="hero-eyebrow">Projektionstechnologie seit 1998</div>
+        <h1>WIR BRINGEN<br><span>LICHT</span> IN<br>IHRE WELT.</h1>
+        <p>BeamTech entwickelt und vertreibt Hochleistungs-Beamertechnologie für Unternehmen, Bildungseinrichtungen und Großveranstaltungen. Präzision, Brillanz, Zuverlässigkeit.</p>
+        <div class="hero-btns">
+            <a href="#produkte" class="btn-primary"><i class="fa-solid fa-layer-group"></i> Unsere Produkte</a>
+            <a href="#kontakt" class="btn-outline"><i class="fa-regular fa-envelope"></i> Kontakt aufnehmen</a>
+        </div>
+    </div>
+    <div class="hero-scroll"><i class="fa-solid fa-chevron-down"></i> Scroll</div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div class="stats-bar">
+    <div class="stat-item">
+        <div class="stat-num">26+</div>
+        <div class="stat-label">Jahre Erfahrung</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">4.800</div>
+        <div class="stat-label">Installierte Systeme</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">38</div>
+        <div class="stat-label">Länder</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Kundenzufriedenheit</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-num">220</div>
+        <div class="stat-label">Mitarbeiter</div>
+    </div>
+</div>
+
+<!-- ══ PRODUKTE ══ -->
+<section id="produkte">
+    <div class="products-intro">
+        <div class="section-label">Produktportfolio</div>
+        <h2 class="section-title">Technologie, die<br>überzeugt.</h2>
+        <p class="section-sub">Von kompakten Bürolösungen bis hin zu High-End-Installationen für Großevents — BeamTech bietet das richtige System für jeden Einsatzbereich.</p>
+    </div>
+    <div class="products-grid">
+
+        <div class="product-card" onclick="openModal('product-bt-pro-6000')">
+            <div class="product-img">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&q=80" alt="BT-Pro 6000">
+                <div class="product-badge">Bestseller</div>
+            </div>
+            <div class="product-body">
+                <h3>BT-Pro 6000</h3>
+                <p>Unser meistverkaufter 4K-Laser-Beamer für mittelgroße Konferenzräume und Seminarräume. Mühelose Einrichtung, brillante Bildqualität.</p>
+                <div class="product-specs">
+                    <span class="spec-chip">6.000 ANSI Lumen</span>
+                    <span class="spec-chip">4K UHD</span>
+                    <span class="spec-chip">Laser</span>
+                </div>
+                <div class="product-link">Mehr erfahren <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+        </div>
+
+        <div class="product-card" onclick="openModal('product-bt-event-20k')">
+            <div class="product-img">
+                <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=700&q=80" alt="BT-Event 20K">
+                <div class="product-badge">Neu 2024</div>
+            </div>
+            <div class="product-body">
+                <h3>BT-Event 20K</h3>
+                <p>Für große Bühnen und Eventlocations. 20.000 Lumen Laserprojektion mit edge blending und 360°-Montage für spektakuläre Inszenierungen.</p>
+                <div class="product-specs">
+                    <span class="spec-chip">20.000 Lumen</span>
+                    <span class="spec-chip">4K</span>
+                    <span class="spec-chip">Edge Blending</span>
+                </div>
+                <div class="product-link">Mehr erfahren <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+        </div>
+
+        <div class="product-card" onclick="openModal('product-bt-edu-compact')">
+            <div class="product-img">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80" alt="BT-Edu Compact">
+            </div>
+            <div class="product-body">
+                <h3>BT-Edu Compact</h3>
+                <p>Leiser, stromsparender Kurzdistanz-Beamer speziell für Schulen und Bildungseinrichtungen. Einfache Bedienung, langlebige LED-Technologie.</p>
+                <div class="product-specs">
+                    <span class="spec-chip">3.500 Lumen</span>
+                    <span class="spec-chip">Full HD</span>
+                    <span class="spec-chip">Kurzdistanz</span>
+                </div>
+                <div class="product-link">Mehr erfahren <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+        </div>
+
+        <div class="product-card" onclick="openModal('product-bt-dome-360')">
+            <div class="product-img">
+                <img src="https://images.unsplash.com/photo-1492724724894-7464c27d0ceb?auto=format&fit=crop&w=700&q=80" alt="BT-Dome 360">
+                <div class="product-badge">Premium</div>
+            </div>
+            <div class="product-body">
+                <h3>BT-Dome 360</h3>
+                <p>Unser Flaggschiff für Planetarien, Museen und immersive Erlebnisräume. Vollständige 360°-Projektion mit eigenem Steuerungssystem.</p>
+                <div class="product-specs">
+                    <span class="spec-chip">30.000 Lumen</span>
+                    <span class="spec-chip">360° Dome</span>
+                    <span class="spec-chip">Custom SW</span>
+                </div>
+                <div class="product-link">Mehr erfahren <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+        </div>
+
+        <div class="product-card" onclick="openModal('product-bt-cinema-pro')">
+            <div class="product-img">
+                <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=700&q=80" alt="BT-Cinema Pro">
+            </div>
+            <div class="product-body">
+                <h3>BT-Cinema Pro</h3>
+                <p>DCI-zertifiziertes Kinoprojektor-System für kleine und mittlere Kinos. Vollständig konform mit internationalen Filmstandards.</p>
+                <div class="product-specs">
+                    <span class="spec-chip">DCI 4K</span>
+                    <span class="spec-chip">DCI-zertifiziert</span>
+                    <span class="spec-chip">HDR</span>
+                </div>
+                <div class="product-link">Mehr erfahren <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+        </div>
+
+        <div class="product-card" onclick="openModal('product-bt-home-laser')">
+            <div class="product-img">
+                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=80" alt="BT-Home Laser">
+            </div>
+            <div class="product-body">
+                <h3>BT-Home Laser</h3>
+                <p>Premium-Heimkinoprojektor mit integriertem Dolby-Atmos-Soundsystem. Bis zu 200 Zoll Bilddiagonale für das ultimative Heimerlebnis.</p>
+                <div class="product-specs">
+                    <span class="spec-chip">2.500 Lumen</span>
+                    <span class="spec-chip">8K-ready</span>
+                    <span class="spec-chip">Dolby Atmos</span>
+                </div>
+                <div class="product-link">Mehr erfahren <i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ══ UNTERNEHMEN ══ -->
+<section id="unternehmen">
+    <div class="about-grid">
+        <div class="about-img-wrap">
+            <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=700&q=80" alt="BeamTech Büro">
+            <div class="about-img-accent"></div>
+            <div class="about-img-tag">📍 Pforzheim, Deutschland</div>
+        </div>
+        <div class="about-text">
+            <div class="section-label">Über BeamTech</div>
+            <h2 class="section-title light">Mehr als nur ein Beamerhersteller.</h2>
+            <p class="section-sub light">Gegründet 1998 in Pforzheim, ist BeamTech heute einer der führenden europäischen Entwickler und Hersteller von Projektionstechnologien. Wir vereinen deutsches Ingenieurswesen mit globalem Vertrieb.</p>
+            <p class="section-sub light">Von der ersten Skizze bis zur Auslieferung — alles passiert unter einem Dach. Unsere über 220 Mitarbeiterinnen und Mitarbeiter arbeiten täglich daran, das Beste aus Licht und Technologie herauszuholen.</p>
+            <ul class="about-features">
+                <li>
+                    <div class="icon"><i class="fa-solid fa-check"></i></div>
+                    Eigene Forschungs- &amp; Entwicklungsabteilung mit 40+ Ingenieuren
+                </li>
+                <li>
+                    <div class="icon"><i class="fa-solid fa-check"></i></div>
+                    ISO 9001 zertifizierte Produktion in Pforzheim
+                </li>
+                <li>
+                    <div class="icon"><i class="fa-solid fa-check"></i></div>
+                    Weltweites Partnernetzwerk in 38 Ländern
+                </li>
+                <li>
+                    <div class="icon"><i class="fa-solid fa-check"></i></div>
+                    5 Jahre Garantie auf alle Laserprodukte
+                </li>
+                <li>
+                    <div class="icon"><i class="fa-solid fa-check"></i></div>
+                    24/7 technischer Support für Geschäftskunden
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ══ TEAM ══ -->
+<section id="team">
+    <div class="team-intro">
+        <div class="section-label">Unser Team</div>
+        <h2 class="section-title">Die Köpfe hinter<br>BeamTech.</h2>
+        <p class="section-sub">Leidenschaft für Technologie, Erfahrung in der Branche — das ist das Fundament unseres Führungsteams.</p>
+    </div>
+    <div class="team-grid">
+
+        <div class="team-card" onclick="openModal('team-remberg')">
+            <div class="team-photo">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80" alt="CEO">
+            </div>
+            <div class="team-info">
+                <h4>Mailin Herdtfelderg</h4>
+                <div class="role">CEO &amp; Gründer</div>
+            </div>
+        </div>
+
+        <div class="team-card" onclick="openModal('team-meier')">
+            <div class="team-photo">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80" alt="CTO">
+            </div>
+            <div class="team-info">
+                <h4>Sabrina Neuber</h4>
+                <div class="role">CTO</div>
+            </div>
+        </div>
+
+        <div class="team-card" onclick="openModal('team-brandt')">
+            <div class="team-photo">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=500&q=80" alt="COO">
+            </div>
+            <div class="team-info">
+                <h4>Yilmaz Tas</h4>
+                <div class="role">COO</div>
+            </div>
+        </div>
+
+        <div class="team-card" onclick="openModal('team-schneider')">
+            <div class="team-photo">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=500&q=80" alt="CMO">
+            </div>
+            <div class="team-info">
+                <h4>Eric Hager</h4>
+                <div class="role">CMO</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ══ KONTAKT ══ -->
+<section id="kontakt">
+    <div class="contact-wrap">
+        <div class="contact-info">
+            <div class="section-label">Kontakt</div>
+            <h2 class="section-title">Sprechen wir<br>miteinander.</h2>
+            <p class="section-sub">Ob Produktanfrage, Partnerschaft oder technische Beratung — unser Team ist für Sie da.</p>
+            <ul class="contact-items">
+                <li>
+                    <div class="ci-icon"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="ci-text">
+                        <strong>Adresse</strong>
+                        <span>Enzstraße 47, 75177 Pforzheim</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="ci-icon"><i class="fa-solid fa-phone"></i></div>
+                    <div class="ci-text">
+                        <strong>Telefon</strong>
+                        <span>+49 (0) 7231 48820-0</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="ci-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="ci-text">
+                        <strong>E-Mail</strong>
+                        <span>info@beamtech-gmbh.de</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="ci-icon"><i class="fa-solid fa-clock"></i></div>
+                    <div class="ci-text">
+                        <strong>Geschäftszeiten</strong>
+                        <span>Mo–Fr 08:00–17:30 Uhr</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="contact-form">
+            <h3>Nachricht senden</h3>
+            <div class="cf-row">
+                <div class="cf-group">
+                    <label>Vorname</label>
+                    <input type="text" placeholder="Max">
+                </div>
+                <div class="cf-group">
+                    <label>Nachname</label>
+                    <input type="text" placeholder="Mustermann">
+                </div>
+            </div>
+            <div class="cf-group">
+                <label>E-Mail</label>
+                <input type="email" placeholder="max@firma.de">
+            </div>
+            <div class="cf-group">
+                <label>Betreff</label>
+                <select>
+                    <option>Produktanfrage</option>
+                    <option>Technischer Support</option>
+                    <option>Partnerschaft</option>
+                    <option>Presse</option>
+                    <option>Sonstiges</option>
+                </select>
+            </div>
+            <div class="cf-group">
+                <label>Nachricht</label>
+                <textarea placeholder="Wie können wir Ihnen helfen?"></textarea>
+            </div>
+            <button class="cf-submit" onclick="sendForm()"><i class="fa-solid fa-paper-plane"></i> Nachricht absenden</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══ MITARBEITER-LOGIN TEASER ══ -->
+<div class="login-teaser">
+    <div class="login-teaser-inner">
+        <div class="icon-big"><i class="fa-solid fa-user-lock"></i></div>
+        <h2>MITARBEITER-LOGIN</h2>
+        <p>Zugang zum BeamTech Intranet, Dokumentenverwaltung, AI-Kompass und allen internen Tools — exklusiv für Mitarbeiterinnen und Mitarbeiter.</p>
+        <a href="login.html" class="login-teaser-btn">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            Zum Mitarbeiterportal
+        </a>
+    </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <div class="logo-f"><span class="bolt"><i class="fa-solid fa-bolt"></i></span> BeamTech</div>
+            <p>BeamTech GmbH & Co. KG entwickelt und vertreibt seit 1998 professionelle Projektionstechnologie. Made in Germany — für die Welt.</p>
+        </div>
+        <div class="footer-col">
+            <h5>Produkte</h5>
+            <ul>
+                <li><a onclick="openModal('product-bt-pro-6000')">BT-Pro 6000</a></li>
+                <li><a onclick="openModal('product-bt-event-20k')">BT-Event 20K</a></li>
+                <li><a onclick="openModal('product-bt-edu-compact')">BT-Edu Compact</a></li>
+                <li><a onclick="openModal('product-bt-dome-360')">BT-Dome 360</a></li>
+                <li><a onclick="openModal('product-bt-cinema-pro')">BT-Cinema Pro</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h5>Unternehmen</h5>
+            <ul>
+                <li><a href="#unternehmen">Über uns</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a onclick="openModal('karriere')">Karriere</a></li>
+                <li><a onclick="openModal('presse')">Presse</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h5>Rechtliches</h5>
+            <ul>
+                <li><a href="impressum.html">Impressum</a></li>
+                <li><a href="datenschutz.html">Datenschutzerklärung</a></li>
+                <li><a href="AGB.html">AGB</a></li>
+                <li><a href="cookies.html">Cookie-Einstellungen</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<!-- ══ MODAL: IMPRESSUM ══ -->
+<div class="modal-overlay" id="modal-impressum">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h2>Impressum</h2>
+            <button class="modal-close" onclick="closeModal('impressum')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <h3>Angaben gemäß § 5 TMG</h3>
+            <p><strong>BeamTech GmbH & Co. KG</strong><br>
+            Enzstraße 47<br>
+            75177 Pforzheim<br>
+            Deutschland</p>
+
+            <h3>Vertreten durch</h3>
+            <p>Mailin Herdtfelderg (Geschäftsführer)<br>
+            Yilmaz Tas (Prokurist)</p>
+
+            <h3>Kontakt</h3>
+            <p>Telefon: +49 (0) 7231 48820-0<br>
+            Telefax: +49 (0) 7231 48820-99<br>
+            E-Mail: info@beamtech-gmbh.de</p>
+
+            <h3>Registereintrag</h3>
+            <p>Eintragung im Handelsregister.<br>
+            Registergericht: Amtsgericht Mannheim<br>
+            Registernummer: HRB 712345</p>
+
+            <h3>Umsatzsteuer-ID</h3>
+            <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br>
+            DE 287 654 321</p>
+
+            <h3>Wirtschafts-ID</h3>
+            <p>Wirtschafts-Identifikationsnummer gemäß § 139c AO:<br>
+            DE 987 654 321</p>
+
+            <h3>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h3>
+            <p>Mailin Herdtfelderg<br>
+            Enzstraße 47, 75177 Pforzheim</p>
+
+            <h3>EU-Streitschlichtung</h3>
+            <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <strong>https://ec.europa.eu/consumers/odr/</strong><br>
+            Unsere E-Mail-Adresse finden Sie oben im Impressum.</p>
+
+            <h3>Verbraucherstreitbeilegung / Universalschlichtungsstelle</h3>
+            <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+
+            <h3>Haftung für Inhalte</h3>
+            <p>Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+
+            <h3>Haftung für Links</h3>
+            <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+
+            <h3>Urheberrecht</h3>
+            <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: DATENSCHUTZ ══ -->
+<div class="modal-overlay" id="modal-datenschutz">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h2>Datenschutzerklärung</h2>
+            <button class="modal-close" onclick="closeModal('datenschutz')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <h3>1. Datenschutz auf einen Blick</h3>
+            <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
+
+            <h3>2. Verantwortliche Stelle</h3>
+            <p>Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br><br>
+            BeamTech GmbH & Co. KG<br>
+            Enzstraße 47, 75177 Pforzheim<br>
+            E-Mail: datenschutz@beamtech-gmbh.de<br>
+            Telefon: +49 (0) 7231 48820-0</p>
+
+            <h3>3. Datenerfassung auf dieser Website</h3>
+            <p><strong>Wer ist verantwortlich für die Datenerfassung?</strong><br>
+            Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Abschnitt „Verantwortliche Stelle" entnehmen.</p>
+
+            <p><strong>Wie erfassen wir Ihre Daten?</strong><br>
+            Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z. B. um Daten handeln, die Sie in ein Kontaktformular eingeben. Andere Daten werden automatisch beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z. B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufes).</p>
+
+            <h3>4. Ihre Rechte</h3>
+            <p>Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht, die Berichtigung oder Löschung dieser Daten zu verlangen. Wenn Sie eine Einwilligung zur Datenverarbeitung erteilt haben, können Sie diese Einwilligung jederzeit für die Zukunft widerrufen. Außerdem haben Sie das Recht, unter bestimmten Umständen die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</p>
+
+            <h3>5. Cookies</h3>
+            <p>Diese Website verwendet sogenannte Cookies. Cookies sind kleine Textdateien, die Ihr Webbrowser auf Ihrem Endgerät speichert. Cookies helfen uns, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Sie können Ihren Browser so einstellen, dass Sie über das Setzen von Cookies informiert werden.</p>
+
+            <h3>6. Kontaktformular</h3>
+            <p>Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter. Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt oder zur Durchführung vorvertraglicher Maßnahmen erforderlich ist.</p>
+
+            <h3>7. Analyse-Tools und Werbung</h3>
+            <p>Wir setzen keine Analyse-Tools von Drittanbietern ein. Wir schalten keine personalisierte Werbung über externe Anbieter.</p>
+
+            <h3>8. Datensicherheit</h3>
+            <p>Diese Website nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://" auf „https://" wechselt.</p>
+
+            <h3>9. Beschwerderecht</h3>
+            <p>Sie haben das Recht, sich bei der zuständigen Aufsichtsbehörde zu beschweren. Die zuständige Aufsichtsbehörde in Baden-Württemberg ist der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg, Königstraße 10a, 70173 Stuttgart.</p>
+
+            <p style="margin-top: 25px; color: #999; font-size: 0.82rem;">Stand: Januar 2024</p>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: AGB ══ -->
+<div class="modal-overlay" id="modal-agb">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h2>Allgemeine Geschäftsbedingungen</h2>
+            <button class="modal-close" onclick="closeModal('agb')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <h3>§ 1 Geltungsbereich</h3>
+            <p>Diese Allgemeinen Geschäftsbedingungen gelten für alle Verträge zwischen der BeamTech GmbH & Co. KG (nachfolgend „BeamTech") und ihren Kunden über die Lieferung von Waren und die Erbringung von Dienstleistungen.</p>
+
+            <h3>§ 2 Vertragsschluss</h3>
+            <p>Die Angebote von BeamTech sind freibleibend und unverbindlich. Ein Vertrag kommt erst durch schriftliche Auftragsbestätigung von BeamTech oder durch die Ausführung der Bestellung zustande. Angebote gelten, sofern nicht anders angegeben, für 30 Tage.</p>
+
+            <h3>§ 3 Preise und Zahlung</h3>
+            <p>Alle Preise verstehen sich zuzüglich der gesetzlichen Umsatzsteuer. Rechnungen sind innerhalb von 30 Tagen netto zahlbar, sofern keine abweichende Vereinbarung getroffen wurde. Bei Zahlungsverzug berechnen wir Verzugszinsen in Höhe von 9 Prozentpunkten über dem Basiszinssatz.</p>
+
+            <h3>§ 4 Lieferung</h3>
+            <p>Liefertermine sind, sofern nicht ausdrücklich als verbindlich vereinbart, unverbindliche Angaben. Teillieferungen sind zulässig, sofern sie für den Kunden zumutbar sind. Die Gefahr des zufälligen Untergangs geht mit Übergabe an den Spediteur auf den Käufer über.</p>
+
+            <h3>§ 5 Gewährleistung</h3>
+            <p>Für Mängel der gelieferten Waren haftet BeamTech nach den gesetzlichen Vorschriften. Die Gewährleistungsfrist beträgt 24 Monate ab Lieferung. Auf Laserprodukte gewähren wir eine erweiterte Garantie von 5 Jahren auf die Lasereinheit.</p>
+
+            <h3>§ 6 Haftung</h3>
+            <p>BeamTech haftet unbeschränkt für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit sowie für vorsätzliche oder grob fahrlässige Pflichtverletzungen. Im Übrigen ist die Haftung auf den vorhersehbaren, vertragstypischen Schaden beschränkt.</p>
+
+            <h3>§ 7 Gerichtsstand</h3>
+            <p>Gerichtsstand für alle Streitigkeiten aus diesem Vertragsverhältnis ist, soweit gesetzlich zulässig, Pforzheim. Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts (CISG).</p>
+
+            <p style="margin-top: 25px; color: #999; font-size: 0.82rem;">Stand: Januar 2024</p>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: COOKIES ══ -->
+<div class="modal-overlay" id="modal-cookies">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h2>Cookie-Einstellungen</h2>
+            <button class="modal-close" onclick="closeModal('cookies')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <p>Wir verwenden Cookies, um unsere Website zu verbessern und Ihnen eine bessere Nutzererfahrung zu bieten. Bitte wählen Sie, welche Cookies Sie zulassen möchten.</p>
+
+            <h3>Notwendige Cookies</h3>
+            <p>Diese Cookies sind für den Betrieb der Website unbedingt erforderlich und können nicht deaktiviert werden. Sie ermöglichen grundlegende Funktionen wie die Navigation und den Zugriff auf gesicherte Bereiche.</p>
+
+            <h3>Funktionale Cookies</h3>
+            <p>Diese Cookies ermöglichen es der Website, erweiterte Funktionalitäten und Personalisierungen bereitzustellen. Sie können von uns oder von Drittanbietern gesetzt werden.</p>
+
+            <h3>Analyse-Cookies</h3>
+            <p>Diese Cookies helfen uns zu verstehen, wie Besucher mit unserer Website interagieren, indem Informationen anonym gesammelt und gemeldet werden. Wir setzen derzeit keine Analyse-Cookies ein.</p>
+
+            <p style="background: #f0f4fa; padding: 15px; border-radius: 8px; margin-top: 20px; font-size: 0.9rem;">
+                <strong>Hinweis:</strong> Diese Website ist eine Demo-Umgebung. Es werden keine realen Cookies für Tracking oder Analyse gesetzt.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: BT-Pro 6000 ══ -->
+<div class="modal-overlay" id="modal-product-bt-pro-6000">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>BT-Pro 6000</h2>
+            <button class="modal-close" onclick="closeModal('product-bt-pro-6000')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="product-detail-grid">
+                <div class="product-detail-img">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&q=80" alt="BT-Pro 6000">
+                </div>
+                <div class="product-detail-info">
+                    <h3>Der Bestseller für Konferenz und Seminar</h3>
+                    <p>Der BT-Pro 6000 ist seit seiner Markteinführung 2021 unser meistverkauftes Modell und hat sich als Standardlösung in hunderten von Unternehmen etabliert. Mit 6.000 ANSI Lumen liefert er selbst in hellen Räumen ein gestochen scharfes 4K-Bild.</p>
+                    <p>Dank der fortschrittlichen Laser-Phosphor-Technologie erreicht die Lichtquelle eine Lebensdauer von über 30.000 Stunden — praktisch wartungsfrei. Die automatische Trapezkorrektur und der motorisierte Lens-Shift ermöglichen eine Einrichtung in unter fünf Minuten.</p>
+                </div>
+            </div>
+            <h3>Technische Daten</h3>
+            <table class="product-detail-specs">
+                <tr><td>Auflösung</td><td>3840 x 2160 (4K UHD)</td></tr>
+                <tr><td>Helligkeit</td><td>6.000 ANSI Lumen</td></tr>
+                <tr><td>Technologie</td><td>Laser-Phosphor (LP)</td></tr>
+                <tr><td>Kontrast</td><td>500.000:1 (dynamisch)</td></tr>
+                <tr><td>Lichtquelle Lebensdauer</td><td>30.000 Stunden (Eco-Modus)</td></tr>
+                <tr><td>Projektionsverhältnis</td><td>1.2:1 – 2.1:1</td></tr>
+                <tr><td>Gewicht</td><td>8,4 kg</td></tr>
+                <tr><td>Anschlüsse</td><td>3x HDMI 2.1, 2x USB-C (PD 65W), HDBaseT, LAN, RS-232</td></tr>
+                <tr><td>Lautstärke</td><td>28 dB (Eco) / 33 dB (Normal)</td></tr>
+                <tr><td>Features</td><td>Motorisierter Lens-Shift, Auto-Trapezkorrektur, Crestron/Extron kompatibel</td></tr>
+            </table>
+            <h3>Highlights</h3>
+            <ul class="product-detail-features">
+                <li><i class="fa-solid fa-check-circle"></i> Automatische Bildanpassung und Keystone-Korrektur</li>
+                <li><i class="fa-solid fa-check-circle"></i> Netzwerksteuerung über Crestron, Extron und AMX</li>
+                <li><i class="fa-solid fa-check-circle"></i> USB-C mit 65W Power Delivery — Laptop laden und projizieren</li>
+                <li><i class="fa-solid fa-check-circle"></i> Flüsterleiser Betrieb mit nur 28 dB im Eco-Modus</li>
+                <li><i class="fa-solid fa-check-circle"></i> 5 Jahre Garantie auf die Lasereinheit</li>
+            </ul>
+            <div class="product-detail-usecases">
+                <h4>Einsatzbereiche</h4>
+                <ul>
+                    <li>Konferenzräume (30–80 m²)</li>
+                    <li>Seminar- und Schulungsräume</li>
+                    <li>Hochschulen und Hörsäle</li>
+                    <li>Showrooms und Präsentationsräume</li>
+                </ul>
+            </div>
+            <div class="product-detail-price">
+                <span>Preis auf Anfrage</span>
+                <a href="#kontakt" onclick="closeModal('product-bt-pro-6000')"><i class="fa-solid fa-envelope"></i> Jetzt anfragen</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: BT-Event 20K ══ -->
+<div class="modal-overlay" id="modal-product-bt-event-20k">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>BT-Event 20K</h2>
+            <button class="modal-close" onclick="closeModal('product-bt-event-20k')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="product-detail-grid">
+                <div class="product-detail-img">
+                    <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=700&q=80" alt="BT-Event 20K">
+                </div>
+                <div class="product-detail-info">
+                    <h3>Maximale Leistung für Großveranstaltungen</h3>
+                    <p>Der BT-Event 20K wurde für professionelle Eventtechnik entwickelt. Mit 20.000 Lumen und nativem 4K projiziert er auch in den größten Hallen ein beeindruckendes Bild. Die integrierte Edge-Blending-Technologie ermöglicht die nahtlose Kombination mehrerer Projektoren zu einer riesigen Projektionsfläche.</p>
+                    <p>Dank der robusten Bauweise und dem modularen Objektivsystem ist der BT-Event 20K der ideale Partner für Touring und Festinstallationen. Die 360°-Montageoption erlaubt kreative Installationen in jeder Raumlage.</p>
+                </div>
+            </div>
+            <h3>Technische Daten</h3>
+            <table class="product-detail-specs">
+                <tr><td>Auflösung</td><td>3840 x 2160 (4K UHD)</td></tr>
+                <tr><td>Helligkeit</td><td>20.000 ANSI Lumen</td></tr>
+                <tr><td>Technologie</td><td>3-Chip DLP Laser</td></tr>
+                <tr><td>Kontrast</td><td>2.000.000:1 (dynamisch)</td></tr>
+                <tr><td>Lichtquelle Lebensdauer</td><td>25.000 Stunden</td></tr>
+                <tr><td>Projektionsverhältnis</td><td>0.8:1 – 7.2:1 (wechselbare Objektive)</td></tr>
+                <tr><td>Gewicht</td><td>38 kg (ohne Objektiv)</td></tr>
+                <tr><td>Anschlüsse</td><td>4x HDMI 2.1, 2x DisplayPort, HDBaseT, 3G-SDI, Fiber-Optic, LAN, Art-Net</td></tr>
+                <tr><td>Montage</td><td>360° Freiheit, Rigging-Punkte nach DGUV</td></tr>
+                <tr><td>Schutzart</td><td>IP5X (staubgeschützt)</td></tr>
+            </table>
+            <h3>Highlights</h3>
+            <ul class="product-detail-features">
+                <li><i class="fa-solid fa-check-circle"></i> Nahtloses Edge Blending und Warping für Multi-Projektor-Setups</li>
+                <li><i class="fa-solid fa-check-circle"></i> Wechselobjektivsystem mit 7 verfügbaren Objektiven</li>
+                <li><i class="fa-solid fa-check-circle"></i> Art-Net / sACN Steuerung für Lichtdesigner</li>
+                <li><i class="fa-solid fa-check-circle"></i> 360°-Montage mit zertifizierten Rigging-Punkten</li>
+                <li><i class="fa-solid fa-check-circle"></i> Redundante Lasermodule für ausfallsicheren Betrieb</li>
+            </ul>
+            <div class="product-detail-usecases">
+                <h4>Einsatzbereiche</h4>
+                <ul>
+                    <li>Konzerte, Festivals und Live-Events</li>
+                    <li>Messen und Großveranstaltungen</li>
+                    <li>Festinstallationen in Kongresszentren</li>
+                    <li>Mapping-Projektionen auf Fassaden und Bühnenbilder</li>
+                </ul>
+            </div>
+            <div class="product-detail-price">
+                <span>Preis auf Anfrage</span>
+                <a href="#kontakt" onclick="closeModal('product-bt-event-20k')"><i class="fa-solid fa-envelope"></i> Jetzt anfragen</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: BT-Edu Compact ══ -->
+<div class="modal-overlay" id="modal-product-bt-edu-compact">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>BT-Edu Compact</h2>
+            <button class="modal-close" onclick="closeModal('product-bt-edu-compact')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="product-detail-grid">
+                <div class="product-detail-img">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80" alt="BT-Edu Compact">
+                </div>
+                <div class="product-detail-info">
+                    <h3>Entwickelt für den Bildungsbereich</h3>
+                    <p>Der BT-Edu Compact wurde in enger Zusammenarbeit mit Lehrkräften und Schulträgern entwickelt. Als Kurzdistanz-Beamer kann er direkt über der Tafel montiert werden und projiziert aus nur 50 cm Entfernung ein 100-Zoll-Bild — ohne Schattenbildung durch die Lehrperson.</p>
+                    <p>Die langlebige LED-Lichtquelle ist praktisch wartungsfrei und besonders energieeffizient. Mit dem integrierten 10-Punkt-Touch-Modul verwandelt der BT-Edu Compact jede Wand in ein interaktives Whiteboard.</p>
+                </div>
+            </div>
+            <h3>Technische Daten</h3>
+            <table class="product-detail-specs">
+                <tr><td>Auflösung</td><td>1920 x 1080 (Full HD)</td></tr>
+                <tr><td>Helligkeit</td><td>3.500 ANSI Lumen</td></tr>
+                <tr><td>Technologie</td><td>LED (RGB)</td></tr>
+                <tr><td>Kontrast</td><td>100.000:1</td></tr>
+                <tr><td>Lichtquelle Lebensdauer</td><td>50.000 Stunden</td></tr>
+                <tr><td>Projektionsverhältnis</td><td>0.25:1 (Ultra-Kurzdistanz)</td></tr>
+                <tr><td>Gewicht</td><td>4,2 kg</td></tr>
+                <tr><td>Anschlüsse</td><td>2x HDMI 2.0, USB-C, USB-A (Touch), VGA, Audio-Out, LAN</td></tr>
+                <tr><td>Lautstärke</td><td>25 dB</td></tr>
+                <tr><td>Interaktivität</td><td>10-Punkt-Touch optional (IR-basiert)</td></tr>
+            </table>
+            <h3>Highlights</h3>
+            <ul class="product-detail-features">
+                <li><i class="fa-solid fa-check-circle"></i> Ultra-Kurzdistanz — 100 Zoll aus nur 50 cm</li>
+                <li><i class="fa-solid fa-check-circle"></i> Extrem leise mit nur 25 dB</li>
+                <li><i class="fa-solid fa-check-circle"></i> 50.000 Stunden LED-Lebensdauer — keine Lampenwechsel</li>
+                <li><i class="fa-solid fa-check-circle"></i> Optionales 10-Punkt-Touch-Modul für interaktiven Unterricht</li>
+                <li><i class="fa-solid fa-check-circle"></i> Zentrale Verwaltung über Netzwerk (LAN/SNMP)</li>
+            </ul>
+            <div class="product-detail-usecases">
+                <h4>Einsatzbereiche</h4>
+                <ul>
+                    <li>Klassenzimmer und Seminarräume</li>
+                    <li>Universitäten und Fachhochschulen</li>
+                    <li>Schulungsräume in Unternehmen</li>
+                    <li>Bibliotheken und Medienzentren</li>
+                </ul>
+            </div>
+            <div class="product-detail-price">
+                <span>Preis auf Anfrage</span>
+                <a href="#kontakt" onclick="closeModal('product-bt-edu-compact')"><i class="fa-solid fa-envelope"></i> Jetzt anfragen</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: BT-Dome 360 ══ -->
+<div class="modal-overlay" id="modal-product-bt-dome-360">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>BT-Dome 360</h2>
+            <button class="modal-close" onclick="closeModal('product-bt-dome-360')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="product-detail-grid">
+                <div class="product-detail-img">
+                    <img src="https://images.unsplash.com/photo-1492724724894-7464c27d0ceb?auto=format&fit=crop&w=700&q=80" alt="BT-Dome 360">
+                </div>
+                <div class="product-detail-info">
+                    <h3>Immersive 360°-Erlebnisse neu definiert</h3>
+                    <p>Der BT-Dome 360 ist unser Flaggschiff-Produkt für immersive Umgebungen. Konzipiert für Planetarien, Science Center und Erlebnismuseen, ermöglicht das System eine lückenlose 360°-Projektion auf Kuppeln von 8 bis 25 Metern Durchmesser.</p>
+                    <p>Das proprietäre BeamTech DomeMaster-Steuerungssystem sorgt für perfekte Synchronisation aller Projektionskanäle, automatische Farb- und Helligkeitskalibrierung sowie eine intuitive Content-Verwaltung. Die Lösung wird schlüsselfertig inklusive Planung, Installation und Schulung geliefert.</p>
+                </div>
+            </div>
+            <h3>Technische Daten</h3>
+            <table class="product-detail-specs">
+                <tr><td>Auflösung</td><td>Bis zu 8K (Multi-Kanal-System)</td></tr>
+                <tr><td>Helligkeit</td><td>30.000+ ANSI Lumen (Gesamtsystem)</td></tr>
+                <tr><td>Technologie</td><td>Multi-Projektor Laser-Array</td></tr>
+                <tr><td>Kontrast</td><td>2.500.000:1</td></tr>
+                <tr><td>Kuppelgröße</td><td>8 m – 25 m Durchmesser</td></tr>
+                <tr><td>Projektoren</td><td>4–12 Einheiten (je nach Kuppelgröße)</td></tr>
+                <tr><td>Steuerung</td><td>BeamTech DomeMaster (proprietär)</td></tr>
+                <tr><td>Anschlüsse</td><td>Fiber-Optic, 10GbE, DisplayPort, HDMI</td></tr>
+                <tr><td>Content-Formate</td><td>DomeMaster, Equirectangular, CubMap</td></tr>
+                <tr><td>Installation</td><td>Schlüsselfertig inkl. Planung und Schulung</td></tr>
+            </table>
+            <h3>Highlights</h3>
+            <ul class="product-detail-features">
+                <li><i class="fa-solid fa-check-circle"></i> Proprietäres DomeMaster-Steuerungssystem</li>
+                <li><i class="fa-solid fa-check-circle"></i> Automatische Kalibrierung aller Projektionskanäle</li>
+                <li><i class="fa-solid fa-check-circle"></i> Kompatibel mit allen gängigen Planetariumssoftware-Systemen</li>
+                <li><i class="fa-solid fa-check-circle"></i> Schlüsselfertige Lösung mit Planung, Installation und Schulung</li>
+                <li><i class="fa-solid fa-check-circle"></i> Wartungsvertrag mit 24/7-Support verfügbar</li>
+            </ul>
+            <div class="product-detail-usecases">
+                <h4>Einsatzbereiche</h4>
+                <ul>
+                    <li>Planetarien und Sternwarten</li>
+                    <li>Science Center und Museen</li>
+                    <li>Immersive Erlebnisräume und Showrooms</li>
+                    <li>Themenparks und Freizeiteinrichtungen</li>
+                </ul>
+            </div>
+            <div class="product-detail-price">
+                <span>Projektpreis auf Anfrage</span>
+                <a href="#kontakt" onclick="closeModal('product-bt-dome-360')"><i class="fa-solid fa-envelope"></i> Jetzt anfragen</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: BT-Cinema Pro ══ -->
+<div class="modal-overlay" id="modal-product-bt-cinema-pro">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>BT-Cinema Pro</h2>
+            <button class="modal-close" onclick="closeModal('product-bt-cinema-pro')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="product-detail-grid">
+                <div class="product-detail-img">
+                    <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=700&q=80" alt="BT-Cinema Pro">
+                </div>
+                <div class="product-detail-info">
+                    <h3>DCI-zertifiziertes Kino der nächsten Generation</h3>
+                    <p>Der BT-Cinema Pro erfüllt alle Anforderungen der Digital Cinema Initiatives (DCI) und ist damit die perfekte Lösung für kleine und mittlere Kinosäle. Die native 4K-Auflösung und der erweiterte DCI-P3-Farbraum garantieren eine Bildqualität, die den höchsten Industriestandards entspricht.</p>
+                    <p>Mit HDR-Unterstützung und einem Kontrastverhältnis von über 6.000:1 liefert der BT-Cinema Pro ein Kinoerlebnis, das Zuschauer begeistert. Die integrierte IMB (Integrated Media Block) ermöglicht die direkte Wiedergabe verschlüsselter DCP-Pakete.</p>
+                </div>
+            </div>
+            <h3>Technische Daten</h3>
+            <table class="product-detail-specs">
+                <tr><td>Auflösung</td><td>4096 x 2160 (DCI 4K)</td></tr>
+                <tr><td>Helligkeit</td><td>15.000 ANSI Lumen</td></tr>
+                <tr><td>Technologie</td><td>3-Chip DLP Cinema Laser</td></tr>
+                <tr><td>Kontrast</td><td>6.000:1 (ANSI) / 2.500.000:1 (dynamisch)</td></tr>
+                <tr><td>Farbraum</td><td>DCI-P3 (98,5% Abdeckung)</td></tr>
+                <tr><td>Leinwandbreite</td><td>Bis 22 Meter</td></tr>
+                <tr><td>Gewicht</td><td>52 kg</td></tr>
+                <tr><td>Anschlüsse</td><td>DCI-Link, HDMI 2.1, 3G-SDI, Fiber-Optic, Ethernet</td></tr>
+                <tr><td>Zertifizierung</td><td>DCI CTP (Compliant Test Plan)</td></tr>
+                <tr><td>Audio</td><td>Dolby Atmos / Auro 11.1 kompatibel</td></tr>
+            </table>
+            <h3>Highlights</h3>
+            <ul class="product-detail-features">
+                <li><i class="fa-solid fa-check-circle"></i> Vollständige DCI-Zertifizierung für kommerzielle Kinovorführungen</li>
+                <li><i class="fa-solid fa-check-circle"></i> Integrierte IMB für DCP-Wiedergabe</li>
+                <li><i class="fa-solid fa-check-circle"></i> HDR / HFR Support (bis 120 fps)</li>
+                <li><i class="fa-solid fa-check-circle"></i> Dolby Atmos und Auro 11.1 kompatibel</li>
+                <li><i class="fa-solid fa-check-circle"></i> Remote-Monitoring und -Wartung über BeamTech Cloud</li>
+            </ul>
+            <div class="product-detail-usecases">
+                <h4>Einsatzbereiche</h4>
+                <ul>
+                    <li>Kleine und mittlere Kinosäle (bis 300 Plätze)</li>
+                    <li>Premium-Kinos und Boutique-Kinos</li>
+                    <li>Filmfestivals und Premierenvorführungen</li>
+                    <li>Private Screening-Räume</li>
+                </ul>
+            </div>
+            <div class="product-detail-price">
+                <span>Preis auf Anfrage</span>
+                <a href="#kontakt" onclick="closeModal('product-bt-cinema-pro')"><i class="fa-solid fa-envelope"></i> Jetzt anfragen</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: BT-Home Laser ══ -->
+<div class="modal-overlay" id="modal-product-bt-home-laser">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>BT-Home Laser</h2>
+            <button class="modal-close" onclick="closeModal('product-bt-home-laser')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="product-detail-grid">
+                <div class="product-detail-img">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=80" alt="BT-Home Laser">
+                </div>
+                <div class="product-detail-info">
+                    <h3>Das ultimative Heimkinoerlebnis</h3>
+                    <p>Der BT-Home Laser verbindet Premium-Projektionstechnologie mit einem integrierten Dolby-Atmos-Soundsystem in einem eleganten Gehäuse. Ob Filmabend, Sportübertragung oder Gaming — der BT-Home Laser liefert ein Erlebnis, das jedes TV-Gerät in den Schatten stellt.</p>
+                    <p>Mit der 8K-ready-Technologie ist der BT-Home Laser zukunftssicher aufgestellt. Die Triple-Laser-Lichtquelle erzeugt einen erweiterten Farbraum (BT.2020) und liefert auch in hellen Wohnzimmern ein brillantes Bild mit bis zu 200 Zoll Diagonale.</p>
+                </div>
+            </div>
+            <h3>Technische Daten</h3>
+            <table class="product-detail-specs">
+                <tr><td>Auflösung</td><td>3840 x 2160 (4K nativ, 8K-ready via Pixel-Shift)</td></tr>
+                <tr><td>Helligkeit</td><td>2.500 ANSI Lumen</td></tr>
+                <tr><td>Technologie</td><td>Triple-Laser (RGB)</td></tr>
+                <tr><td>Kontrast</td><td>1.000.000:1 (dynamisch)</td></tr>
+                <tr><td>Farbraum</td><td>107% BT.2020</td></tr>
+                <tr><td>Bildgröße</td><td>80 – 200 Zoll</td></tr>
+                <tr><td>Gewicht</td><td>11,5 kg</td></tr>
+                <tr><td>Anschlüsse</td><td>3x HDMI 2.1 (eARC), USB-C, WiFi 6E, Bluetooth 5.3, Optical</td></tr>
+                <tr><td>Sound</td><td>Integriertes Dolby Atmos 4.2.2 System (60W)</td></tr>
+                <tr><td>Smart-Features</td><td>Android TV, Google Assistant, AirPlay 2, Chromecast</td></tr>
+            </table>
+            <h3>Highlights</h3>
+            <ul class="product-detail-features">
+                <li><i class="fa-solid fa-check-circle"></i> Integriertes Dolby Atmos 4.2.2 Soundsystem (60W)</li>
+                <li><i class="fa-solid fa-check-circle"></i> Triple-Laser mit erweitertem BT.2020 Farbraum</li>
+                <li><i class="fa-solid fa-check-circle"></i> Gaming-Modus mit 4K/120Hz und 8ms Input-Lag</li>
+                <li><i class="fa-solid fa-check-circle"></i> Smart-TV-Funktionen mit Android TV und AirPlay 2</li>
+                <li><i class="fa-solid fa-check-circle"></i> Elegantes, wohnraumfreundliches Design in Weiß oder Anthrazit</li>
+            </ul>
+            <div class="product-detail-usecases">
+                <h4>Einsatzbereiche</h4>
+                <ul>
+                    <li>Heimkino und Wohnzimmer</li>
+                    <li>Gaming auf der großen Leinwand</li>
+                    <li>Sportübertragungen in Großformat</li>
+                    <li>Premium-Wohnprojekte und Smart Homes</li>
+                </ul>
+            </div>
+            <div class="product-detail-price">
+                <span>UVP ab 3.499 EUR</span>
+                <a href="#kontakt" onclick="closeModal('product-bt-home-laser')"><i class="fa-solid fa-envelope"></i> Jetzt anfragen</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: Team — Mailin Herdtfelderg ══ -->
+<div class="modal-overlay" id="modal-team-remberg">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>Mailin Herdtfelderg</h2>
+            <button class="modal-close" onclick="closeModal('team-remberg')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="team-detail-grid">
+                <div class="team-detail-photo">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80" alt="Mailin Herdtfelderg">
+                </div>
+                <div class="team-detail-meta">
+                    <h3>Mailin Herdtfelderg</h3>
+                    <div class="team-detail-role">CEO & Gründer</div>
+                    <p>Mailin Herdtfelderg gründete BeamTech 1998 mit der Vision, deutsche Ingenieurskunst in die Welt der Projektionstechnologie zu bringen. Nach seiner Promotion in Optoelektronik an der Universität Karlsruhe (heute KIT) und mehreren Jahren bei einem führenden japanischen Optikhersteller wagte er den Schritt in die Selbstständigkeit.</p>
+                </div>
+            </div>
+            <p>Unter seiner Führung wuchs BeamTech von einem Drei-Mann-Startup in einer Pforzheimer Garage zu einem international anerkannten Technologieunternehmen mit über 220 Mitarbeitern. Dr. Remberg hält 14 Patente im Bereich Laser-Projektionstechnologie und ist regelmäßiger Keynote-Speaker auf der ISE (Integrated Systems Europe) und der InfoComm.</p>
+            <div class="team-detail-quote">"Innovation entsteht nicht am Schreibtisch, sondern dort, wo Ingenieurswissen auf echte Kundenprobleme trifft. Unser Ziel war immer, Technologie zu bauen, die im Alltag einen Unterschied macht."</div>
+            <h3>Karriere-Stationen</h3>
+            <ul class="team-detail-highlights">
+                <li><i class="fa-solid fa-star"></i> Promotion in Optoelektronik, Universität Karlsruhe (KIT), 1994</li>
+                <li><i class="fa-solid fa-star"></i> Senior Engineer Optical Systems, Epson Japan, 1994–1997</li>
+                <li><i class="fa-solid fa-star"></i> Gründung BeamTech GmbH & Co. KG, 1998</li>
+                <li><i class="fa-solid fa-star"></i> Gewinner Innovationspreis Baden-Württemberg, 2012</li>
+                <li><i class="fa-solid fa-star"></i> Mitglied im Beirat des ZVEI (Fachverband Licht), seit 2018</li>
+            </ul>
+            <div class="team-detail-contact">
+                <strong>Kontakt</strong>
+                E-Mail: k.remberg@beamtech-gmbh.de | LinkedIn: /in/klausremberg
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: Team — Sabrina Neuber ══ -->
+<div class="modal-overlay" id="modal-team-meier">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>Sabrina Neuber</h2>
+            <button class="modal-close" onclick="closeModal('team-meier')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="team-detail-grid">
+                <div class="team-detail-photo">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80" alt="Sabrina Neuber">
+                </div>
+                <div class="team-detail-meta">
+                    <h3>Sabrina Neuber</h3>
+                    <div class="team-detail-role">Chief Technology Officer (CTO)</div>
+                    <p>Sabrina Neuber verantwortet als CTO die gesamte technologische Entwicklung bei BeamTech. Mit einem Hintergrund in Physik und Elektrotechnik bringt sie über 18 Jahre Erfahrung in der Entwicklung optischer Systeme und Lasertechnologie mit.</p>
+                </div>
+            </div>
+            <p>Vor ihrem Wechsel zu BeamTech 2015 leitete Sabrina Neuber die Abteilung für Laser-Display-Systeme bei einem führenden europäischen Photonikunternehmen. Unter ihrer technischen Leitung hat BeamTech die Triple-Laser-Technologie zur Marktreife gebracht und mehrere branchenweite Innovationspreise gewonnen. Ihr Team aus über 40 Ingenieuren und Physikern arbeitet an der nächsten Generation von Projektionslösungen.</p>
+            <div class="team-detail-quote">"Jede neue Technologie muss zwei Fragen bestehen: Ist sie besser als alles, was es gibt? Und ist sie einfach genug, dass jeder sie nutzen kann? Nur wenn beides stimmt, bringen wir sie auf den Markt."</div>
+            <h3>Karriere-Stationen</h3>
+            <ul class="team-detail-highlights">
+                <li><i class="fa-solid fa-star"></i> Diplom Physik, TU München, 2004</li>
+                <li><i class="fa-solid fa-star"></i> M.Sc. Elektrotechnik, ETH Zürich, 2006</li>
+                <li><i class="fa-solid fa-star"></i> Lead Engineer Laser Display Systems, OSRAM, 2006–2015</li>
+                <li><i class="fa-solid fa-star"></i> CTO BeamTech GmbH & Co. KG, seit 2015</li>
+                <li><i class="fa-solid fa-star"></i> 9 Patente im Bereich Laser-Optik und Farb-Management</li>
+            </ul>
+            <div class="team-detail-contact">
+                <strong>Kontakt</strong>
+                E-Mail: s.meier@beamtech-gmbh.de | LinkedIn: /in/sandrameier-optics
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: Team — Yilmaz Tas ══ -->
+<div class="modal-overlay" id="modal-team-brandt">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>Yilmaz Tas</h2>
+            <button class="modal-close" onclick="closeModal('team-brandt')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="team-detail-grid">
+                <div class="team-detail-photo">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=500&q=80" alt="Yilmaz Tas">
+                </div>
+                <div class="team-detail-meta">
+                    <h3>Yilmaz Tas</h3>
+                    <div class="team-detail-role">Chief Operating Officer (COO)</div>
+                    <p>Yilmaz Tas steuert als COO alle operativen Prozesse von BeamTech — von der Lieferkette und Produktion über die Qualitätssicherung bis hin zum internationalen Vertrieb. Seine Expertise liegt in der Skalierung mittelständischer Unternehmen auf globale Märkte.</p>
+                </div>
+            </div>
+            <p>Bevor Yilmaz Tas 2012 zu BeamTech kam, war er über 10 Jahre in leitenden Positionen bei einem internationalen Maschinenbauunternehmen tätig, wo er den Aufbau von Vertriebsniederlassungen in Asien und Nordamerika verantwortete. Unter seiner operativen Führung hat BeamTech die Produktionskapazität verdreifacht und das Partnernetzwerk auf 38 Länder ausgebaut.</p>
+            <div class="team-detail-quote">"Exzellente Produkte entstehen in der Entwicklung, aber ihr Erfolg entscheidet sich in der Ausführung. Zuverlässige Lieferketten, motivierte Teams und zufriedene Kunden — das ist mein täglicher Antrieb."</div>
+            <h3>Karriere-Stationen</h3>
+            <ul class="team-detail-highlights">
+                <li><i class="fa-solid fa-star"></i> MBA, Universität Mannheim, 2003</li>
+                <li><i class="fa-solid fa-star"></i> Director Operations APAC, Trumpf GmbH, 2005–2012</li>
+                <li><i class="fa-solid fa-star"></i> COO BeamTech GmbH & Co. KG, seit 2012</li>
+                <li><i class="fa-solid fa-star"></i> Aufbau des internationalen Partnernetzwerks (38 Länder)</li>
+                <li><i class="fa-solid fa-star"></i> Einführung des ISO 9001 Qualitätsmanagementsystems</li>
+            </ul>
+            <div class="team-detail-contact">
+                <strong>Kontakt</strong>
+                E-Mail: t.brandt@beamtech-gmbh.de | LinkedIn: /in/thomasbrandt-ops
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: Team — Eric Hager ══ -->
+<div class="modal-overlay" id="modal-team-schneider">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>Eric Hager</h2>
+            <button class="modal-close" onclick="closeModal('team-schneider')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="team-detail-grid">
+                <div class="team-detail-photo">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=500&q=80" alt="Eric Hager">
+                </div>
+                <div class="team-detail-meta">
+                    <h3>Eric Hager</h3>
+                    <div class="team-detail-role">Chief Marketing Officer (CMO)</div>
+                    <p>Eric Hager verantwortet die gesamte Markenstrategie, Kommunikation und das digitale Marketing von BeamTech. Mit ihrer Leidenschaft für technische Marken und B2B-Storytelling hat sie BeamTech als Premiummarke in der Projektionsbranche positioniert.</p>
+                </div>
+            </div>
+            <p>Nach ihrem Studium der Medien- und Kommunikationswissenschaft in Berlin und einem Master in Digital Marketing in London sammelte Eric Hager umfangreiche Erfahrung bei internationalen Technologiekonzernen. Seit ihrem Einstieg bei BeamTech 2019 hat sie den digitalen Auftritt des Unternehmens komplett neu aufgestellt, die Social-Media-Reichweite vervierfacht und den jährlichen Marketing-ROI um 180% gesteigert.</p>
+            <div class="team-detail-quote">"Technologie begeistert nur dann, wenn Menschen sie verstehen. Unsere Aufgabe im Marketing ist es, aus komplexer Ingenieursleistung greifbare Geschichten zu machen."</div>
+            <h3>Karriere-Stationen</h3>
+            <ul class="team-detail-highlights">
+                <li><i class="fa-solid fa-star"></i> B.A. Medien- und Kommunikationswissenschaft, FU Berlin, 2012</li>
+                <li><i class="fa-solid fa-star"></i> M.A. Digital Marketing, King's College London, 2014</li>
+                <li><i class="fa-solid fa-star"></i> Senior Marketing Manager DACH, Samsung Business, 2014–2019</li>
+                <li><i class="fa-solid fa-star"></i> CMO BeamTech GmbH & Co. KG, seit 2019</li>
+                <li><i class="fa-solid fa-star"></i> Gewinnerin German Brand Award (Kategorie B2B), 2022</li>
+            </ul>
+            <div class="team-detail-contact">
+                <strong>Kontakt</strong>
+                E-Mail: j.schneider@beamtech-gmbh.de | LinkedIn: /in/juliaschneider-marketing
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: Karriere ══ -->
+<div class="modal-overlay" id="modal-karriere">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>Karriere bei BeamTech</h2>
+            <button class="modal-close" onclick="closeModal('karriere')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <h3>Arbeiten bei BeamTech</h3>
+            <p>BeamTech ist ein wachsendes Technologieunternehmen mit Sitz in Pforzheim. Wir bieten spannende Aufgaben an der Schnittstelle von Optik, Elektronik und Software — in einem Team, das Innovationsgeist mit Kollegialität verbindet. Flexible Arbeitszeiten, 30 Tage Urlaub, betriebliche Altersvorsorge und ein modernes Arbeitsumfeld sind für uns selbstverständlich.</p>
+
+            <h3>Aktuelle Stellenangebote</h3>
+
+            <div class="karriere-job">
+                <h4>Senior Embedded Software Engineer (m/w/d)</h4>
+                <div class="karriere-job-meta">
+                    <span><i class="fa-solid fa-building"></i> Entwicklung</span>
+                    <span><i class="fa-solid fa-location-dot"></i> Pforzheim</span>
+                    <span><i class="fa-solid fa-clock"></i> Vollzeit</span>
+                </div>
+                <p>Sie entwickeln die Firmware und Steuerungssoftware unserer Laser-Projektionssysteme. Erfahrung mit C/C++ in Echtzeitsystemen, RTOS und optischer Sensorik ist erforderlich. Sie arbeiten eng mit unserem Hardware-Team zusammen und begleiten Produkte von der Konzeptphase bis zur Serienreife.</p>
+                <a href="#kontakt" class="btn-small" onclick="closeModal('karriere')"><i class="fa-solid fa-paper-plane"></i> Jetzt bewerben</a>
+            </div>
+
+            <div class="karriere-job">
+                <h4>Optik-Ingenieur / Laser-Physiker (m/w/d)</h4>
+                <div class="karriere-job-meta">
+                    <span><i class="fa-solid fa-building"></i> Forschung & Entwicklung</span>
+                    <span><i class="fa-solid fa-location-dot"></i> Pforzheim</span>
+                    <span><i class="fa-solid fa-clock"></i> Vollzeit</span>
+                </div>
+                <p>Sie designen und optimieren optische Systeme für unsere nächste Projektorgeneration. Vertiefte Kenntnisse in Zemax/OpticStudio, Erfahrung mit Laserlichtquellen und ein abgeschlossenes Studium der Physik oder Optoelektronik werden vorausgesetzt.</p>
+                <a href="#kontakt" class="btn-small" onclick="closeModal('karriere')"><i class="fa-solid fa-paper-plane"></i> Jetzt bewerben</a>
+            </div>
+
+            <div class="karriere-job">
+                <h4>Key Account Manager AV-Integration (m/w/d)</h4>
+                <div class="karriere-job-meta">
+                    <span><i class="fa-solid fa-building"></i> Vertrieb</span>
+                    <span><i class="fa-solid fa-location-dot"></i> Pforzheim / Remote</span>
+                    <span><i class="fa-solid fa-clock"></i> Vollzeit</span>
+                </div>
+                <p>Sie betreuen und entwickeln strategische Kundenbeziehungen im Bereich AV-Integration und Großprojekte. Idealerweise bringen Sie ein Netzwerk in der ProAV-Branche mit und haben Erfahrung mit Crestron/Extron-Systemen und komplexen Ausschreibungsverfahren.</p>
+                <a href="#kontakt" class="btn-small" onclick="closeModal('karriere')"><i class="fa-solid fa-paper-plane"></i> Jetzt bewerben</a>
+            </div>
+
+            <div class="karriere-job">
+                <h4>Werkstudent/in Marketing & Content (m/w/d)</h4>
+                <div class="karriere-job-meta">
+                    <span><i class="fa-solid fa-building"></i> Marketing</span>
+                    <span><i class="fa-solid fa-location-dot"></i> Pforzheim / Hybrid</span>
+                    <span><i class="fa-solid fa-clock"></i> Teilzeit (20h/Woche)</span>
+                </div>
+                <p>Sie unterstützen unser Marketing-Team bei der Content-Erstellung, Social-Media-Betreuung und der Organisation von Messe-Auftritten. Eingeschrieben in einem relevanten Studiengang und sicher im Umgang mit Adobe Creative Suite und Social-Media-Plattformen.</p>
+                <a href="#kontakt" class="btn-small" onclick="closeModal('karriere')"><i class="fa-solid fa-paper-plane"></i> Jetzt bewerben</a>
+            </div>
+
+            <p style="margin-top: 25px; color: var(--muted); font-size: 0.88rem;">Keine passende Stelle dabei? Wir freuen uns immer über Initiativbewerbungen an <strong>karriere@beamtech-gmbh.de</strong>.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: Presse ══ -->
+<div class="modal-overlay" id="modal-presse">
+    <div class="modal-box modal-wide">
+        <div class="modal-head">
+            <h2>Presse & Neuigkeiten</h2>
+            <button class="modal-close" onclick="closeModal('presse')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <h3>Pressemitteilungen</h3>
+            <p>Für Presseanfragen wenden Sie sich bitte an: <strong>presse@beamtech-gmbh.de</strong></p>
+
+            <div class="presse-item">
+                <div class="presse-item-date"><i class="fa-regular fa-calendar"></i> 15. Januar 2024</div>
+                <h4>BeamTech stellt BT-Event 20K auf der ISE 2024 in Barcelona vor</h4>
+                <p>BeamTech GmbH & Co. KG hat auf der Integrated Systems Europe (ISE) 2024 in Barcelona den neuen BT-Event 20K vorgestellt. Der Hochleistungs-Laserprojektor mit 20.000 ANSI Lumen und nativem 4K richtet sich an professionelle Eventtechnik-Unternehmen und Festinstallationen. Mit integriertem Edge Blending und 360°-Montage setzt das Gerät neue Standards in der Großveranstaltungstechnik.</p>
+            </div>
+
+            <div class="presse-item">
+                <div class="presse-item-date"><i class="fa-regular fa-calendar"></i> 03. November 2023</div>
+                <h4>BeamTech überschreitet Marke von 4.500 installierten Systemen weltweit</h4>
+                <p>Pforzheim — BeamTech GmbH & Co. KG gibt bekannt, dass das Unternehmen die Marke von 4.500 weltweit installierten Projektionssystemen überschritten hat. Besonders starkes Wachstum verzeichnet das Unternehmen in den Bereichen Bildung und immersive Erlebnisräume. Seit Gründung im Jahr 1998 hat sich BeamTech von einem regionalen Anbieter zu einem international anerkannten Hersteller entwickelt.</p>
+            </div>
+
+            <div class="presse-item">
+                <div class="presse-item-date"><i class="fa-regular fa-calendar"></i> 18. Juli 2023</div>
+                <h4>Partnerschaft mit dem Deutschen Museum München für immersives Planetarium</h4>
+                <p>BeamTech GmbH & Co. KG wurde als Technologiepartner für die Neugestaltung des Planetariums im Deutschen Museum München ausgewählt. Das Projekt umfasst die Installation eines BT-Dome 360 Multiprojektor-Systems mit 12 synchronisierten Lasereinheiten in der 15-Meter-Kuppel. Die Eröffnung des modernisierten Planetariums ist für Herbst 2024 geplant.</p>
+            </div>
+
+            <div class="presse-item">
+                <div class="presse-item-date"><i class="fa-regular fa-calendar"></i> 22. März 2023</div>
+                <h4>BeamTech erhält Innovationspreis der AV-Branche für Triple-Laser-Technologie</h4>
+                <p>Die Deutsche Gesellschaft für AV-Medientechnik (DGAV) hat BeamTech GmbH & Co. KG mit dem Innovationspreis 2023 in der Kategorie "Projektionstechnologie" ausgezeichnet. Gewürdigt wurde die hauseigene Triple-Laser-Technologie, die in der BT-Home Laser Serie erstmals einem breiten Publikum zugänglich gemacht wird und einen erweiterten Farbraum mit hoher Energieeffizienz vereint.</p>
+            </div>
+
+            <p style="margin-top: 25px; color: var(--muted); font-size: 0.88rem;">Pressemappe und hochauflösendes Bildmaterial auf Anfrage verfügbar. Kontakt: <strong>presse@beamtech-gmbh.de</strong></p>
+        </div>
+    </div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast">Nachricht gesendet!</div>
+
+<script>
+    // ── Cinematic Scroll Intro ──
+    (function() {
+        var intro = document.getElementById('cinematic-intro');
+        if (!intro) return;
+
+        var frames = intro.querySelectorAll('.cinematic-frame');
+        var rays = intro.querySelectorAll('.cinematic-ray');
+        var scrollHint = document.getElementById('cinematic-scroll-hint');
+        var progressBar = document.getElementById('cinematic-progress');
+        var nav = document.getElementById('main-nav');
+
+        nav.style.opacity = '0';
+        nav.style.pointerEvents = 'none';
+
+        function easeOut(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        function tick() {
+            var rect = intro.getBoundingClientRect();
+            var scrollable = intro.offsetHeight - window.innerHeight;
+            var scrolled = Math.max(0, -rect.top);
+            var progress = Math.min(1, scrolled / scrollable);
+            var pastIntro = rect.bottom <= window.innerHeight;
+
+            if (progressBar) {
+                progressBar.style.width = (progress * 100) + '%';
+                progressBar.style.opacity = progress >= 0.97 ? '0' : '1';
+            }
+
+            for (var i = 0; i < frames.length; i++) {
+                var f = frames[i];
+                var s = parseFloat(f.dataset.cineStart);
+                var e = parseFloat(f.dataset.cineEnd);
+                var p = Math.max(0, Math.min(1, (progress - s) / (e - s)));
+
+                var opacity, blur, ty;
+                var isFirst = (i === 0);
+
+                if (p <= 0 && !isFirst) {
+                    opacity = 0; blur = 5; ty = 25;
+                } else if (p < 0.18 && !isFirst) {
+                    var t = easeOut(p / 0.18);
+                    opacity = t; blur = (1 - t) * 5; ty = (1 - t) * 25;
+                } else if (p <= 0.82) {
+                    opacity = 1; blur = 0; ty = 0;
+                } else if (p < 1) {
+                    var t2 = easeOut((p - 0.82) / 0.18);
+                    opacity = 1 - t2; blur = t2 * 3; ty = -t2 * 18;
+                } else {
+                    opacity = 0; blur = 3; ty = -18;
+                }
+
+                var sc = 0.98 + p * 0.04;
+                f.style.opacity = opacity;
+                f.style.transform = 'scale(' + sc + ') translateY(' + ty + 'px)';
+                f.style.filter = blur > 0.05 ? 'blur(' + blur + 'px)' : 'none';
+            }
+
+            for (var j = 0; j < rays.length; j++) {
+                var angle = Math.sin(progress * 5 + j * 1.3) * 16;
+                var glow = 0.08 + Math.sin(progress * 3 + j * 0.9) * 0.1;
+                rays[j].style.transform = 'rotate(' + angle + 'deg)';
+                rays[j].style.opacity = glow;
+            }
+
+            if (scrollHint) {
+                scrollHint.style.opacity = progress < 0.04 ? 1 : Math.max(0, 1 - progress * 6);
+            }
+
+            if (pastIntro || progress >= 0.97) {
+                nav.style.opacity = '1';
+                nav.style.pointerEvents = 'auto';
+            } else if (progress > 0.88) {
+                var nf = (progress - 0.88) / 0.09;
+                nav.style.opacity = Math.min(1, nf);
+                nav.style.pointerEvents = nf > 0.5 ? 'auto' : 'none';
+            } else {
+                nav.style.opacity = '0';
+                nav.style.pointerEvents = 'none';
+            }
+
+            requestAnimationFrame(tick);
+        }
+
+        tick();
+    })();
+
+    // ── Modal ──
+    function openModal(id) {
+        document.getElementById('modal-' + id).classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+        document.getElementById('modal-' + id).classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // Close on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.open').forEach(m => {
+                m.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        }
+    });
+
+    // ── Toast ──
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ── Kontaktformular ──
+    function sendForm() {
+        showToast('✓ Ihre Nachricht wurde gesendet. Wir melden uns bald!');
+    }
+
+    // ── Nav scroll effect ──
+    window.addEventListener('scroll', function() {
+        var nav = document.getElementById('main-nav');
+        var ci = document.getElementById('cinematic-intro');
+        var past = !ci || ci.getBoundingClientRect().bottom <= window.innerHeight;
+        if (past && parseFloat(nav.style.opacity) > 0.5) {
+            nav.style.background = window.scrollY > 50 ? 'rgba(13, 31, 60, 0.98)' : 'rgba(13, 31, 60, 0.95)';
+        }
+    });
+
+    // ── Intersection Observer für Fade-in ──
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.product-card, .team-card, .stat-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(el);
+    });
+</script>
+
+</body>
+</html>

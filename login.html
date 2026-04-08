@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeamTech | Mitarbeiter Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #143c7b;
+            --navy:    #0f2a54;
+            --blue:    #143c7b;
+            --mid:     #1e5fa8;
+            --sky:     #3b9de3;
+            --light:   #e8f0fb;
+            --white:   #ffffff;
+            --gray:    #f4f4f4;
+            --text:    #1a1a2e;
+            --muted:   #64748b;
+            --accent:  #f59e0b;
+            --error-red: #c0392b;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── NAVIGATION ── */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            height: 72px;
+            background: rgba(13, 31, 60, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--white);
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo .bolt {
+            color: var(--accent);
+            font-size: 1.4rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--white); }
+
+        /* ── FOOTER ── */
+        /* ── FOOTER ── */
+        footer {
+            background: #060d1a;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+            padding: 18px 60px;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            position: relative;
+            z-index: 10;
+        }
+
+        footer span { 
+            color: var(--accent); 
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .page-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            margin-top: 72px;
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(130deg, rgba(13,31,60,0.92) 0%, rgba(27,54,100,0.75) 60%, rgba(59,157,227,0.4) 100%);
+        }
+
+        /* ── BEAM RAY ANIMATION ── */
+        .hero-rays {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .ray {
+            position: absolute;
+            bottom: -20%;
+            width: 2px;
+            background: linear-gradient(to top, rgba(59,157,227,0.6), transparent);
+            transform-origin: bottom center;
+            animation: rayPulse 4s ease-in-out infinite;
+        }
+
+        .ray:nth-child(1) { left: 30%; height: 70vh; transform: rotate(-15deg); animation-delay: 0s; }
+        .ray:nth-child(2) { left: 50%; height: 80vh; transform: rotate(0deg);   animation-delay: 0.8s; }
+        .ray:nth-child(3) { left: 70%; height: 65vh; transform: rotate(12deg);  animation-delay: 1.6s; }
+        .ray:nth-child(4) { left: 40%; height: 75vh; transform: rotate(-6deg);  animation-delay: 2.4s; opacity: 0.4; }
+
+        @keyframes rayPulse {
+            0%, 100% { opacity: 0.15; }
+            50%       { opacity: 0.55; }
+        }
+
+        /* ── LOGIN CARD ── */
+        .login-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 420px;
+            overflow: hidden;
+            animation: slideUp 0.5s ease both;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-card-header {
+            background: linear-gradient(135deg, var(--navy), var(--sky));
+            color: var(--white);
+            padding: 30px 35px 25px;
+            text-align: center;
+        }
+
+        .login-card-header .icon-wrap {
+            width: 64px;
+            height: 64px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.8rem;
+        }
+
+        .login-card-header h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .login-card-header p {
+            font-size: 0.88rem;
+            opacity: 0.75;
+        }
+
+        .login-card-body {
+            padding: 35px 35px 30px;
+        }
+
+        /* ── FORM ── */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 13px 14px 13px 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 7px;
+            font-size: 0.95rem;
+            color: var(--text);
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--sky);
+            box-shadow: 0 0 0 3px rgba(59, 157, 227, 0.15);
+        }
+
+        .input-wrapper input:focus + i,
+        .input-wrapper:focus-within i {
+            color: var(--sky);
+        }
+
+        .input-wrapper i.icon-left { pointer-events: none; }
+
+        /* Password toggle */
+        .toggle-pw {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 0.95rem;
+            padding: 0;
+            transition: color 0.2s;
+        }
+        .toggle-pw:hover { color: var(--sky); }
+
+        /* ── ERROR BANNER ── */
+        .error-banner {
+            background-color: #fdf0ef;
+            border: 1.5px solid var(--error-red);
+            border-radius: 8px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            color: var(--error-red);
+            margin-bottom: 20px;
+            display: none;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        /* ── LOGIN BUTTON ── */
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--accent);
+            color: var(--navy);
+            border: none;
+            border-radius: 7px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+        }
+
+        .login-btn:hover:not(:disabled) { background-color: #f6ab1a; transform: translateY(-1px); }
+        .login-btn:active:not(:disabled) { transform: scale(0.98); }
+        .login-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* ── SUCCESS OVERLAY ── */
+        .success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 35px;
+            text-align: center;
+            gap: 15px;
+        }
+
+        .success-overlay .checkmark {
+            width: 72px;
+            height: 72px;
+            background-color: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--sky);
+            animation: popIn 0.4s ease both;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        .success-overlay h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--navy);
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+        .success-overlay p  { color: var(--muted); font-size: 0.9rem; }
+
+        .progress-bar-wrap {
+            width: 100%;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--sky);
+            width: 0%;
+            border-radius: 2px;
+            animation: fillBar 2s linear forwards;
+        }
+
+        @keyframes fillBar {
+            from { width: 0%; }
+            to   { width: 100%; }
+        }
+
+        /* ── HINT ── */
+        .hint-box {
+            background: var(--light);
+            border-left: 3px solid var(--sky);
+            border-radius: 0 6px 6px 0;
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            color: var(--muted);
+            margin-top: 22px;
+            line-height: 1.5;
+        }
+
+        .hint-box b { color: var(--blue); }
+
+    </style>
+</head>
+<body>
+
+<!-- ══ NAVIGATION ══ -->
+<nav class="nav" id="main-nav">
+    <a href="index.html" class="nav-logo"><span class="bolt"><i class="fa-solid fa-bolt"></i></span> BeamTech</a>
+    <ul class="nav-links">
+        <li><a href="beamtech-website.html#produkte">Produkte</a></li>
+        <li><a href="beamtech-website.html#unternehmen">Unternehmen</a></li>
+        <li><a href="beamtech-website.html#team">Team</a></li>
+        <li><a href="beamtech-website.html#kontakt">Kontakt</a></li>
+        <li><a href="login.html" class="nav-cta"><i class="fa-solid fa-user-lock"></i> Mitarbeiter-Login</a></li>
+    </ul>
+</nav>
+
+    <div class="page-body">
+        <div class="hero-rays">
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+            <div class="ray"></div>
+        </div>
+
+        <div class="login-card">
+
+            <div class="login-card-header">
+                <div class="icon-wrap"><i class="fa-solid fa-user-lock"></i></div>
+                <h2>Mitarbeiter-Login</h2>
+                <p>BeamTech Intranet &mdash; Bitte melde dich an</p>
+            </div>
+
+            <!-- LOGIN FORM VIEW -->
+            <div class="login-card-body" id="form-view">
+
+                <div class="error-banner" id="error-banner">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span id="error-text">Benutzername oder Passwort ung&uuml;ltig.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Benutzername</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user icon-left"></i>
+                        <input type="text" id="username" placeholder="vorname.nachname" autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Passwort</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock icon-left"></i>
+                        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+                        <button class="toggle-pw" type="button" onclick="togglePassword()" tabindex="-1" id="toggle-icon">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="login-btn" id="login-btn" onclick="handleLogin()">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    ANMELDEN
+                </button>
+
+                <div class="hint-box">
+                    <b>Demo-Zugangsdaten:</b><br>
+                    Benutzername: <b>martin.mueller</b> &nbsp;|&nbsp; Passwort: <b>beamtech2024</b><br><br>
+                    <b>Rechtsabteilung:</b><br>
+                    Benutzername: <b>legal.admin</b> &nbsp;|&nbsp; Passwort: <b>legal2026</b>
+                </div>
+            </div>
+
+            <!-- SUCCESS VIEW (hidden initially) -->
+            <div class="success-overlay" id="success-view">
+                <div class="checkmark"><i class="fa-solid fa-check"></i></div>
+                <h3>Erfolgreich angemeldet!</h3>
+                <p>Willkommen zur&uuml;ck, <b id="welcome-name">Martin</b>. Du wirst weitergeleitet...</p>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+    &copy; 2026 <span>BeamTech</span> GmbH & Co. KG &mdash;
+    <a href="impressum.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Impressum</a>·
+    <a href="datenschutz.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Datenschutz</a>·
+    <a href="AGB.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">AGB</a>·
+    <a href="cookies.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Cookies</a>
+</footer>
+
+    <script>
+        // Enter-Taste auslösen
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+
+        function togglePassword() {
+            const pw = document.getElementById('password');
+            const icon = document.querySelector('#toggle-icon i');
+            if (pw.type === 'password') {
+                pw.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash';
+            } else {
+                pw.type = 'password';
+                icon.className = 'fa-solid fa-eye';
+            }
+        }
+
+        function showError(msg) {
+            const banner = document.getElementById('error-banner');
+            document.getElementById('error-text').innerText = msg;
+            banner.style.display = 'flex';
+            // Shake-Animation neu starten
+            banner.style.animation = 'none';
+            banner.offsetHeight; // reflow
+            banner.style.animation = 'shake 0.4s ease';
+        }
+
+       function handleLogin() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            const btn  = document.getElementById('login-btn');
+
+            // Felder leer?
+            if (!user || !pass) {
+                showError('Bitte Benutzername und Passwort eingeben.');
+                return;
+            }
+
+            // Demo-Credentials prüfen (case-insensitive user)
+            const u = user.toLowerCase();
+            let redirect = null;
+            let displayName = ''; // Hier speichern wir den Namen für die Begrüßung
+
+            if (u === 'martin.mueller' && pass === 'beamtech2024') {
+                redirect = 'dashboard.html';
+                displayName = 'Martin';
+            } else if (u === 'legal.admin' && pass === 'legal2026') {
+                redirect = 'legal-dashboard.html';
+                displayName = 'Legal-Team'; // Alternativ auch 'Admin'
+            }
+
+            if (!redirect) {
+                showError('Benutzername oder Passwort ungültig. Bitte erneut versuchen.');
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+                return;
+            }
+
+            // Den Namen im Erfolgs-Fenster anpassen
+            document.getElementById('welcome-name').innerText = displayName;
+
+            // ── Erfolg ──
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Wird angemeldet...';
+
+            setTimeout(() => {
+                document.getElementById('form-view').style.display = 'none';
+                const sv = document.getElementById('success-view');
+                sv.style.display = 'flex';
+
+                // Nach 2 Sekunden weiterleiten
+                setTimeout(() => {
+                    window.location.href = redirect;
+                }, 2100);
+            }, 900);
+        }
+    </script>
+
+</body>
+</html>

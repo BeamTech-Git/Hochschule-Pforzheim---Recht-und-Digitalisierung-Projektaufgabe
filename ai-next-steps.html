@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next-Steps Generator | BeamTech Compliance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary:  #143c7b;
+            --navy:     #0f2a54;
+            --sky:      #3b9de3;
+            --white:    #ffffff;
+            --gray:     #f4f4f4;
+            --text:     #1a1a2e;
+            --muted:    #64748b;
+            --accent:   #f59e0b;
+            --green:     #15803d;
+            --green-bg:  #f0fdf4;
+            --red:       #b91c1c;
+            --red-bg:    #fef2f2;
+            --orange:    #c2410c;
+            --orange-bg: #fff7ed;
+            --gray-text: #4b5563;
+            --gray-bg:   #f3f4f6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'DM Sans', sans-serif; background-color: var(--gray); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* ── NAVIGATION ── */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; height: 72px; background: rgba(13, 31, 60, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .nav-left { display: flex; align-items: center; gap: 50px; }
+        .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--white); letter-spacing: 3px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .nav-logo .bolt { color: var(--accent); }
+        .nav-links { display: flex; gap: 35px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.88rem; font-weight: 500; text-transform: uppercase; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--white); }
+        .nav-right { display: flex; align-items: center; gap: 25px; }
+        .nav-profile { display: flex; align-items: center; gap: 12px; }
+        .nav-profile-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, var(--sky), var(--primary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-family: 'Bebas Neue', sans-serif; font-size: 0.95rem; }
+        .nav-profile-info { display: flex; flex-direction: column; line-height: 1.2; }
+        .nav-profile-name { color: var(--white); font-size: 0.82rem; font-weight: 500; }
+        .nav-profile-logout { color: rgba(255,255,255,0.45); font-size: 0.7rem; text-decoration: none; }
+
+        /* ── PAGE HEADER ── */
+        .page-header { margin-top: 72px; background: linear-gradient(135deg, var(--primary), var(--navy)); color: var(--white); padding: 50px 60px; text-align: center; }
+        .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; letter-spacing: 2px; margin-bottom: 10px; }
+        .page-header p { font-size: 1.05rem; opacity: 0.8; max-width: 600px; margin: 0 auto; }
+
+        /* ── MAIN CONTAINER ── */
+        .main-container { max-width: 900px; margin: 40px auto; padding: 0 20px; flex: 1; }
+
+        /* ── OUTCOME SELECTION ── */
+        #selection-screen { text-align: center; }
+        #selection-screen h2 { font-size: 1.4rem; color: var(--navy); margin-bottom: 30px; }
+
+        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+
+        .result-card { background: var(--white); border-radius: 12px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: flex; align-items: center; gap: 20px; text-align: left; border: 2px solid transparent; }
+        .result-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+
+        .result-icon { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
+        .result-info h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; margin-bottom: 5px; letter-spacing: 1px; }
+        .result-info p { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+
+        .card-noki:hover { border-color: var(--gray-text); }
+        .card-noki .result-icon { background: var(--gray-bg); color: var(--gray-text); }
+        .card-noki h3 { color: var(--gray-text); }
+
+        .card-safe:hover { border-color: var(--green); }
+        .card-safe .result-icon { background: var(--green-bg); color: var(--green); }
+        .card-safe h3 { color: var(--green); }
+
+        .card-high:hover { border-color: var(--orange); }
+        .card-high .result-icon { background: var(--orange-bg); color: var(--orange); }
+        .card-high h3 { color: var(--orange); }
+
+        .card-banned:hover { border-color: var(--red); }
+        .card-banned .result-icon { background: var(--red-bg); color: var(--red); }
+        .card-banned h3 { color: var(--red); }
+
+        /* ── VIDEO MODAL OVERLAY ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(6, 13, 26, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+            animation: overlayFadeIn 0.25s ease both;
+        }
+
+        @keyframes overlayFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 780px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            overflow: hidden;
+            animation: modalSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(40px) scale(0.96); opacity: 0; }
+            to   { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 28px 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .modal-header-left { display: flex; flex-direction: column; gap: 4px; }
+        .modal-eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+        .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; letter-spacing: 1px; color: var(--navy); }
+
+        .modal-close {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gray);
+            color: var(--muted);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s;
+            flex-shrink: 0;
+        }
+        .modal-close:hover { background: #e2e8f0; color: var(--navy); }
+
+        .modal-body { padding: 28px; }
+
+        /* 16:9 video placeholder */
+        .video-placeholder {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .video-placeholder-inner {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            background: linear-gradient(135deg, #0d1b2e 0%, #1a3a6e 100%);
+        }
+
+        /* iframe slot — uncomment and add src when ready */
+        .video-placeholder iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .play-btn {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.12);
+            border: 2px solid rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.6rem;
+        }
+        .play-btn i { margin-left: 4px; }
+
+        .video-label {
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 0.5px;
+        }
+
+        .modal-footer {
+            padding: 0 28px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .modal-hint { font-size: 0.82rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+        .modal-hint i { color: var(--sky); }
+
+        .modal-cta {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--sky), var(--primary));
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-cta:hover { opacity: 0.88; }
+
+        /* ── FOOTER ── */
+        footer { background: #060d1a; color: rgba(255,255,255,0.4); text-align: center; padding: 30px 60px; font-size: 0.8rem; margin-top: 60px; }
+        footer span { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="dashboard.html" class="nav-logo">
+                <i class="fa-solid fa-bolt bolt"></i>BEAMTECH
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="aikompass.html">AI-Kompass</a></li>
+                <li><a href="dokumentenablage.html">Dokumente</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="nav-profile">
+                <div class="nav-profile-avatar">MM</div>
+                <div class="nav-profile-info">
+                    <span class="nav-profile-name">Martin M&uuml;ller</span>
+                    <a href="login.html" class="nav-profile-logout">Abmelden</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <h1>Next-Steps Generator</h1>
+        <p>Erstelle deinen maßgeschneiderten Maßnahmenplan basierend auf deinem AI-Kompass Ergebnis.</p>
+    </header>
+
+    <main class="main-container">
+        <div id="selection-screen">
+            <h2>Was war dein Ergebnis im AI-Kompass?</h2>
+
+            <div class="result-grid">
+                
+
+                
+
+                <div class="result-card card-high" onclick="openModal('Hochrisiko-KI')">
+                    <div class="result-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="result-info">
+                        <h3>Hochrisiko-KI</h3>
+                        <p>Erhöhte Sorgfalts- und Dokumentationspflichten (Art. 8-25).</p>
+                    </div>
+                </div>
+
+                <div class="result-card card-banned" onclick="openModal('Verboten (Art. 5)')">
+                    <div class="result-icon"><i class="fa-solid fa-ban"></i></div>
+                    <div class="result-info">
+                        <h3>Verboten</h3>
+                        <p>Einsatz nach Art. 5 unzulässig. Absolutes Verbot.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+   <footer>
+            &copy; 2026 <span>BeamTech</span> GmbH & Co. KG &mdash;
+            <a href="impressum.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Impressum</a>·
+            <a href="datenschutz.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Datenschutz</a>·
+            <a href="AGB.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">AGB</a>·
+            <a href="cookies.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Cookies</a>
+        </footer>
+
+    <!-- ── VIDEO MODAL ── -->
+    <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal" id="modal">
+
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <span class="modal-eyebrow">Schulungsvideo</span>
+                    <span class="modal-title" id="modal-title">Geringes Risiko</span>
+                </div>
+                <button class="modal-close" onclick="closeModal()" aria-label="Schließen">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="video-placeholder">
+                    <div class="video-placeholder-inner">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        <span class="video-label">Video wird hier eingebettet</span>
+                        <!--
+                            Platzhalter für iframe – src ergänzen, um ein echtes Video einzubinden:
+                            <iframe src="https://www.youtube-nocookie.com/embed/VIDEO_ID" allowfullscreen></iframe>
+                        -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <span class="modal-hint">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Bitte das Schulungsvideo vollständig ansehen, bevor du fortfährst.
+                </span>
+                <button class="modal-cta" onclick="closeModal()">
+                    <i class="fa-solid fa-check"></i> Verstanden
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function openModal(title) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function handleOverlayClick(event) {
+            if (event.target === document.getElementById('modal-overlay')) {
+                closeModal();
+            }
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+
+</body>
+</html>

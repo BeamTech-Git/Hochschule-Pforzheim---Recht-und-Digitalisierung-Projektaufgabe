@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeamTech Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary:  #143c7b;
+            --navy:    #0f2a54;
+            --blue:    #143c7b;
+            --mid:     #1e5fa8;
+            --sky:     #3b9de3;
+            --light:   #e8f0fb;
+            --white:   #ffffff;
+            --gray:    #f4f4f4;
+            --text:    #1a1a2e;
+            --muted:   #64748b;
+            --accent:  #f59e0b;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--gray);
+            overflow-x: hidden;
+            padding-bottom: 0;
+        }
+
+        /* ══════════════════════════════════════════
+           NAVIGATION
+        ══════════════════════════════════════════ */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            height: 72px;
+            background: rgba(13, 31, 60, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--white);
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-logo .bolt {
+            color: var(--accent);
+            font-size: 1.4rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            transition: color 0.2s;
+            padding-bottom: 2px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a.active { color: var(--white); border-bottom-color: var(--accent); }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px;
+            padding: 8px 18px;
+            width: 280px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .nav-search:focus-within {
+            background: rgba(255,255,255,0.18);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .nav-search input {
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        .nav-search input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .nav-search i {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.85rem;
+        }
+
+        .nav-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-profile-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--sky), var(--mid));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-profile-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .nav-profile-name {
+            color: var(--white);
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .nav-profile-logout {
+            color: rgba(255,255,255,0.45);
+            font-size: 0.7rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-profile-logout:hover { color: var(--accent); }
+
+        /* ══════════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════════ */
+        footer {
+            background: #060d1a;
+            color: rgba(255,255,255,0.55);
+            padding: 60px 60px 0;
+            margin-top: 0px;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            padding-bottom: 50px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .footer-brand .logo-f {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: white;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .footer-brand .logo-f .bolt { color: var(--accent); }
+
+        .footer-brand p {
+            font-size: 0.88rem;
+            line-height: 1.75;
+            max-width: 280px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .footer-col h5 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .footer-col ul a {
+            color: rgba(255,255,255,0.45);
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .footer-col ul a:hover { color: white; }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 22px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .footer-bottom-links a:hover { color: white; }
+
+        /* ══════════════════════════════════════════
+           MAIN CONTENT
+        ══════════════════════════════════════════ */
+        .main-content {
+            padding-top: 72px;
+        }
+
+        /* ══════════════════════════════════════════
+           WELCOME BANNER
+        ══════════════════════════════════════════ */
+        .welcome-banner {
+            position: relative;
+            background: linear-gradient(130deg, var(--navy) 0%, var(--mid) 60%, var(--sky) 100%);
+            color: var(--white);
+            padding: 60px 60px;
+            overflow: hidden;
+        }
+
+        .welcome-rays {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .ray {
+            position: absolute;
+            bottom: -20%;
+            width: 2px;
+            background: linear-gradient(to top, rgba(59,157,227,0.6), transparent);
+            transform-origin: bottom center;
+            animation: rayPulse 4s ease-in-out infinite;
+        }
+
+        .ray:nth-child(1) { left: 20%; height: 50vh; transform: rotate(-15deg); animation-delay: 0s; }
+        .ray:nth-child(2) { left: 45%; height: 60vh; transform: rotate(0deg);   animation-delay: 0.8s; }
+        .ray:nth-child(3) { left: 70%; height: 45vh; transform: rotate(12deg);  animation-delay: 1.6s; }
+        .ray:nth-child(4) { left: 35%; height: 55vh; transform: rotate(-6deg);  animation-delay: 2.4s; opacity: 0.4; }
+
+        @keyframes rayPulse {
+            0%, 100% { opacity: 0.15; }
+            50%       { opacity: 0.55; }
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-banner h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .welcome-banner p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.75);
+            margin-top: 8px;
+        }
+
+        /* ══════════════════════════════════════════
+           GRID LAYOUT
+        ══════════════════════════════════════════ */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 0 60px;
+        }
+
+        /* ══════════════════════════════════════════
+           SECTION LABELS
+        ══════════════════════════════════════════ */
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--sky);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 28px;
+            height: 3px;
+            background: var(--sky);
+            border-radius: 2px;
+        }
+
+        /* ══════════════════════════════════════════
+           QUICK LINKS
+        ══════════════════════════════════════════ */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .link-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .link-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+        }
+
+        .link-card i {
+            font-size: 2.5rem;
+            color: var(--sky);
+            display: block;
+        }
+
+        .link-card span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.15rem;
+            letter-spacing: 1.5px;
+            color: var(--navy);
+        }
+
+        /* ══════════════════════════════════════════
+           NEWSFEED
+        ══════════════════════════════════════════ */
+        .newsfeed {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .newsfeed-header {
+            padding: 22px 25px 0 25px;
+        }
+
+        .news-item {
+            padding: 18px 25px;
+            border-bottom: 1px solid var(--gray);
+            color: var(--text);
+            font-size: 0.92rem;
+            transition: background 0.2s;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .news-item:last-child { border-bottom: none; }
+
+        .news-item:hover { background: var(--light); }
+
+        .news-item .news-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--sky);
+            margin-top: 7px;
+            flex-shrink: 0;
+        }
+
+        .news-item b { color: var(--navy); }
+
+        /* ══════════════════════════════════════════
+           WEATHER WIDGET
+        ══════════════════════════════════════════ */
+        .weather-widget {
+            background: linear-gradient(160deg, var(--navy) 0%, var(--blue) 100%);
+            color: var(--white);
+            padding: 30px 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-widget::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(59,157,227,0.1);
+        }
+
+        .weather-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .weather-location {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            margin-top: 2px;
+        }
+
+        .weather-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0 10px;
+        }
+
+        .weather-info span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 2px;
+        }
+
+        .weather-info i {
+            font-size: 2.8rem;
+        }
+
+        #weather-desc {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* ══════════════════════════════════════════
+           MEETINGS WIDGET
+        ══════════════════════════════════════════ */
+        .meetings-widget {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .meetings-header {
+            background: var(--navy);
+            color: var(--white);
+            padding: 16px 20px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .meetings-header i { color: var(--accent); font-size: 0.9rem; }
+
+        .meetings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .meetings-table td {
+            padding: 16px 14px;
+            border-bottom: 1px solid var(--gray);
+            font-size: 0.88rem;
+            color: var(--text);
+        }
+
+        .meetings-table tr:last-child td { border-bottom: none; }
+
+        .meetings-table td:first-child {
+            font-weight: 700;
+            color: var(--navy);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .meetings-table td:nth-child(2) {
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .meetings-table td:last-child {
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        /* ══════════════════════════════════════════
+           IT SUPPORT BUTTON
+        ══════════════════════════════════════════ */
+        .it-support-btn {
+            background: var(--accent);
+            color: var(--navy);
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 4px 20px rgba(245,158,11,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .it-support-btn:hover {
+            background: #f6ab1a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245,158,11,0.35);
+        }
+
+        /* ══════════════════════════════════════════
+           LEGAL ACCESS CARD
+        ══════════════════════════════════════════ */
+        .legal-access-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--white);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-top: 16px;
+            text-decoration: none;
+            border: 1px solid rgba(15, 42, 84, 0.12);
+            box-shadow: 0 2px 10px rgba(15, 42, 84, 0.06);
+            transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+        }
+
+        .legal-access-card:hover {
+            border-color: rgba(15, 42, 84, 0.3);
+            box-shadow: 0 6px 22px rgba(15, 42, 84, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .legal-access-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .legal-access-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--mid) 100%);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.85);
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .legal-access-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .legal-access-title {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: 0.2px;
+        }
+
+        .legal-access-sub {
+            font-size: 0.72rem;
+            color: var(--muted);
+            letter-spacing: 0.2px;
+        }
+
+        .legal-access-arrow {
+            color: rgba(15, 42, 84, 0.3);
+            font-size: 0.75rem;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .legal-access-card:hover .legal-access-arrow {
+            color: var(--navy);
+            transform: translateX(3px);
+        }
+
+        /* ══════════════════════════════════════════
+           IT-SUPPORT MODAL
+        ══════════════════════════════════════════ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(7,15,35,0.72);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal-box {
+            background: var(--white);
+            border-radius: 18px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            overflow: hidden;
+            animation: modalIn 0.25s cubic-bezier(0.34,1.4,0.64,1);
+        }
+        @keyframes modalIn {
+            from { opacity:0; transform:translateY(24px) scale(0.97); }
+            to   { opacity:1; transform:translateY(0) scale(1); }
+        }
+
+        .modal-head {
+            background: linear-gradient(130deg, var(--navy), var(--mid));
+            padding: 22px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal-head-left { display:flex; align-items:center; gap:12px; }
+        .modal-head-icon {
+            width: 40px; height: 40px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent); font-size: 1.1rem;
+        }
+        .modal-head h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem; letter-spacing: 2px;
+            color: var(--white); font-weight: 400;
+        }
+        .modal-head p { font-size: 0.75rem; color: rgba(255,255,255,0.55); margin-top:2px; }
+        .modal-close-btn {
+            background: rgba(255,255,255,0.1);
+            border: none; border-radius: 8px;
+            width: 32px; height: 32px;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer; font-size: 0.9rem;
+            display:flex; align-items:center; justify-content:center;
+            transition: background 0.2s;
+        }
+        .modal-close-btn:hover { background: rgba(255,255,255,0.22); color:white; }
+
+        .modal-body { padding: 28px; display:flex; flex-direction:column; gap:16px; }
+
+        .form-row { display:flex; flex-direction:column; gap:6px; }
+        .form-row label {
+            font-size: 0.78rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--navy);
+        }
+        .form-row input,
+        .form-row textarea,
+        .form-row select {
+            border: 1.5px solid #dde3ef;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #fafbfd;
+            width: 100%;
+        }
+        .form-row input:focus,
+        .form-row textarea:focus,
+        .form-row select:focus {
+            border-color: var(--sky);
+            box-shadow: 0 0 0 3px rgba(59,157,227,0.12);
+        }
+        .form-row textarea { resize: vertical; min-height: 90px; }
+
+        .form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+        .modal-submit-btn {
+            background: linear-gradient(135deg, var(--blue), var(--mid));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 13px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            display:flex; align-items:center; justify-content:center; gap:9px;
+            transition: opacity 0.2s, transform 0.15s;
+            box-shadow: 0 4px 18px rgba(20,60,123,0.28);
+            margin-top: 4px;
+        }
+        .modal-submit-btn:hover { opacity:0.92; transform:translateY(-1px); }
+
+        /* Toast */
+        .it-toast {
+            position: fixed;
+            bottom: 32px; left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #0f2a54;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex; align-items:center; gap:10px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.22);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 3000;
+        }
+        .it-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+        .it-toast i { color: #22c55e; font-size: 1.1rem; }
+
+        /* ══════════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════════ */
+        .footer {
+            background: #060d1a;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+            padding: 30px 60px;
+            font-size: 0.8rem;
+            margin-top: 60px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer span {
+            color: var(--accent);
+        }
+
+        /* ══════════════════════════════════════════
+           COMPLIANCE AUDIT SECTION
+        ══════════════════════════════════════════ */
+        .compliance-section {
+            margin-top: 30px;
+        }
+
+        .compliance-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .compliance-badge-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 7px;
+            background: var(--accent);
+            color: var(--navy);
+            border-radius: 99px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .compliance-card {
+            background: var(--white);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid rgba(20,60,123,0.08);
+        }
+
+        .compliance-card-header {
+            background: linear-gradient(130deg, var(--navy) 0%, var(--blue) 100%);
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .compliance-card-header-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(245,158,11,0.2);
+            border: 1px solid rgba(245,158,11,0.35);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .compliance-card-header-text h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.15rem;
+            letter-spacing: 2px;
+            color: var(--white);
+            font-weight: 400;
+            line-height: 1.1;
+        }
+
+        .compliance-card-header-text p {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 2px;
+        }
+
+        .compliance-table-wrap {
+            overflow-x: auto;
+        }
+
+        .compliance-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        .compliance-table thead tr {
+            border-bottom: 2px solid #eef0f5;
+        }
+
+        .compliance-table thead th {
+            padding: 11px 16px;
+            text-align: left;
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .compliance-table tbody tr {
+            border-bottom: 1px solid #f1f3f8;
+            transition: background 0.15s;
+        }
+
+        .compliance-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .compliance-table tbody tr:hover {
+            background: #f7f9ff;
+        }
+
+        .compliance-table td {
+            padding: 13px 16px;
+            vertical-align: middle;
+        }
+
+        .ct-projekt {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 0.88rem;
+        }
+
+        .ct-datum {
+            color: var(--muted);
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        /* Risk badges in table */
+        .risk-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.67rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 99px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1px solid;
+            white-space: nowrap;
+        }
+        .risk-pill-VERBOTEN   { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+        .risk-pill-HOCHRISIKO { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+        .risk-pill-GERING     { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+        .risk-pill-NOKI       { background: #f3f4f6; border-color: #d1d5db; color: #4b5563; }
+
+        /* Status chips */
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 99px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            border: 1px solid;
+            white-space: nowrap;
+        }
+        .status-Offen         { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+        .status-InBearbeitung { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+        .status-Freigegeben   { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+        .status-Abgelehnt     { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+        .status-Abgeschlossen { background: #f3f4f6; border-color: #d1d5db; color: #374151; }
+
+        .btn-detail-sm {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--light);
+            border: 1.5px solid rgba(20,60,123,0.18);
+            color: var(--navy);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 7px 13px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .btn-detail-sm:hover {
+            background: var(--blue);
+            color: white;
+            border-color: var(--blue);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(20,60,123,0.2);
+        }
+
+        .compliance-empty {
+            padding: 48px 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .compliance-empty-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sky);
+            font-size: 1.5rem;
+        }
+
+        .compliance-empty h5 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: var(--navy);
+            font-weight: 400;
+        }
+
+        .compliance-empty p {
+            font-size: 0.82rem;
+            color: var(--muted);
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        .compliance-empty a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--navy);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 9px 18px;
+            border-radius: 9px;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            transition: background 0.18s, transform 0.15s;
+        }
+
+        .compliance-empty a:hover {
+            background: var(--blue);
+            transform: translateY(-1px);
+        }
+
+        /* ══ Compliance Detail Modal ══ */
+        .cd-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(7,15,35,0.75);
+            backdrop-filter: blur(6px);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .cd-modal-overlay.open { display: flex; }
+
+        .cd-modal {
+            background: var(--white);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.3), 0 0 0 1px rgba(20,60,123,0.08);
+            animation: cdModalIn 0.28s cubic-bezier(0.34,1.15,0.64,1);
+        }
+
+        @keyframes cdModalIn {
+            from { opacity: 0; transform: translateY(22px) scale(0.96); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .cd-modal-head {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+            padding: 26px 30px 22px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .cd-modal-head-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245,158,11,0.2);
+            border: 1px solid rgba(245,158,11,0.4);
+            color: var(--accent);
+            font-size: 0.67rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            padding: 4px 11px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .cd-modal-head h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.55rem;
+            color: var(--white);
+            letter-spacing: 1.5px;
+            line-height: 1.1;
+        }
+
+        .cd-modal-head-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .cd-modal-head-meta span {
+            font-size: 0.73rem;
+            color: rgba(255,255,255,0.55);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cd-close-btn {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.8);
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all 0.18s;
+        }
+        .cd-close-btn:hover { background: rgba(255,255,255,0.22); color: white; }
+
+        .cd-risk-strip {
+            margin: 20px 28px 0;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .cd-risk-strip i { font-size: 1.15rem; flex-shrink: 0; }
+        .cdrs-label { font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.65; margin-bottom: 2px; }
+        .cdrs-val   { font-size: 0.9rem; font-weight: 700; }
+        .cdrs-VERBOTEN   { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+        .cdrs-HOCHRISIKO { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+        .cdrs-GERING     { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+        .cdrs-NOKI       { background: #f3f4f6; border-color: #d1d5db; color: #4b5563; }
+
+        .cd-modal-body {
+            padding: 22px 28px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .cd-section {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .cd-section-head {
+            padding: 11px 16px;
+            background: #f8f9fc;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+        }
+        .cd-section-head i { color: var(--blue); font-size: 0.82rem; }
+
+        .cd-section-body { padding: 14px 16px; }
+
+        .cd-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .cd-row { display: flex; flex-direction: column; gap: 3px; }
+        .cd-row.full { grid-column: 1 / -1; }
+        .cd-key { font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+        .cd-val { font-size: 0.88rem; color: var(--text); font-weight: 500; line-height: 1.5; }
+        .cd-val.desc { font-weight: 400; line-height: 1.65; color: #374151; }
+
+        .bewertung-box {
+            background: #f8faff;
+            border: 1.5px solid rgba(20,60,123,0.12);
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: var(--text);
+            min-height: 80px;
+            white-space: pre-wrap;
+        }
+
+        .bewertung-empty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: #f9fafb;
+            border: 1px dashed #d1d5db;
+            border-radius: 10px;
+            font-size: 0.83rem;
+            color: #9ca3af;
+        }
+
+        .cd-modal-footer {
+            padding: 0 28px 28px;
+        }
+
+        .cd-close-footer-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--navy), var(--blue));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+            box-shadow: 0 4px 18px rgba(20,60,123,0.22);
+        }
+        .cd-close-footer-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="dashboard.html" class="nav-logo">
+                <i class="fa-solid fa-bolt bolt"></i>BEAMTECH
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="aikompass.html">AI-Kompass</a></li>
+                <li><a href="chat.html">BeamTechGPT</a></li>
+                <li><a href="dokumentenablage.html">Dokumente</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="nav-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Suchen...">
+            </div>
+            <div class="nav-profile">
+                <div class="nav-profile-avatar">MM</div>
+                <div class="nav-profile-info">
+                    <span class="nav-profile-name">Martin M&uuml;ller</span>
+                    <a href="login.html" class="nav-profile-logout">Abmelden</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <!-- WELCOME BANNER -->
+        <div class="welcome-banner">
+            <div class="welcome-rays">
+                <div class="ray"></div>
+                <div class="ray"></div>
+                <div class="ray"></div>
+                <div class="ray"></div>
+            </div>
+            <div class="welcome-content">
+                <h1>Willkommen zur&uuml;ck, Martin!</h1>
+                <p>Dein BeamTech-Dashboard &mdash; alles auf einen Blick.</p>
+            </div>
+        </div>
+
+        <!-- GRID -->
+        <div class="container">
+            <div class="left-column">
+
+                <!-- QUICK LINKS -->
+                <div class="section-label">Schnellzugriff</div>
+                <div class="quick-links">
+                    <a href="aikompass.html" class="link-card">
+                        <i class="fa-regular fa-compass"></i>
+                        <span>AI-Kompass</span>
+                    </a>
+                    <a href="dokumentenablage.html" class="link-card">
+                        <i class="fa-regular fa-file-lines"></i>
+                        <span>Dokumentenablage</span>
+                    </a>
+                   <a href="hr-benefits.html" class="link-card">
+    <i class="fa-solid fa-users-gear"></i>
+    <span>HR &amp; Benefits</span>
+</a>
+                </div>
+
+                <!-- NEWSFEED -->
+                <div class="newsfeed">
+                    <div class="newsfeed-header">
+                        <div class="section-label" style="margin-bottom:12px;">Newsfeed</div>
+                    </div>
+                    <a href="news_aikompass.html" class="news-item" style="text-decoration: none; color: inherit;">
+                        <div class="news-dot"></div>
+                        <div><b>Neu:</b> Der AI-Kompass ist jetzt live!</div>
+                    </a>
+                    <a href="news-osterfeier.html" class="news-item" style="text-decoration: none; color: inherit;">
+                        <div class="news-dot"></div>
+                        <div>Recap: So war unsere Osterfeier.</div>
+                    </a>
+                    <a href="news-health.html" class="news-item" style="text-decoration: none; color: inherit;">
+                        <div class="news-dot"></div>
+                        <div>Health-Update: Neue Sportkurse ab Mai.</div>
+                    </a>
+                </div>
+
+                <!-- COMPLIANCE AUDITS SECTION -->
+                <div class="compliance-section">
+                    <div class="compliance-header">
+                        <div class="section-label" style="margin-bottom:0;">
+                            Meine Compliance-Audits
+                            <span class="compliance-badge-count" id="compliance-count">0</span>
+                        </div>
+                        <a href="aikompass.html" style="font-size:0.75rem;color:var(--sky);font-weight:600;text-decoration:none;display:flex;align-items:center;gap:5px;">
+                            <i class="fa-solid fa-plus"></i> Neues Audit
+                        </a>
+                    </div>
+
+                    <div class="compliance-card">
+                        <div class="compliance-card-header">
+                            <div class="compliance-card-header-icon">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                            </div>
+                            <div class="compliance-card-header-text">
+                                <h4>AI-Kompass Tickets</h4>
+                                <p>Eingereichte Prüfungen &amp; juristische Rückmeldungen</p>
+                            </div>
+                        </div>
+                        <div id="compliance-content">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="right-column">
+
+                <!-- WEATHER WIDGET -->
+                <div class="weather-widget">
+                    <div class="weather-title">AKTUELL IN</div>
+                    <div class="weather-location">PFORZHEIM</div>
+                    <div class="weather-info" id="live-weather">
+                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem;"></i>
+                    </div>
+                    <div id="weather-desc">Lade Daten...</div>
+                </div>
+
+                <!-- MEETINGS -->
+                <div class="meetings-widget">
+                    <div class="meetings-header"><i class="fa-regular fa-calendar"></i> N&Auml;CHSTE TERMINE</div>
+                    <table class="meetings-table">
+                        <tr><td>09:45</td><td>Teams</td><td>KI-Workshop</td></tr>
+                        <tr><td>14:15</td><td>Raum 4</td><td>Projekt-Update</td></tr>
+                    </table>
+                </div>
+
+                <!-- IT SUPPORT -->
+                <button class="it-support-btn" onclick="document.getElementById('it-modal').classList.add('open')">
+                    <i class="fa-solid fa-headset"></i> IT-SUPPORT
+                </button>
+
+                <!-- LEGAL DEPARTMENT -->
+                <a href="legal-login.html" class="legal-access-card">
+                    <div class="legal-access-left">
+                        <div class="legal-access-icon">
+                            <i class="fa-solid fa-gavel"></i>
+                        </div>
+                        <div class="legal-access-text">
+                            <span class="legal-access-title">Rechtsabteilung</span>
+                            <span class="legal-access-sub">Zugang nur für autorisiertes Personal</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right legal-access-arrow"></i>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- IT-SUPPORT MODAL -->
+    <div class="modal-overlay" id="it-modal" onclick="if(event.target===this)closeItModal()">
+        <div class="modal-box">
+            <div class="modal-head">
+                <div class="modal-head-left">
+                    <div class="modal-head-icon"><i class="fa-solid fa-headset"></i></div>
+                    <div>
+                        <h3>IT-Support Ticket</h3>
+                        <p>Wir melden uns innerhalb von 24 Stunden</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" onclick="closeItModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <label for="it-betreff">Betreff *</label>
+                    <input type="text" id="it-betreff" placeholder="Kurze Beschreibung des Problems">
+                </div>
+                <div class="form-row-2">
+                    <div class="form-row">
+                        <label for="it-kategorie">Kategorie</label>
+                        <select id="it-kategorie">
+                            <option value="">– Bitte wählen –</option>
+                            <option>Hardware</option>
+                            <option>Software / Lizenzen</option>
+                            <option>Netzwerk / VPN</option>
+                            <option>Zugriffsrechte</option>
+                            <option>E-Mail / Teams</option>
+                            <option>Sonstiges</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="it-dringlichkeit">Dringlichkeit</label>
+                        <select id="it-dringlichkeit">
+                            <option value="niedrig">🟢 Niedrig</option>
+                            <option value="mittel" selected>🟡 Mittel</option>
+                            <option value="hoch">🔴 Hoch – Arbeit blockiert</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="it-beschreibung">Beschreibung *</label>
+                    <textarea id="it-beschreibung" placeholder="Bitte beschreibe das Problem so genau wie möglich. Wann tritt es auf? Seit wann?"></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="it-geraet">Betroffenes Gerät / System</label>
+                    <input type="text" id="it-geraet" placeholder="z.B. Laptop HP EliteBook, Windows 11">
+                </div>
+                <button class="modal-submit-btn" onclick="submitItTicket()">
+                    <i class="fa-solid fa-paper-plane"></i> TICKET ERSTELLEN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- IT TOAST -->
+    <div class="it-toast" id="it-toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="it-toast-text">Ticket erfolgreich erstellt!</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        &copy; 2026 <span>BeamTech</span> GmbH & Co. KG &mdash; Intranet Dashboard
+    </footer>
+
+    <!-- COMPLIANCE DETAIL MODAL -->
+    <div class="cd-modal-overlay" id="cd-modal-overlay" onclick="if(event.target===this)closeCdModal()">
+        <div class="cd-modal" id="cd-modal-box">
+            <!-- Filled dynamically -->
+        </div>
+    </div>
+
+    <!-- WEATHER JAVASCRIPT (unchanged) -->
+    <script>
+        async function fetchWeather() {
+            const display = document.getElementById('live-weather');
+            const desc = document.getElementById('weather-desc');
+
+            try {
+                // Koordinaten Pforzheim
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=48.89&longitude=8.70&current_weather=true');
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+
+                const temp = Math.round(data.current_weather.temperature);
+                const code = data.current_weather.weathercode;
+                const isDay = data.current_weather.is_day === 1;
+
+                let icon = "fa-sun";
+                let color = "#FFD700"; // Gold
+                let label = "Sonnig";
+
+                // Wettercodes mit Tag/Nacht-Unterscheidung
+                if (code === 0) {
+                    // Klarer Himmel
+                    icon = isDay ? "fa-sun" : "fa-moon";
+                    color = isDay ? "#FFD700" : "#a0b4d6";
+                    label = isDay ? "Klarer Himmel" : "Klare Nacht";
+                } else if (code === 1 || code === 2) {
+                    // Leicht bis mäßig bewölkt
+                    icon = isDay ? "fa-cloud-sun" : "fa-cloud-moon";
+                    color = isDay ? "#f1c40f" : "#8fa8c8";
+                    label = "Leicht bewölkt";
+                } else if (code === 3) {
+                    icon = "fa-cloud"; color = "#bdc3c7"; label = "Bedeckt";
+                } else if (code >= 45 && code <= 48) {
+                    icon = "fa-smog"; color = "#ecf0f1"; label = "Neblig";
+                } else if (code >= 51 && code <= 67) {
+                    icon = "fa-cloud-showers-heavy"; color = "#3498db"; label = "Regen";
+                } else if (code >= 71 && code <= 77) {
+                    icon = "fa-snowflake"; color = "#ffffff"; label = "Schneefall";
+                } else if (code >= 80 && code <= 82) {
+                    icon = "fa-cloud-rain"; color = "#2980b9"; label = "Regenschauer";
+                } else if (code >= 95) {
+                    icon = "fa-bolt-lightning"; color = "#e67e22"; label = "Gewitter";
+                }
+
+                display.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color};"></i> <span>${temp}°C</span>`;
+                desc.innerText = label;
+
+            } catch (e) {
+                display.innerHTML = `<i class="fa-solid fa-cloud"></i> <span>--°C</span>`;
+                desc.innerText = "Wetterdaten nicht verfügbar";
+            }
+        }
+
+        // Wetter beim Start laden
+        fetchWeather();
+        // Alle 10 Minuten aktualisieren
+        setInterval(fetchWeather, 600000);
+
+        // ── IT-Support Modal ────────────────────────────────
+        function closeItModal() {
+            document.getElementById('it-modal').classList.remove('open');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') { closeItModal(); closeCdModal(); }
+        });
+
+        let ticketCounter = 1042;
+
+        function submitItTicket() {
+            const betreff = document.getElementById('it-betreff').value.trim();
+            const beschreibung = document.getElementById('it-beschreibung').value.trim();
+
+            if (!betreff || !beschreibung) {
+                const empty = !betreff
+                    ? document.getElementById('it-betreff')
+                    : document.getElementById('it-beschreibung');
+                empty.style.borderColor = '#ef4444';
+                empty.focus();
+                setTimeout(() => empty.style.borderColor = '', 2000);
+                return;
+            }
+
+            ticketCounter++;
+            const ticketId = 'IT-' + ticketCounter;
+            const dringlichkeit = document.getElementById('it-dringlichkeit').selectedOptions[0].text;
+
+            closeItModal();
+
+            // Felder zurücksetzen
+            ['it-betreff','it-beschreibung','it-geraet'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('it-kategorie').selectedIndex = 0;
+            document.getElementById('it-dringlichkeit').selectedIndex = 1;
+
+            // Toast anzeigen
+            const toast = document.getElementById('it-toast');
+            document.getElementById('it-toast-text').textContent =
+                `Ticket ${ticketId} erstellt · ${dringlichkeit} · IT-Team wird benachrichtigt`;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+    </script>
+
+    <script>
+        // ══ COMPLIANCE AUDIT SECTION ════════════════════════════════════════
+        const RISK_CFG = {
+            'VERBOTEN':        { cls: 'risk-pill-VERBOTEN',   cdrs: 'cdrs-VERBOTEN',   icon: 'fa-ban',                  label: 'Verboten' },
+            'HOCHRISIKO':      { cls: 'risk-pill-HOCHRISIKO', cdrs: 'cdrs-HOCHRISIKO', icon: 'fa-triangle-exclamation', label: 'Hochrisiko' },
+            'GERINGES RISIKO': { cls: 'risk-pill-GERING',     cdrs: 'cdrs-GERING',     icon: 'fa-circle-check',         label: 'Geringes Risiko' },
+            'KEIN KI-SYSTEM':  { cls: 'risk-pill-NOKI',       cdrs: 'cdrs-NOKI',       icon: 'fa-circle-xmark',         label: 'Kein KI-System' },
+        };
+        const STATUS_CFG = {
+            'Offen':          { cls: 'status-Offen',         icon: 'fa-circle-dot',    label: 'Offen' },
+            'In Bearbeitung': { cls: 'status-InBearbeitung', icon: 'fa-hourglass-half',label: 'In Prüfung' },
+            'Freigegeben':    { cls: 'status-Freigegeben',   icon: 'fa-circle-check',  label: 'Freigegeben' },
+            'Abgelehnt':      { cls: 'status-Abgelehnt',     icon: 'fa-circle-xmark',  label: 'Abgelehnt' },
+            'Abgeschlossen':  { cls: 'status-Abgeschlossen', icon: 'fa-check',         label: 'Abgeschlossen' },
+        };
+
+        function escHtmlDash(str) {
+            if (str == null) return '';
+            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+        }
+
+        function loadTickets() {
+            try { return JSON.parse(localStorage.getItem('legalTickets') || '[]'); }
+            catch(e) { return []; }
+        }
+
+        function renderComplianceSection() {
+            const tickets = loadTickets().filter(t => t.user === 'Martin Müller');
+            const countEl  = document.getElementById('compliance-count');
+            const contentEl = document.getElementById('compliance-content');
+            if (!contentEl) return;
+            if (countEl) countEl.textContent = tickets.length;
+
+            if (tickets.length === 0) {
+                contentEl.innerHTML = `
+                    <div class="compliance-empty">
+                        <div class="compliance-empty-icon"><i class="fa-solid fa-file-circle-question"></i></div>
+                        <h5>Keine Audits vorhanden</h5>
+                        <p>Starte eine AI-Risikoprüfung im Kompass und sende das Ergebnis an die Rechtsabteilung.</p>
+                        <a href="aikompass.html"><i class="fa-solid fa-compass"></i> AI-Kompass öffnen</a>
+                    </div>`;
+                return;
+            }
+
+            const rows = tickets.map(t => {
+                const r = RISK_CFG[t.risikoklasse] || { cls: 'risk-pill-NOKI', icon: 'fa-circle-info', label: t.risikoklasse || '—' };
+                const s = STATUS_CFG[t.status]     || { cls: 'status-Offen', icon: 'fa-circle-dot', label: t.status || 'Offen' };
+                return `<tr>
+                    <td class="ct-projekt">${escHtmlDash(t.projektname || t.titel || '—')}</td>
+                    <td class="ct-datum">${escHtmlDash(t.datum)}</td>
+                    <td><span class="risk-pill ${r.cls}"><i class="fa-solid ${r.icon}"></i>${r.label}</span></td>
+                    <td><span class="status-chip ${s.cls}"><i class="fa-solid ${s.icon}"></i>${s.label}</span></td>
+                    <td><button class="btn-detail-sm" onclick="openCdModal('${escHtmlDash(t.id)}')"><i class="fa-solid fa-eye"></i> Details</button></td>
+                </tr>`;
+            }).join('');
+
+            contentEl.innerHTML = `
+                <div class="compliance-table-wrap">
+                    <table class="compliance-table">
+                        <thead><tr>
+                            <th>Projekt</th><th>Datum</th><th>Risiko</th><th>Status</th><th></th>
+                        </tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>`;
+        }
+
+        function openCdModal(id) {
+            const t = loadTickets().find(x => x.id === id);
+            if (!t) return;
+            const r = RISK_CFG[t.risikoklasse] || { cdrs: 'cdrs-NOKI', icon: 'fa-circle-info', label: t.risikoklasse || '—' };
+            const s = STATUS_CFG[t.status]     || { cls: 'status-Offen', icon: 'fa-circle-dot', label: t.status || 'Offen' };
+
+            const bewertungHTML = (t.juristischeBewertung && t.juristischeBewertung.trim())
+                ? `<div class="bewertung-box">${escHtmlDash(t.juristischeBewertung)}</div>`
+                : `<div class="bewertung-empty"><i class="fa-regular fa-clock"></i> &nbsp;Noch keine Bewertung eingegangen – die Rechtsabteilung prüft das Ticket.</div>`;
+
+            document.getElementById('cd-modal-box').innerHTML = `
+                <div class="cd-modal-head">
+                    <div>
+                        <div class="cd-modal-head-badge"><i class="fa-solid fa-scale-balanced"></i> Compliance-Audit</div>
+                        <h3>${escHtmlDash(t.projektname || t.titel || 'Ticket')}</h3>
+                        <div class="cd-modal-head-meta">
+                            <span><i class="fa-regular fa-clock"></i> ${escHtmlDash(t.datum)}</span>
+                            <span><i class="fa-solid fa-hashtag"></i> ${escHtmlDash(t.id)}</span>
+                            <span class="status-chip ${s.cls}"><i class="fa-solid ${s.icon}"></i>${s.label}</span>
+                        </div>
+                    </div>
+                    <button class="cd-close-btn" onclick="closeCdModal()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="cd-risk-strip ${r.cdrs}" style="margin:20px 28px 0;">
+                    <i class="fa-solid ${r.icon}"></i>
+                    <div>
+                        <div class="cdrs-label">Risikoklasse</div>
+                        <div class="cdrs-val">${escHtmlDash(t.risikoklasse)} — ${escHtmlDash(t.titel)}</div>
+                    </div>
+                </div>
+                <div class="cd-modal-body">
+                    <div class="cd-section">
+                        <div class="cd-section-head"><i class="fa-solid fa-folder-open"></i> Projektinformationen</div>
+                        <div class="cd-section-body">
+                            <div class="cd-grid">
+                                <div class="cd-row"><div class="cd-key">Projektname</div><div class="cd-val">${escHtmlDash(t.projektname||'—')}</div></div>
+                                <div class="cd-row"><div class="cd-key">Abteilung</div><div class="cd-val">${escHtmlDash(t.abteilung||'—')}</div></div>
+                                <div class="cd-row"><div class="cd-key">Datenquellen</div><div class="cd-val">${escHtmlDash(t.datenquellen||'—')}</div></div>
+                                <div class="cd-row"><div class="cd-key">Status</div><div class="cd-val">${escHtmlDash(t.status)}</div></div>
+                                <div class="cd-row full"><div class="cd-key">Projektbeschreibung</div><div class="cd-val desc">${escHtmlDash(t.beschreibung||'—')}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cd-section">
+                        <div class="cd-section-head"><i class="fa-solid fa-scale-balanced"></i> Juristische Bewertung der Rechtsabteilung</div>
+                        <div class="cd-section-body">${bewertungHTML}</div>
+                    </div>
+                </div>
+                <div class="cd-modal-footer">
+                    <button class="cd-close-footer-btn" onclick="closeCdModal()"><i class="fa-solid fa-xmark"></i> &nbsp;Schließen</button>
+                </div>`;
+
+            document.getElementById('cd-modal-overlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCdModal() {
+            document.getElementById('cd-modal-overlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        renderComplianceSection();
+        setInterval(renderComplianceSection, 3000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeamTech | Rechtsabteilung – Ticket-Board</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary:  #143c7b;
+            --navy:     #0f2a54;
+            --navy-dark:#0d1f3c;
+            --blue:     #143c7b;
+            --mid:      #1e5fa8;
+            --sky:      #3b9de3;
+            --light:    #e8f0fb;
+            --white:    #ffffff;
+            --gray:     #f4f4f4;
+            --text:     #1a1a2e;
+            --muted:    #64748b;
+            --accent:   #f59e0b;
+            --nav-h:    72px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--gray);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ══ NAV ══ */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 60px; height: var(--nav-h);
+            background: rgba(13,31,60,0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+        }
+        .nav-left { display: flex; align-items: center; gap: 50px; }
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
+            color: var(--white); letter-spacing: 3px;
+            display: flex; align-items: center; gap: 10px;
+            cursor: pointer; text-decoration: none;
+        }
+        .nav-logo .bolt { color: var(--accent); font-size: 1.4rem; }
+        .nav-links { display: flex; gap: 35px; list-style: none; }
+        .nav-links a {
+            color: rgba(255,255,255,0.65); text-decoration: none;
+            font-size: 0.82rem; font-weight: 500; letter-spacing: 0.8px;
+            text-transform: uppercase; transition: color 0.2s;
+            padding-bottom: 2px; border-bottom: 2px solid transparent;
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a.active { color: var(--white); border-bottom-color: var(--accent); }
+        .nav-right { display: flex; align-items: center; gap: 25px; }
+        .nav-profile { display: flex; align-items: center; gap: 12px; }
+        .nav-profile-avatar {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--sky), var(--mid));
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--white); font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.95rem; letter-spacing: 1px; flex-shrink: 0;
+        }
+        .nav-profile-info { display: flex; flex-direction: column; line-height: 1.2; }
+        .nav-profile-name { color: var(--white); font-size: 0.82rem; font-weight: 500; }
+        .nav-profile-logout { color: rgba(255,255,255,0.45); font-size: 0.7rem; text-decoration: none; transition: color 0.2s; }
+        .nav-profile-logout:hover { color: var(--accent); }
+
+        /* ══ HERO ══ */
+        .page-hero {
+            margin-top: var(--nav-h);
+            background: linear-gradient(130deg, var(--navy) 0%, var(--mid) 70%, var(--sky) 100%);
+            padding: 36px 60px 32px; position: relative; overflow: hidden;
+        }
+        .page-hero::before {
+            content: ''; position: absolute; top: -80px; right: -80px;
+            width: 400px; height: 400px; border-radius: 50%;
+            background: rgba(245,158,11,0.06); pointer-events: none;
+        }
+        .hero-inner { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(245,158,11,0.18); border: 1px solid rgba(245,158,11,0.35);
+            color: var(--accent); font-size: 0.73rem; font-weight: 700;
+            letter-spacing: 1.2px; text-transform: uppercase;
+            padding: 5px 13px; border-radius: 20px; margin-bottom: 14px;
+        }
+        .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--white); letter-spacing: 2px; line-height: 1.05; margin-bottom: 8px; }
+        .hero-title span { color: var(--accent); }
+        .hero-desc { color: rgba(255,255,255,0.6); font-size: 0.9rem; max-width: 480px; }
+        .hero-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+        .stat-pill { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 20px; text-align: center; min-width: 88px; }
+        .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--white); letter-spacing: 1px; line-height: 1; }
+        .stat-num.accent { color: var(--accent); }
+        .stat-label { font-size: 0.66rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.8px; margin-top: 3px; }
+
+        /* ══ TOOLBAR ══ */
+        .toolbar {
+            max-width: 1400px; margin: 24px auto 0; padding: 0 32px;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+        }
+        .toolbar-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 7px; }
+        .btn-toolbar {
+            display: inline-flex; align-items: center; gap: 7px;
+            border-radius: 8px; padding: 8px 16px; font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.18s; border: 1.5px solid;
+        }
+        .btn-reload { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 2px 8px rgba(20,60,123,0.2); }
+        .btn-reload:hover { background: var(--navy); border-color: var(--navy); }
+        .btn-clear  { background: white; border-color: #e5e7eb; color: #b91c1c; }
+        .btn-clear:hover  { background: #fef2f2; border-color: #fecaca; }
+
+        /* ══ KANBAN BOARD ══ */
+        .board {
+            max-width: 1400px; margin: 18px auto 60px;
+            padding: 0 32px;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 20px; align-items: start;
+        }
+
+        .column {
+            background: #e4e6ea; border-radius: 14px;
+            padding: 16px; display: flex; flex-direction: column;
+            gap: 12px; min-height: 280px;
+        }
+        .col-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding-bottom: 12px; margin-bottom: 2px;
+            border-bottom: 2px solid rgba(0,0,0,0.08);
+        }
+        .col-title-group { display: flex; align-items: center; gap: 9px; }
+        .col-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .col-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #374151; }
+        .col-count { font-size: 0.72rem; font-weight: 700; padding: 2px 10px; border-radius: 99px; }
+
+        .col-offen    .col-dot   { background: var(--primary); }
+        .col-offen    .col-header{ border-bottom-color: var(--primary); }
+        .col-offen    .col-count { background: rgba(20,60,123,0.12); color: var(--primary); }
+
+        .col-progress .col-dot   { background: #d97706; }
+        .col-progress .col-header{ border-bottom-color: #d97706; }
+        .col-progress .col-count { background: rgba(217,119,6,0.13); color: #92400e; }
+
+        .col-done     .col-dot   { background: #15803d; }
+        .col-done     .col-header{ border-bottom-color: #15803d; }
+        .col-done     .col-count { background: rgba(21,128,61,0.12); color: #15803d; }
+
+        .col-approved .col-dot   { background: #15803d; }
+        .col-approved .col-header{ border-bottom-color: #15803d; }
+        .col-approved .col-count { background: rgba(21,128,61,0.12); color: #15803d; }
+
+        .col-rejected .col-dot   { background: #b91c1c; }
+        .col-rejected .col-header{ border-bottom-color: #b91c1c; }
+        .col-rejected .col-count { background: rgba(185,28,28,0.10); color: #b91c1c; }
+
+        .col-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 36px 16px; text-align: center; gap: 8px; color: #9ca3af; flex: 1; }
+        .col-empty i { font-size: 1.4rem; opacity: 0.35; }
+        .col-empty p { font-size: 0.78rem; line-height: 1.5; }
+
+        /* ══ TICKET CARDS ══ */
+        .ticket {
+            background: var(--white); border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.07);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            padding: 15px 17px; cursor: default;
+            transition: transform 0.18s, box-shadow 0.18s;
+            animation: cardIn 0.3s cubic-bezier(0.34,1.3,0.64,1) both;
+        }
+        .ticket:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(0,0,0,0.12); }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(14px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .ticket-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+        .ticket-id { font-family: 'DM Mono', monospace; font-size: 0.66rem; color: #9ca3af; letter-spacing: 0.5px; }
+
+        .risk-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 0.67rem; font-weight: 700; padding: 3px 10px;
+            border-radius: 99px; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid;
+        }
+        .risk-VERBOTEN       { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+        .risk-HOCHRISIKO     { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+        .risk-GERING         { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+        .risk-NOKI           { background: #f3f4f6; border-color: #d1d5db; color: #4b5563; }
+
+        .ticket-title { font-size: 0.91rem; font-weight: 700; color: var(--text); line-height: 1.35; margin-bottom: 10px; }
+
+        /* Detail toggle hint */
+        .ticket-details-hint {
+            font-size: 0.72rem; color: var(--muted);
+            display: flex; align-items: center; gap: 4px;
+            margin-bottom: 8px; cursor: pointer; user-select: none;
+            transition: color 0.15s;
+        }
+        .ticket-details-hint:hover { color: var(--primary); }
+
+        .ticket-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+        .ticket-user { display: flex; align-items: center; gap: 6px; }
+        .ticket-avatar {
+            width: 22px; height: 22px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--sky), var(--mid));
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-family: 'Bebas Neue', sans-serif; font-size: 0.6rem; flex-shrink: 0;
+        }
+        .ticket-user-name { font-size: 0.77rem; color: var(--muted); font-weight: 500; }
+        .ticket-date { font-size: 0.71rem; color: #9ca3af; }
+
+        .ticket-actions {
+            display: flex; gap: 6px; margin-top: 11px;
+            padding-top: 10px; border-top: 1px solid #f3f4f6;
+        }
+        .tkt-btn {
+            flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+            padding: 6px 10px; border-radius: 7px; font-size: 0.73rem; font-weight: 600;
+            cursor: pointer; border: 1px solid; transition: all 0.16s; font-family: 'DM Sans', sans-serif;
+        }
+        .tkt-btn-accept { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+        .tkt-btn-accept:hover { background: #dcfce7; }
+        .tkt-btn-finish { background: var(--light); border-color: #bfdbfe; color: var(--primary); }
+        .tkt-btn-finish:hover { background: #dbeafe; }
+        .tkt-btn-del    { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+        .tkt-btn-del:hover { background: #fee2e2; }
+        .tkt-btn-detail { background: #f8f9ff; border-color: #bfdbfe; color: var(--primary); }
+        .tkt-btn-detail:hover { background: var(--light); }
+
+        /* ══ EMPTY BOARD ══ */
+        .board-empty {
+            grid-column: 1 / -1;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; padding: 80px 24px; text-align: center; gap: 16px;
+        }
+        .board-empty-icon {
+            width: 80px; height: 80px; border-radius: 20px;
+            background: linear-gradient(135deg, var(--mid), var(--sky));
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 2rem; box-shadow: 0 8px 28px rgba(30,95,168,0.25);
+        }
+        .board-empty h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px; color: var(--navy); }
+        .board-empty p  { font-size: 0.88rem; color: var(--muted); max-width: 360px; line-height: 1.65; }
+        .board-empty a  { color: var(--primary); font-weight: 600; text-decoration: none; }
+        .board-empty a:hover { text-decoration: underline; }
+
+        /* ══════════════════════════════════════════
+           DETAIL MODAL
+        ══════════════════════════════════════════ */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 2000;
+            background: rgba(7,16,32,0.72);
+            backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.25s cubic-bezier(0.4,0,0.2,1);
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .modal {
+            background: var(--white); border-radius: 20px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.3), 0 0 0 1px rgba(20,60,123,0.08);
+            width: 100%; max-width: 680px; max-height: 90vh;
+            overflow-y: auto; overflow-x: hidden;
+            transform: translateY(20px) scale(0.97);
+            transition: transform 0.28s cubic-bezier(0.34,1.15,0.64,1);
+        }
+        .modal-overlay.active .modal { transform: translateY(0) scale(1); }
+
+        /* Modal header */
+        .modal-head {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--primary) 100%);
+            padding: 28px 32px 24px;
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+            position: sticky; top: 0; z-index: 10;
+        }
+        .modal-head-left {}
+        .modal-head-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.4);
+            color: var(--accent); font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 1.2px; text-transform: uppercase;
+            padding: 4px 11px; border-radius: 20px; margin-bottom: 10px;
+        }
+        .modal-head h3 {
+            font-family: 'Bebas Neue', sans-serif; font-size: 1.65rem;
+            color: var(--white); letter-spacing: 1.5px; line-height: 1.1;
+        }
+        .modal-head-meta {
+            display: flex; align-items: center; gap: 14px; margin-top: 8px; flex-wrap: wrap;
+        }
+        .modal-head-meta span {
+            font-size: 0.75rem; color: rgba(255,255,255,0.55);
+            display: flex; align-items: center; gap: 5px;
+        }
+        .modal-close-btn {
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.8); width: 34px; height: 34px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 0.9rem; flex-shrink: 0; transition: all 0.18s;
+        }
+        .modal-close-btn:hover { background: rgba(255,255,255,0.22); color: var(--white); }
+
+        /* Risk strip inside modal */
+        .modal-risk-strip {
+            margin: 22px 32px 0; padding: 12px 18px;
+            border-radius: 10px; border: 1px solid;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .modal-risk-strip i { font-size: 1.2rem; flex-shrink: 0; }
+        .mrs-inner .mrs-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.65; margin-bottom: 2px; }
+        .mrs-inner .mrs-val   { font-size: 0.93rem; font-weight: 700; }
+        .mrs-VERBOTEN  { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+        .mrs-HOCHRISIKO{ background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+        .mrs-GERING    { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+        .mrs-NOKI      { background: #f3f4f6; border-color: #d1d5db; color: #4b5563; }
+
+        /* Modal body */
+        .modal-body { padding: 24px 32px 32px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* Section blocks */
+        .detail-section {
+            border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden;
+        }
+        .detail-section-header {
+            padding: 12px 18px;
+            background: #f8f9fc;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.73rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--muted);
+        }
+        .detail-section-header i { color: var(--primary); font-size: 0.85rem; }
+        .detail-section-body { padding: 16px 18px; }
+
+        /* Detail rows */
+        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .detail-row { display: flex; flex-direction: column; gap: 3px; }
+        .detail-row.full { grid-column: 1 / -1; }
+        .detail-key { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+        .detail-val { font-size: 0.9rem; color: var(--text); font-weight: 500; line-height: 1.5; }
+        .detail-val.desc { font-weight: 400; line-height: 1.65; color: #374151; }
+
+        /* Attachment button */
+        .btn-attachment {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, var(--primary), var(--mid));
+            color: white; border: none; border-radius: 9px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 700;
+            cursor: pointer; transition: all 0.18s;
+            box-shadow: 0 2px 8px rgba(20,60,123,0.22);
+        }
+        .btn-attachment:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(20,60,123,0.3); }
+        .no-attachment {
+            display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+            background: #f9fafb; border-radius: 8px; border: 1px dashed #d1d5db;
+            font-size: 0.85rem; color: #9ca3af;
+        }
+        .attach-meta { font-size: 0.77rem; color: var(--muted); margin-top: 6px; }
+
+        /* Juristische Bewertung textarea */
+        .bewertung-textarea {
+            width: 100%; padding: 12px 14px; min-height: 120px;
+            border: 1.5px solid #e5e7eb; border-radius: 9px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text);
+            resize: vertical; outline: none; line-height: 1.65;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+        .bewertung-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(20,60,123,0.1);
+        }
+        .bewertung-save-row {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 10px; gap: 12px; flex-wrap: wrap;
+        }
+        .bewertung-saved-note {
+            font-size: 0.77rem; color: #15803d;
+            display: flex; align-items: center; gap: 5px;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .bewertung-saved-note.show { opacity: 1; }
+        .btn-save-bewertung {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 9px 18px; background: var(--primary); color: white;
+            border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif;
+            font-size: 0.83rem; font-weight: 700; cursor: pointer; transition: all 0.18s;
+            box-shadow: 0 2px 6px rgba(20,60,123,0.2);
+        }
+        .btn-save-bewertung:hover { background: var(--navy); transform: translateY(-1px); }
+
+        /* Status change actions inside modal */
+        .modal-status-actions {
+            display: flex; gap: 10px; flex-wrap: wrap;
+        }
+        .btn-modal-action {
+            flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+            padding: 10px 16px; border-radius: 9px; font-size: 0.83rem; font-weight: 700;
+            cursor: pointer; border: 1.5px solid; transition: all 0.16s;
+            font-family: 'DM Sans', sans-serif; min-width: 140px;
+        }
+        .btn-action-accept { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+        .btn-action-accept:hover { background: #dcfce7; }
+        .btn-action-finish { background: #eff6ff; border-color: #93c5fd; color: var(--primary); }
+        .btn-action-finish:hover { background: #dbeafe; }
+        .btn-action-close  { background: var(--gray); border-color: #e5e7eb; color: var(--muted); }
+        .btn-action-close:hover { background: #e9eaec; }
+        .btn-action-del    { background: #fef2f2; border-color: #fca5a5; color: #b91c1c; }
+        .btn-action-del:hover { background: #fee2e2; }
+        .btn-action-approve { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+        .btn-action-approve:hover { background: #dcfce7; }
+        .btn-action-reject  { background: #fef2f2; border-color: #fca5a5; color: #b91c1c; }
+        .btn-action-reject:hover { background: #fee2e2; }
+
+        /* ══ FOOTER ══ */
+        /* ══ FOOTER ══ */
+        footer {
+            background: #060d1a;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+            padding: 18px 60px;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            margin-top: auto;
+        }
+
+        footer span { 
+            color: var(--accent); 
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .board { grid-template-columns: 1fr 1fr; }
+            .col-done { grid-column: 1 / -1; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .nav, .page-hero, .toolbar, .board { padding-left: 24px; padding-right: 24px; }
+        }
+        @media (max-width: 640px) {
+            .board { grid-template-columns: 1fr; }
+            .col-done { grid-column: auto; }
+            .nav-links { display: none; }
+            .hero-stats { display: none; }
+            .modal { border-radius: 14px; }
+            .modal-head { padding: 20px 20px 18px; }
+            .modal-body { padding: 16px 20px 24px; }
+            .modal-risk-strip { margin: 16px 20px 0; }
+            .detail-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ══ DETAIL MODAL ══ -->
+    <div class="modal-overlay" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detail-modal-title">
+        <div class="modal" id="detailModalContent">
+            <!-- Dynamically filled -->
+        </div>
+    </div>
+
+    <!-- ══ NAVIGATION ══ -->
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="dashboard.html" class="nav-logo">
+                <i class="fa-solid fa-bolt bolt"></i>BEAMTECH
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="aikompass.html">AI-Kompass</a></li>
+                <li><a href="chat.html">BeamTechGPT</a></li>
+                <li><a href="dokumentenablage.html">Dokumente</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="nav-profile">
+                <div class="nav-profile-avatar">RA</div>
+                <div class="nav-profile-info">
+                    <span class="nav-profile-name">Rechtsabteilung</span>
+                    <a href="login.html" class="nav-profile-logout">Abmelden</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ══ HERO ══ -->
+    <div class="page-hero">
+        <div class="hero-inner">
+            <div>
+                <div class="hero-badge"><i class="fa-solid fa-gavel"></i> Rechtsabteilung</div>
+                <h1 class="hero-title">KI-Compliance <span>Ticket-Board</span></h1>
+                <p class="hero-desc">Alle eingegangenen AI-Kompass-Anfragen — prüfen, bearbeiten, abschließen.</p>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-pill">
+                    <div class="stat-num accent" id="stat-total">0</div>
+                    <div class="stat-label">Gesamt</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-num" id="stat-offen">0</div>
+                    <div class="stat-label">Offen</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-num" id="stat-progress">0</div>
+                    <div class="stat-label">In Bearbeitung</div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-num" id="stat-done">0</div>
+                    <div class="stat-label">Abgeschlossen</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ TOOLBAR ══ -->
+    <div class="toolbar">
+        <span class="toolbar-label"><i class="fa-solid fa-layer-group"></i> Kanban-Ansicht</span>
+        <div style="display:flex;gap:8px;">
+            <button class="btn-toolbar btn-reload" onclick="renderBoard()">
+                <i class="fa-solid fa-rotate-right"></i> Aktualisieren
+            </button>
+            <button class="btn-toolbar btn-clear" onclick="clearAll()">
+                <i class="fa-solid fa-trash"></i> Alle löschen
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ KANBAN BOARD ══ -->
+    <div class="board" id="board"></div>
+
+    <!-- ══ FOOTER ══ -->
+<footer>
+        &copy; 2026 <span>BeamTech</span> GmbH &mdash;
+        <a href="impressum.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Impressum</a>·
+        <a href="datenschutz.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Datenschutz</a>·
+        <a href="AGB.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">AGB</a>·
+        <a href="cookies.html" style="color:rgba(255,255,255,0.4);text-decoration:none;margin:0 6px;">Cookies</a>
+    </footer>
+    <script>
+        // ── Risk config ───────────────────────────────────────────────────────
+        const RISK = {
+            'VERBOTEN':        { cls: 'risk-VERBOTEN',  mrsCls: 'mrs-VERBOTEN',  icon: 'fa-ban',                  label: 'Verboten' },
+            'HOCHRISIKO':      { cls: 'risk-HOCHRISIKO', mrsCls: 'mrs-HOCHRISIKO', icon: 'fa-triangle-exclamation', label: 'Hochrisiko' },
+            'GERINGES RISIKO': { cls: 'risk-GERING',    mrsCls: 'mrs-GERING',    icon: 'fa-circle-check',         label: 'Geringes Risiko' },
+            'KEIN KI-SYSTEM':  { cls: 'risk-NOKI',      mrsCls: 'mrs-NOKI',      icon: 'fa-circle-xmark',         label: 'Kein KI-System' },
+        };
+
+        function getRisk(k) {
+            return RISK[k] || { cls: 'risk-NOKI', mrsCls: 'mrs-NOKI', icon: 'fa-circle-info', label: k };
+        }
+
+        // ── Persistence ───────────────────────────────────────────────────────
+        function load()          { return JSON.parse(localStorage.getItem('legalTickets') || '[]'); }
+        function save(t)         { localStorage.setItem('legalTickets', JSON.stringify(t)); }
+
+        function setStatus(id, s) {
+            const t = load();
+            const f = t.find(x => x.id === id);
+            if (f) { f.status = s; save(t); renderBoard(); }
+        }
+
+        function del(id) {
+            if (confirm('Ticket unwiderruflich löschen?')) {
+                save(load().filter(x => x.id !== id));
+                closeModal();
+                renderBoard();
+            }
+        }
+
+        function clearAll() {
+            if (confirm('Alle Tickets unwiderruflich löschen?')) {
+                localStorage.removeItem('legalTickets');
+                renderBoard();
+            }
+        }
+
+        function saveBewertung(id, text) {
+            const t = load();
+            const f = t.find(x => x.id === id);
+            if (f) { f.juristischeBewertung = text; save(t); }
+        }
+
+        // ── Modal ─────────────────────────────────────────────────────────────
+        const overlay      = document.getElementById('detailModal');
+        const modalContent = document.getElementById('detailModalContent');
+        let   activeTicketId = null;
+
+        function openModal(id) {
+            const tickets = load();
+            const t = tickets.find(x => x.id === id);
+            if (!t) return;
+            activeTicketId = id;
+            renderModal(t);
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            activeTicketId = null;
+        }
+
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+        function renderModal(t) {
+            const r = getRisk(t.risikoklasse);
+
+            // Attachment block
+            let attachmentHTML = '';
+            if (t.anhang && t.anhangMeta) {
+                const m = t.anhangMeta;
+                attachmentHTML = `
+                    <button class="btn-attachment" onclick="openAttachment('${t.id}')">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        Anhang öffnen / herunterladen
+                    </button>
+                    <div class="attach-meta">
+                        <i class="fa-regular fa-file"></i>
+                        <strong>${escHtml(m.name)}</strong> &nbsp;·&nbsp; ${escHtml(m.sizeStr)} &nbsp;·&nbsp; ${escHtml(m.type||'Unbekannt')}
+                    </div>`;
+            } else {
+                attachmentHTML = `
+                    <div class="no-attachment">
+                        <i class="fa-regular fa-folder-open"></i>
+                        <span>Kein Anhang beigefügt</span>
+                    </div>`;
+            }
+
+            // Status action buttons
+            let statusActionsHTML = '';
+            if (t.status === 'Offen') {
+                statusActionsHTML = `
+                    <button class="btn-modal-action btn-action-accept" onclick="setStatus('${t.id}','In Bearbeitung'); closeModal(); renderBoard();">
+                        <i class="fa-solid fa-play"></i> Annehmen
+                    </button>
+                    <button class="btn-modal-action btn-action-del" onclick="del('${t.id}')">
+                        <i class="fa-solid fa-trash"></i> Löschen
+                    </button>`;
+            } else if (t.status === 'In Bearbeitung') {
+                statusActionsHTML = `
+                    <button class="btn-modal-action btn-action-approve" onclick="setStatus('${t.id}','Freigegeben'); closeModal(); renderBoard();">
+                        <i class="fa-solid fa-circle-check"></i> Freigeben
+                    </button>
+                    <button class="btn-modal-action btn-action-reject" onclick="setStatus('${t.id}','Abgelehnt'); closeModal(); renderBoard();">
+                        <i class="fa-solid fa-circle-xmark"></i> Ablehnen
+                    </button>
+                    <button class="btn-modal-action btn-action-del" onclick="del('${t.id}')">
+                        <i class="fa-solid fa-trash"></i> Löschen
+                    </button>`;
+            } else {
+                statusActionsHTML = `
+                    <button class="btn-modal-action btn-action-del" onclick="del('${t.id}')">
+                        <i class="fa-solid fa-trash"></i> Ticket löschen
+                    </button>`;
+            }
+
+            modalContent.innerHTML = `
+                <!-- Header -->
+                <div class="modal-head">
+                    <div class="modal-head-left">
+                        <div class="modal-head-badge"><i class="fa-solid fa-ticket"></i> Ticket-Detail</div>
+                        <h3 id="detail-modal-title">${escHtml(t.titel)}</h3>
+                        <div class="modal-head-meta">
+                            <span><i class="fa-regular fa-clock"></i> ${escHtml(t.datum)}</span>
+                            <span><i class="fa-solid fa-user"></i> ${escHtml(t.user)}</span>
+                            <span><i class="fa-solid fa-hashtag"></i> ${escHtml(t.id)}</span>
+                        </div>
+                    </div>
+                    <button class="modal-close-btn" onclick="closeModal()" aria-label="Schließen">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Risk strip -->
+                <div class="modal-risk-strip ${r.mrsCls}">
+                    <i class="fa-solid ${r.icon}"></i>
+                    <div class="mrs-inner">
+                        <div class="mrs-label">Risikoklasse</div>
+                        <div class="mrs-val">${escHtml(t.risikoklasse)} — ${escHtml(t.titel)}</div>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- Projektinformationen -->
+                    <div class="detail-section">
+                        <div class="detail-section-header">
+                            <i class="fa-solid fa-folder-open"></i> Projektinformationen
+                        </div>
+                        <div class="detail-section-body">
+                            <div class="detail-grid">
+                                <div class="detail-row">
+                                    <div class="detail-key">Projektname</div>
+                                    <div class="detail-val">${escHtml(t.projektname || '—')}</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-key">Abteilung</div>
+                                    <div class="detail-val">${escHtml(t.abteilung || '—')}</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-key">Datenquellen</div>
+                                    <div class="detail-val">${escHtml(t.datenquellen || '—')}</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-key">Status</div>
+                                    <div class="detail-val">${escHtml(t.status)}</div>
+                                </div>
+                                <div class="detail-row full">
+                                    <div class="detail-key">Projektbeschreibung</div>
+                                    <div class="detail-val desc">${escHtml(t.beschreibung || '—')}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Anhang -->
+                    <div class="detail-section">
+                        <div class="detail-section-header">
+                            <i class="fa-solid fa-paperclip"></i> Anhang
+                        </div>
+                        <div class="detail-section-body">
+                            ${attachmentHTML}
+                        </div>
+                    </div>
+
+                    <!-- Juristische Bewertung -->
+                    <div class="detail-section">
+                        <div class="detail-section-header">
+                            <i class="fa-solid fa-scale-balanced"></i> Interne juristische Bewertung
+                        </div>
+                        <div class="detail-section-body">
+                            <textarea
+                                class="bewertung-textarea"
+                                id="bewertung-${escHtml(t.id)}"
+                                placeholder="Interne Einschätzung, Handlungsempfehlung, Hinweise zur EU-KI-VO Konformität ..."
+                            >${escHtml(t.juristischeBewertung || '')}</textarea>
+                            <div class="bewertung-save-row">
+                                <div class="bewertung-saved-note" id="saved-note-${escHtml(t.id)}">
+                                    <i class="fa-solid fa-circle-check"></i> Gespeichert
+                                </div>
+                                <button class="btn-save-bewertung" onclick="handleSaveBewertung('${escHtml(t.id)}')">
+                                    <i class="fa-solid fa-floppy-disk"></i> Bewertung speichern
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status-Aktionen -->
+                    <div class="detail-section">
+                        <div class="detail-section-header">
+                            <i class="fa-solid fa-sliders"></i> Status-Aktionen
+                        </div>
+                        <div class="detail-section-body">
+                            <div class="modal-status-actions">
+                                ${statusActionsHTML}
+                                <button class="btn-modal-action btn-action-close" onclick="closeModal()">
+                                    <i class="fa-solid fa-xmark"></i> Schließen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>`;
+        }
+
+        function handleSaveBewertung(id) {
+            const ta = document.getElementById('bewertung-' + id);
+            if (!ta) return;
+            saveBewertung(id, ta.value);
+            renderBoard(); // Sync board after save
+            const note = document.getElementById('saved-note-' + id);
+            if (note) {
+                note.classList.add('show');
+                setTimeout(() => note.classList.remove('show'), 2500);
+            }
+        }
+
+        function openAttachment(id) {
+            const t = load().find(x => x.id === id);
+            if (!t || !t.anhang) return;
+
+            const meta = t.anhangMeta || {};
+            const dataUrl = t.anhang;
+
+            // If it's an image or PDF, open directly; otherwise trigger download
+            const isViewable = meta.type && (meta.type.startsWith('image/') || meta.type === 'application/pdf');
+            if (isViewable) {
+                const w = window.open('', '_blank');
+                if (!w) { alert('Bitte Pop-ups für diese Seite erlauben.'); return; }
+                if (meta.type === 'application/pdf') {
+                    w.document.write(`<html><head><title>${meta.name||'Anhang'}</title></head><body style="margin:0;"><embed width="100%" height="100%" src="${dataUrl}" type="application/pdf"></body></html>`);
+                } else {
+                    w.document.write(`<html><head><title>${meta.name||'Anhang'}</title></head><body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${dataUrl}" style="max-width:100%;max-height:100vh;"></body></html>`);
+                }
+            } else {
+                // Force download
+                const a = document.createElement('a');
+                a.href = dataUrl;
+                a.download = meta.name || 'anhang';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        }
+
+        function escHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // ── Render Board ──────────────────────────────────────────────────────
+        function renderBoard() {
+            const tickets  = load();
+            const board    = document.getElementById('board');
+            board.innerHTML = '';
+
+            const byStatus = s => tickets.filter(t => t.status === s);
+            const offen    = byStatus('Offen');
+            const progress = byStatus('In Bearbeitung');
+            const approved = byStatus('Freigegeben');
+            const rejected = byStatus('Abgelehnt');
+            const done     = [...approved, ...rejected, ...byStatus('Abgeschlossen')];
+
+            document.getElementById('stat-total').textContent    = tickets.length;
+            document.getElementById('stat-offen').textContent    = offen.length;
+            document.getElementById('stat-progress').textContent = progress.length;
+            document.getElementById('stat-done').textContent     = done.length;
+
+            if (tickets.length === 0) {
+                board.innerHTML = `
+                    <div class="board-empty">
+                        <div class="board-empty-icon"><i class="fa-solid fa-inbox"></i></div>
+                        <h3>Keine Tickets vorhanden</h3>
+                        <p>Sobald Mitarbeiter im <a href="aikompass.html">AI-Kompass</a> eine Prüfung abschließen und „An Rechtsabteilung senden" klicken, erscheinen die Tickets hier.</p>
+                    </div>`;
+                return;
+            }
+
+            [
+                { label: 'Offen',          cls: 'col-offen',    list: offen,    key: 'offen'    },
+                { label: 'In Bearbeitung', cls: 'col-progress', list: progress, key: 'progress' },
+                { label: 'Abgeschlossen',  cls: 'col-done',     list: done,     key: 'done'     },
+            ].forEach(col => {
+                const colEl = document.createElement('div');
+                colEl.className = `column ${col.cls}`;
+                colEl.innerHTML = `
+                    <div class="col-header">
+                        <div class="col-title-group">
+                            <div class="col-dot"></div>
+                            <span class="col-title">${col.label}</span>
+                        </div>
+                        <span class="col-count">${col.list.length}</span>
+                    </div>`;
+
+                if (col.list.length === 0) {
+                    const e = document.createElement('div');
+                    e.className = 'col-empty';
+                    e.innerHTML = `<i class="fa-solid fa-inbox"></i><p>Leer</p>`;
+                    colEl.appendChild(e);
+                } else {
+                    col.list.forEach((t, i) => {
+                        const r    = getRisk(t.risikoklasse);
+                        const card = document.createElement('div');
+                        card.className = 'ticket';
+                        card.style.animationDelay = (i * 0.06) + 's';
+
+                        let cardBtns = '';
+                        if (col.key === 'offen') {
+                            cardBtns = `
+                                <button class="tkt-btn tkt-btn-detail" onclick="event.stopPropagation(); openModal('${t.id}')">
+                                    <i class="fa-solid fa-eye"></i> Details
+                                </button>
+                                <button class="tkt-btn tkt-btn-accept" onclick="event.stopPropagation(); setStatus('${t.id}','In Bearbeitung')">
+                                    <i class="fa-solid fa-play"></i> Annehmen
+                                </button>
+                                <button class="tkt-btn tkt-btn-del" onclick="event.stopPropagation(); del('${t.id}')" title="Löschen">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>`;
+                        } else if (col.key === 'progress') {
+                            cardBtns = `
+                                <button class="tkt-btn tkt-btn-detail" onclick="event.stopPropagation(); openModal('${t.id}')">
+                                    <i class="fa-solid fa-eye"></i> Details
+                                </button>
+                                <button class="tkt-btn tkt-btn-accept" onclick="event.stopPropagation(); setStatus('${t.id}','Freigegeben')" style="background:#f0fdf4;border-color:#86efac;color:#15803d;">
+                                    <i class="fa-solid fa-circle-check"></i> Freigeben
+                                </button>
+                                <button class="tkt-btn tkt-btn-del" onclick="event.stopPropagation(); setStatus('${t.id}','Abgelehnt')" style="background:#fef2f2;border-color:#fecaca;color:#b91c1c;" title="Ablehnen">
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                </button>`;
+                        } else {
+                            // Status badge for done column
+                            const statusColors = {
+                                'Freigegeben':   'background:#f0fdf4;border:1px solid #86efac;color:#15803d;',
+                                'Abgelehnt':     'background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;',
+                                'Abgeschlossen': 'background:#f3f4f6;border:1px solid #d1d5db;color:#374151;',
+                            };
+                            const statusIcons = {
+                                'Freigegeben':   'fa-circle-check',
+                                'Abgelehnt':     'fa-circle-xmark',
+                                'Abgeschlossen': 'fa-check',
+                            };
+                            const sStyle = statusColors[t.status] || statusColors['Abgeschlossen'];
+                            const sIcon  = statusIcons[t.status]  || 'fa-check';
+                            cardBtns = `
+                                <button class="tkt-btn tkt-btn-detail" onclick="event.stopPropagation(); openModal('${t.id}')">
+                                    <i class="fa-solid fa-eye"></i> Details
+                                </button>
+                                <span class="tkt-btn" style="${sStyle};cursor:default;flex:initial;padding:6px 12px;">
+                                    <i class="fa-solid ${sIcon}"></i> ${t.status}
+                                </span>
+                                <button class="tkt-btn tkt-btn-del" style="flex:initial;" onclick="event.stopPropagation(); del('${t.id}')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>`;
+                        }
+
+                        const subtext = t.projektname
+                            ? `<div class="ticket-details-hint" onclick="openModal('${t.id}')"><i class="fa-solid fa-folder-open"></i> ${escHtml(t.projektname)}</div>`
+                            : '';
+
+                        const attachIcon = t.anhang
+                            ? `<i class="fa-solid fa-paperclip" title="Anhang vorhanden" style="color:var(--muted);font-size:0.75rem;"></i>`
+                            : '';
+
+                        card.innerHTML = `
+                            <div class="ticket-top">
+                                <span class="ticket-id">${escHtml(t.id)}</span>
+                                <span class="risk-badge ${r.cls}">
+                                    <i class="fa-solid ${r.icon}"></i>${r.label}
+                                </span>
+                            </div>
+                            <div class="ticket-title">${escHtml(t.titel)}</div>
+                            ${subtext}
+                            <div class="ticket-meta">
+                                <div class="ticket-user">
+                                    <div class="ticket-avatar">MM</div>
+                                    <span class="ticket-user-name">${escHtml(t.user)}</span>
+                                </div>
+                                <span class="ticket-date" style="display:flex;align-items:center;gap:6px;">
+                                    ${attachIcon}
+                                    <i class="fa-regular fa-clock"></i> ${escHtml(t.datum)}
+                                </span>
+                            </div>
+                            <div class="ticket-actions">${cardBtns}</div>`;
+
+                        colEl.appendChild(card);
+                    });
+                }
+
+                board.appendChild(colEl);
+            });
+        }
+
+        function escHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        renderBoard();
+    </script>
+
+</body>
+</html>
