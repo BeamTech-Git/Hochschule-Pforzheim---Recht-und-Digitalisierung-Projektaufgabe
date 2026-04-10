@@ -556,6 +556,13 @@
         }
 
         /* ══════════════════════════════════════════
+           DISCLAIMER STRIP
+        ══════════════════════════════════════════ */
+        .disclaimer-strip { background: rgba(245,158,11,0.25); border-top: 2px solid rgba(245,158,11,0.7); padding: 12px 48px; font-size: 0.78rem; color: #1a1a1a; display: flex; align-items: center; gap: 10px; letter-spacing: 0.2px; flex-shrink: 0; }
+        .disclaimer-strip i { color: #b45309; font-size: 1rem; flex-shrink: 0; }
+        .disclaimer-strip strong { color: #000; }
+
+        /* ══════════════════════════════════════════
            FOOTER (exact dashboard copy)
         ══════════════════════════════════════════ */
         footer {
@@ -719,6 +726,12 @@
                     Eingaben werden nicht gespeichert &middot; Enter zum Senden &middot; Shift+Enter für neue Zeile
                 </div>
             </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer-strip">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span><strong>Hinweis:</strong> Dieser KI-Assistent liefert keine rechtsverbindlichen Auskünfte. Bei rechtlichen oder datenschutzrelevanten Fragen wenden Sie sich an die Rechtsabteilung oder den Datenschutzbeauftragten.</span>
         </div>
 
         <!-- Footer -->
