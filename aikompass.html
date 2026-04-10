@@ -489,7 +489,9 @@
         .footer-bottom-links { display: flex; gap: 22px; }
         .footer-bottom-links a { color: rgba(255,255,255,0.38); text-decoration: none; transition: color var(--transition); }
         .footer-bottom-links a:hover { color: white; }
-        .disclaimer-strip { background: rgba(245,158,11,0.08); border-top: 1px solid rgba(245,158,11,0.18); padding: 10px 48px; font-size: 0.74rem; color: rgba(245,158,11,0.75); display: flex; align-items: center; gap: 8px; }
+        .disclaimer-strip { background: rgba(245,158,11,0.25); border-top: 2px solid rgba(245,158,11,0.7); padding: 12px 48px; font-size: 0.78rem; color: #1a1a1a; display: flex; align-items: center; gap: 10px; letter-spacing: 0.2px; }
+        .disclaimer-strip i { color: #b45309; font-size: 1rem; flex-shrink: 0; }
+        .disclaimer-strip strong { color: #000; }
     </style>
 </head>
 <body>
@@ -590,7 +592,7 @@
             <div class="nav-profile">
                 <div class="nav-profile-avatar">MM</div>
                 <div class="nav-profile-info">
-                    <span class="nav-profile-name">Martin Müller</span>
+                    <span class="nav-profile-name">Martin Keller</span>
                     <a href="login.html" class="nav-profile-logout">Abmelden</a>
                 </div>
             </div>
@@ -653,94 +655,142 @@
 
         // ══ DECISION TREE ═══════════════════════════════════════════════════════
         const tree = {
+            'a0': {
+                phase:'a', step:1, total:8,
+                badge:'Teil A · Schritt 1/8',
+                title:'Gilt die KI-VO? — Persönlicher & territorialer Anwendungsbereich',
+                question:'Fällt das Vorhaben in den persönlichen oder territorialen Anwendungsbereich der KI-VO?',
+                criteria:[
+                    '<strong>Anbieter (Provider):</strong> Ein Unternehmen bringt ein KI-System in der EU in Verkehr oder nimmt es in Betrieb.',
+                    '<strong>Nutzer (Deployer):</strong> Ein Unternehmen verwendet in der EU ein KI-System.',
+                    '<strong>Drittstaaten-Ausdehnung:</strong> Anbieter oder Nutzer sind außerhalb der EU tätig, der Output wird jedoch in der EU verwendet.'
+                ],
+                example:{label:'BeamTech-Beispiel', text:'BeamTech GmbH (Sitz Hamburg) setzt ein KI-Tool intern ein → KI-VO anwendbar (Deployer in der EU). Ein US-Hersteller, der sein KI-System ausschließlich auf dem US-Markt betreibt und dessen Output nie in der EU wirkt → KI-VO nicht anwendbar.'},
+                legalRef:'Art. 2 KI-VO',
+                yesNext:'a1', noNext:'end_no_applicable'
+            },
             'a1': {
-                phase:'a', step:1, total:6,
-                badge:'Teil A · Schritt 1/6',
-                title:'Ist es ein technisches System?',
-                question:'Besteht das Vorhaben aus Software- und/oder Hardwarekomponenten, die auf einem Computer oder technischem Gerät betrieben werden?',
-                criteria:['Läuft das System auf einem Computer, Server oder eingebetteten Gerät?','Es handelt sich um Software (App, Algorithmus, Modell, API).','Die Verarbeitung erfolgt maschinell und nicht rein manuell durch Menschen.'],
-                example:{label:'BeamTech-Beispiel', text:'Ein Excel-Sheet mit manuellen Formeln → kein technisches System im KI-VO-Sinne. Ein Python-Skript, das auf einem Server läuft → technisches System.'},
-                legalRef:'Art. 3 Abs. 1 KI-VO',
+                phase:'a', step:2, total:8,
+                badge:'Teil A · Schritt 2/8',
+                title:'Maschinengestütztes System?',
+                question:'Besteht das Vorhaben aus Hardware- oder Softwarekomponenten, die maschinell Daten verarbeiten?',
+                criteria:['Hardware oder Software (App, Algorithmus, Modell, API, eingebettetes System).','Maschinelle Datenverarbeitung — nicht rein manuelle Bearbeitung durch Menschen.','Läuft auf einem Computer, Server oder eingebetteten Gerät.'],
+                example:{label:'BeamTech-Beispiel', text:'Ein Excel-Sheet mit manuellen Formeln → kein maschinengestütztes System im KI-VO-Sinne. Ein Python-Skript, das auf einem Server Daten automatisch verarbeitet → maschinengestütztes System.'},
+                legalRef:'Art. 3 Nr. 1 KI-VO',
                 yesNext:'a2', noNext:'end_no_ki'
             },
             'a2': {
-                phase:'a', step:2, total:6,
-                badge:'Teil A · Schritt 2/6',
-                title:'Maschinelles Lernen oder wissensbasierte Ansätze?',
-                question:'Nutzt das System Techniken des maschinellen Lernens, tiefe neuronale Netze, statistische Methoden oder wissensbasierte Ansätze (z. B. Expertensysteme, Logikprogrammierung)?',
-                criteria:['Machine Learning (supervised, unsupervised, reinforcement learning).','Deep Learning / neuronale Netze (CNN, RNN, Transformer, LLMs).','Statistische Modelle mit Lernkomponente (Regression mit Feature-Engineering, Bayessche Netze).','Wissensbasierte Systeme: Regelengines, Ontologien, Fuzzy Logic.'],
-                example:{label:'BeamTech-Beispiel', text:'Predictive Maintenance mit Random Forest → ML-Technik. Einfache regelbasierte Wenn-Dann-Logik ohne Lernfähigkeit → kein KI-Ansatz im Sinne der VO.'},
-                legalRef:'Art. 3 Abs. 1 i.V.m. Anhang I KI-VO',
+                phase:'a', step:3, total:8,
+                badge:'Teil A · Schritt 3/8',
+                title:'Autonomiegrad & Zielorientierung?',
+                question:'Handelt das System zumindest teilweise autonom und verfolgt es dabei explizite oder implizite Ziele?',
+                criteria:[
+                    '<strong>Autonomiegrad:</strong> Das System handelt zumindest teilweise autonom — ohne dass jede Entscheidung explizit von einem Menschen getroffen wird.',
+                    '<strong>Zielorientierung:</strong> Das System verfolgt explizite Ziele (vorgegebene Aufgaben) oder implizite Ziele (selbst erlernte Optimierungsziele).',
+                    'Machine Learning (supervised, unsupervised, reinforcement learning), neuronale Netze, statistische Modelle.',
+                    'Wissensbasierte Systeme: Regelengines, Ontologien, Fuzzy Logic, logikbasierte Systeme.'
+                ],
+                example:{label:'BeamTech-Beispiel', text:'Predictive-Maintenance-System mit Random Forest wählt autonom Wartungsmaßnahmen aus und optimiert selbst seine Vorhersage → Autonomiegrad + Zielorientierung gegeben. Einfache Wenn-Dann-Logik, die ein Mensch manuell steuert → kein ausreichender Autonomiegrad.'},
+                legalRef:'Art. 3 Nr. 1 KI-VO',
                 yesNext:'a3', noNext:'end_no_ki'
             },
             'a3': {
-                phase:'a', step:3, total:6,
-                badge:'Teil A · Schritt 3/6',
-                title:'Autonome Inferenz aus Daten?',
-                question:'Leitet das System selbstständig Muster, Strukturen oder Entscheidungsregeln aus Daten ab — ohne, dass jede Regel explizit von einem Menschen programmiert wurde?',
-                criteria:['Das System "lernt" Zusammenhänge aus historischen Daten.','Modellparameter werden durch Training, nicht durch manuelle Programmierung bestimmt.','Das System kann auf neue, ungesehene Daten generalisieren.'],
-                example:{label:'BeamTech-Beispiel', text:'Kreditrisikomodell, das aus 50.000 historischen Kreditentscheidungen Muster extrahiert → autonome Inferenz. Lookup-Table mit manuell definierten Schwellenwerten → keine autonome Inferenz.'},
-                legalRef:'Art. 3 Abs. 1 KI-VO',
+                phase:'a', step:4, total:8,
+                badge:'Teil A · Schritt 4/8',
+                title:'Inferenzfähigkeit?',
+                question:'Leitet das System selbstständig Ergebnisse, Muster oder Entscheidungsregeln aus Daten ab — z. B. durch ML-Modelle oder logikbasierte Systeme?',
+                criteria:[
+                    'Ableitung von Ergebnissen aus Daten (z. B. Klassifikation, Regression, Clustering).',
+                    'ML-Modelle: Modellparameter werden durch Training, nicht durch manuelle Programmierung bestimmt.',
+                    'Logikbasierte Systeme: Regelengines, Expertensysteme, die eigenständig Schlussfolgerungen ziehen.',
+                    'Das System kann auf neue, ungesehene Daten generalisieren.'
+                ],
+                example:{label:'BeamTech-Beispiel', text:'Beamer-Qualitätskontrolle mit CNN, das selbständig Defekte aus Kamerabildern ableitet → Inferenzfähigkeit. Lookup-Table mit manuell definierten Schwellenwerten, aus der ein Mensch Werte abliest → keine Inferenz.'},
+                legalRef:'Art. 3 Nr. 1 KI-VO',
                 yesNext:'a4', noNext:'end_no_ki'
             },
             'a4': {
-                phase:'a', step:4, total:6,
-                badge:'Teil A · Schritt 4/6',
+                phase:'a', step:5, total:8,
+                badge:'Teil A · Schritt 5/8',
                 title:'Verarbeitet es Eingabedaten?',
                 question:'Erhält das System strukturierte oder unstrukturierte Eingaben — wie Text, Bilder, Audio, Video, Sensordaten oder tabellarische Daten — und verarbeitet diese zur Ausgabegenerierung?',
                 criteria:['Strukturierte Daten (Tabellen, Datenbanken, JSON, CSV).','Unstrukturierte Daten (Texte, Bilder, Audio, Video, Sprache).','Sensordaten (IoT, Temperatur, Bewegung, biometrische Messwerte).','Kombination mehrerer Datentypen (multimodale Systeme).'],
                 example:{label:'BeamTech-Beispiel', text:'Dokumentenklassifikation empfängt PDFs → Eingabedaten: unstrukturierter Text/Bild. Reine Datenspeicherung ohne Analyse → keine relevante Datenverarbeitung für KI-VO.'},
-                legalRef:'Art. 3 Abs. 1 KI-VO',
+                legalRef:'Art. 3 Nr. 1 KI-VO',
                 yesNext:'a5', noNext:'end_no_ki'
             },
             'a5': {
-                phase:'a', step:5, total:6,
-                badge:'Teil A · Schritt 5/6',
+                phase:'a', step:6, total:8,
+                badge:'Teil A · Schritt 6/8',
                 title:'Erzeugt es verwertbare Outputs?',
                 question:'Produziert das System Ergebnisse, die für Entscheidungen, Inhalte oder Empfehlungen verwendet werden?',
-                criteria:['Vorhersagen (z. B. "Ausfallwahrscheinlichkeit: 78 %")','Empfehlungen (z. B. "Zeige diesem Nutzer Produkt X")','Entscheidungen (z. B. "Kreditantrag abgelehnt")','Generierte Inhalte (Texte, Bilder, Code, Sprache)'],
+                criteria:['Vorhersagen (z. B. "Ausfallwahrscheinlichkeit: 78 %").','Empfehlungen (z. B. "Zeige diesem Nutzer Produkt X").','Entscheidungen (z. B. "Kreditantrag abgelehnt").','Generierte Inhalte (Texte, Bilder, Code, Sprache).'],
                 example:{label:'BeamTech-Beispiel', text:'System analysiert Support-Tickets und schlägt Antwort-Templates vor → Output: Empfehlung. Reine Datenspeicherung ohne nachgelagerte Nutzung → kein relevanter Output.'},
-                legalRef:'Art. 3 Abs. 1 KI-VO',
+                legalRef:'Art. 3 Nr. 1 KI-VO',
                 yesNext:'a6', noNext:'end_no_ki'
             },
             'a6': {
-                phase:'a', step:6, total:6,
-                badge:'Teil A · Schritt 6/6',
-                title:'Beeinflussen die Outputs reale oder digitale Umgebungen?',
-                question:'Wirken sich die Outputs auf physische oder digitale Umgebungen aus — z. B. durch Steuerung von Prozessen, Anzeige von Inhalten oder Entscheidungsunterstützung?',
+                phase:'a', step:7, total:8,
+                badge:'Teil A · Schritt 7/8',
+                title:'Umweltwirkung — Beeinflussen die Outputs reale oder digitale Umgebungen?',
+                question:'Wirkt sich der Output des Systems auf physische oder virtuelle Umgebungen aus — z. B. durch Steuerung von Prozessen, Anzeige von Inhalten oder Entscheidungsunterstützung?',
                 criteria:['Reale Welt: Roboterbewegung, Vertragsentscheidung, Zulassung/Ablehnung von Personen.','Digitale Welt: Rankings, Anzeigenauswahl, Zugriffssperrungen, Content-Filterung.','Geschäftsprozesse: Automatische Weiterleitung, Priorisierung, Risikoklassifizierung.'],
                 example:{label:'BeamTech-Beispiel', text:'KI-Priorisierung von Serviceanfragen → beeinflusst digitalen Arbeitsablauf. Internes Logging ohne Auswirkung auf Entscheidungen oder Prozesse → kein relevanter Einfluss.'},
-                legalRef:'Art. 3 Abs. 1 KI-VO',
-                yesNext:'part_b_start', noNext:'end_no_ki'
+                legalRef:'Art. 3 Nr. 1 KI-VO',
+                yesNext:'a_ausnahme', noNext:'end_no_ki'
+            },
+            'a_ausnahme': {
+                phase:'a', step:8, total:8,
+                badge:'Teil A · Schritt 8/8',
+                title:'Greift eine Ausnahme vom Anwendungsbereich?',
+                question:'Fällt das KI-Vorhaben unter eine der gesetzlich vorgesehenen Ausnahmen der KI-VO?',
+                criteria:[
+                    '<strong>Rein private Nutzung:</strong> Das System wird ausschließlich im privaten, nicht-beruflichen Bereich eingesetzt.',
+                    '<strong>Militärische Zwecke:</strong> Das System dient ausschließlich militärischen oder nationalen Sicherheitszwecken.',
+                    '<strong>Forschung:</strong> Das System wird ausschließlich für wissenschaftliche Forschung genutzt, ohne Inverkehrbringen oder Inbetriebnahme.'
+                ],
+                example:{label:'BeamTech-Beispiel', text:'BeamTech-Forschungsabteilung testet ein neues KI-Modell isoliert im Labor, ohne es in Produkte zu integrieren oder zu vertreiben → möglicherweise Forschungsausnahme. Regulärer interner Betrieb eines KI-Tools oder Produktentwicklung → keine Ausnahme, KI-VO vollständig anwendbar.'},
+                legalRef:'Art. 2 Abs. 3–6 KI-VO',
+                yesNext:'end_exception', noNext:'part_b_start'
             },
 
             'part_b_start': {
                 type:'milestone', phase:'b',
-                title:'✓ KI-System nach Art. 3 Abs. 1 KI-VO bestätigt',
-                text:'Ihr Vorhaben erfüllt alle Definitionsmerkmale eines KI-Systems. Jetzt prüfen wir, ob es sich um eine <strong>verbotene Praktik nach Art. 5 KI-VO</strong> handelt — diese sind ohne Ausnahme untersagt.',
-                nextPhaseTitle:'Teil B: Verbotene Praktiken (Art. 5 KI-VO)',
-                nextPhaseDesc:'6 Prüfschritte — Manipulation, Diskriminierung, Überwachung',
+                title:'✓ KI-System nach Art. 3 Nr. 1 KI-VO bestätigt — keine Ausnahme',
+                text:'Ihr Vorhaben erfüllt alle Definitionsmerkmale eines KI-Systems und fällt ohne Einschränkung unter die KI-VO. Jetzt prüfen wir, ob es sich um eine <strong>verbotene Praktik nach Art. 5 KI-VO</strong> handelt — diese sind absolut und ohne Ausnahmen untersagt.',
+                nextPhaseTitle:'Teil B: Verbotstatbestände (Art. 5 KI-VO)',
+                nextPhaseDesc:'6 Prüfschritte: subliminale Beeinflussung · Vulnerabilität · Social Scoring · biometrisches Scraping · Emotionserkennung · biometrische Kategorisierung',
                 next:'b1'
             },
 
             'b1': {
                 phase:'b', step:1, total:6,
                 badge:'Teil B · Schritt 1/6 – Verbotene Praktiken',
-                title:'Manipulative Beeinflussung?',
-                question:'Setzt das System unterschwellige Techniken ein, die das Verhalten von Personen steuern — ohne dass sie es bemerken oder sich dagegen wehren können?',
-                criteria:['Einsatz von Subliminal Techniques jenseits bewusster Wahrnehmung.','Ausnutzung kognitiver Schwächen oder Vorurteile zur Entscheidungslenkung.','Dark Patterns, die Nutzer zu schädigenden Handlungen verleiten.'],
-                example:{label:'Verbotenes Beispiel', text:'Chatbot drängt vulnerable Nutzer durch emotionale Manipulation zu teuren Käufen. Oder: KI-Bilder in Werbung, die unbewusste Angst auslösen, um Kaufentscheidungen zu erzwingen.'},
-                warning:'Auch geringer Schaden genügt. Die Absicht zur Manipulation reicht für den Verbotstatbestand aus.',
+                title:'Manipulative oder subliminale Beeinflussung?',
+                question:'Setzt das System unterschwellige oder täuschende Techniken ein, die das Verhalten von Personen wesentlich steuern — außerhalb ihres bewussten Entscheidungsprozesses?',
+                criteria:[
+                    '<strong>Technik:</strong> Subliminale Reize, manipulative oder täuschende Techniken (z. B. Dark Patterns).',
+                    '<strong>Zielrichtung:</strong> Wesentliche Verhaltensbeeinflussung der betroffenen Personen.',
+                    '<strong>Bewusstseinsebene:</strong> Die Beeinflussung findet außerhalb des bewussten Entscheidungsprozesses statt.',
+                    '<strong>Schadenspotenzial:</strong> Physischer oder psychischer Schaden für die betroffene Person ist möglich.'
+                ],
+                example:{label:'BeamTech-Beispiel', text:'Chatbot drängt vulnerable Nutzer durch versteckte emotionale Manipulation zu teuren Käufen — außerhalb ihrer bewussten Wahrnehmung und mit möglichem finanziellem Schaden → alle 4 Voraussetzungen erfüllt, absolutes Verbot.'},
+                warning:'Alle vier Tatbestandsmerkmale (Technik, Zielrichtung, Bewusstseinsebene, Schadenspotenzial) müssen kumulativ vorliegen.',
                 legalRef:'Art. 5 Abs. 1 lit. a KI-VO',
                 yesNext:'end_verboten', noNext:'b2'
             },
             'b2': {
                 phase:'b', step:2, total:6,
                 badge:'Teil B · Schritt 2/6 – Verbotene Praktiken',
-                title:'Ausnutzung von Vulnerabilität?',
-                question:'Nutzt das System gezielt Schwächen bestimmter Personengruppen aus — z. B. aufgrund von Alter, Behinderung oder wirtschaftlicher Notlage?',
-                criteria:['Ältere oder kognitiv eingeschränkte Personen als gezielte Zielgruppe.','Personen in wirtschaftlicher Not oder sozialer Abhängigkeit.','Minderjährige als Zielgruppe für manipulative Inhalte.'],
-                example:{label:'BeamTech-Beispiel', text:'KI erkennt technikunsichere, ältere Nutzer auf der Webseite und blendet ihnen gezielt Fake-Rabatte ein, um Kaufentscheidungen zu manipulieren → Klarer Verstoß gegen Art. 5 Abs. 1 lit. b.'},
+                title:'Ausnutzung von Vulnerabilitäten?',
+                question:'Nutzt das System gezielt besondere Verwundbarkeiten bestimmter Personengruppen aus, um deren Verhalten zu beeinflussen?',
+                criteria:[
+                    '<strong>Alter:</strong> Kinder oder ältere Personen als gezielte Zielgruppe.',
+                    '<strong>Behinderung:</strong> Ausnutzung körperlicher oder kognitiver Einschränkungen.',
+                    '<strong>Soziale oder wirtschaftliche Lage:</strong> Personen in wirtschaftlicher Not oder sozialer Abhängigkeit.',
+                    '<strong>Ziel:</strong> Verhaltensbeeinflussung durch Ausnutzung dieser besonderen Verwundbarkeit.'
+                ],
+                example:{label:'BeamTech-Beispiel', text:'KI erkennt technikunsichere, ältere Nutzer auf der Webseite und blendet ihnen gezielt Fake-Rabatte ein, um Kaufentscheidungen zu manipulieren → Ausnutzung von Alter als Vulnerabilität, klarer Verstoß gegen Art. 5 Abs. 1 lit. b.'},
                 legalRef:'Art. 5 Abs. 1 lit. b KI-VO',
                 yesNext:'end_verboten', noNext:'b3'
             },
@@ -748,9 +798,13 @@
                 phase:'b', step:3, total:6,
                 badge:'Teil B · Schritt 3/6 – Verbotene Praktiken',
                 title:'Social Scoring?',
-                question:'Bewertet das System Personen anhand ihres sozialen Verhaltens und leitet daraus Nachteile in anderen, unzusammenhängenden Lebensbereichen ab?',
-                criteria:['Langfristige Bewertung auf Basis von Verhalten, sozialen Interaktionen oder persönlichen Merkmalen.','Pauschal-Scoring führt zu Benachteiligungen in nicht verbundenen Bereichen.','Automatische Verschlechterung von Konditionen ohne transparente Einzelfallprüfung.'],
-                example:{label:'BeamTech-Beispiel', text:'KI-Score kombiniert Retourenquote, Social-Media-Aktivität und Zahlungshistorie und verschlechtert automatisch Zahlungsfristen → Social Scoring, verboten nach Art. 5 Abs. 1 lit. c.'},
+                question:'Bewertet das System Personen langfristig anhand ihres sozialen Verhaltens oder ihrer Persönlichkeitsmerkmale?',
+                criteria:[
+                    '<strong>Langfristige Bewertung</strong> von Personen auf Basis ihres Verhaltens über Zeit.',
+                    '<strong>Sozialer Bewertungsmaßstab:</strong> Grundlage ist soziales Verhalten oder persönliche Merkmale.',
+                    'Bewertung führt zu Benachteiligungen in unzusammenhängenden Lebensbereichen oder ist unverhältnismäßig.'
+                ],
+                example:{label:'BeamTech-Beispiel', text:'KI-Score kombiniert Retourenquote, Social-Media-Aktivität und Zahlungshistorie und verschlechtert automatisch Zahlungsfristen für Kunden → langfristiges Social Scoring auf Basis sozialen Verhaltens, verboten nach Art. 5 Abs. 1 lit. c.'},
                 legalRef:'Art. 5 Abs. 1 lit. c KI-VO',
                 yesNext:'end_verboten', noNext:'b4'
             },
@@ -780,7 +834,7 @@
                 badge:'Teil B · Schritt 6/6 – Verbotene Praktiken',
                 title:'Biometrische Kategorisierung nach sensiblen Merkmalen?',
                 question:'Klassifiziert das System Personen automatisch anhand biometrischer Merkmale nach Ethnizität, Religion, politischer Meinung, sexueller Orientierung oder ähnlichen Kategorien?',
-                criteria:['Ableitung von Ethnie, Herkunft oder Nationalität aus Körpermerkmalen.','Kategorisierung nach religiösen oder politischen Überzeugungen via biometrische Analyse.','Schlussfolgerungen auf sexuelle Orientierung oder Identität aus Kamera- oder Audiodaten.'],
+                criteria:['Kategorisierung nach <strong>Ethnie</strong> oder Herkunft aus biometrischen Merkmalen.','Kategorisierung nach <strong>Religion</strong> oder <strong>politischer Meinung</strong> via biometrische Analyse.','Schlussfolgerungen auf <strong>sexuelle Orientierung</strong> oder Identität aus Kamera- oder Audiodaten.','Ableitung des <strong>Gesundheitszustands</strong> aus biometrischen Merkmalen.'],
                 example:{label:'BeamTech-Beispiel', text:'System auf dem Messegelände, das Besuchende anhand des Gesichtsbilds als "konservativ" oder "progressiv" einordnet und Marketingbotschaften entsprechend anpasst → Verboten.'},
                 legalRef:'Art. 5 Abs. 1 lit. g KI-VO',
                 yesNext:'end_verboten', noNext:'part_c_start'
@@ -798,10 +852,15 @@
             'c1': {
                 phase:'c', step:1, total:2,
                 badge:'Teil C · Schritt 1/2 – Hochrisiko-KI',
-                title:'Biometrie-Anwendung?',
-                question:'Dient das System der Fernidentifizierung, biometrischen Kategorisierung oder Emotionserkennung von natürlichen Personen?',
-                criteria:['Fernbiometrische Identifizierung (live oder aufgezeichnet).','Biometrische Kategorisierung nach persönlichen Merkmalen (außerhalb des Verbots aus Teil B).','Emotionserkennung in nicht verbotenen Kontexten (z. B. mit nachgewiesener Einwilligung und engem Zweck).'],
-                example:{label:'BeamTech-Beispiel', text:'System vergleicht Messebesuchende mit einer Whitelist autorisierter Geschäftspartner per Kamerabild → Hochrisiko (Anhang III Nr. 1). Erfordert: Konformitätsbewertung, technische Dokumentation und Transparenzpflichten.'},
+                title:'Biometrische Anwendung?',
+                question:'Dient das System der biometrischen Fernidentifizierung, Emotionserkennung oder biometrischen Kategorisierung von natürlichen Personen?',
+                criteria:[
+                    '<strong>Biometrische Fernidentifizierung:</strong> Identifikation von Personen über Distanz anhand biometrischer Merkmale (live oder aufgezeichnet).',
+                    '<strong>Emotionserkennung:</strong> Erkennung emotionaler Zustände aus biometrischen Daten (in nicht verbotenen Kontexten).',
+                    '<strong>Biometrische Kategorisierung:</strong> Einstufung von Personen nach persönlichen Merkmalen anhand biometrischer Daten (außerhalb von Teil B).',
+                    '<strong>Nicht hochriskant:</strong> Reine 1-zu-1-Verifikation (z. B. Face-Unlock am Smartphone) fällt nicht darunter.'
+                ],
+                example:{label:'BeamTech-Beispiel', text:'System vergleicht Messebesuchende per Kamerabild mit einer Whitelist autorisierter Geschäftspartner (1-zu-n-Identifizierung) → Hochrisiko (Anhang III Nr. 1). Reines Face-Unlock für Mitarbeiter-Laptop-Zugang (1-zu-1-Verifikation) → kein Hochrisiko.'},
                 legalRef:'Anhang III Nr. 1 KI-VO',
                 yesNext:'end_hochrisiko', noNext:'c2'
             },
@@ -809,9 +868,15 @@
                 phase:'c', step:2, total:2,
                 badge:'Teil C · Schritt 2/2 – Hochrisiko-KI',
                 title:'Beschäftigung & Personalmanagement?',
-                question:'Wird das System für Entscheidungen in HR-Prozessen eingesetzt — und geht dabei über bloße administrative Unterstützung hinaus?',
-                criteria:['Bewerberauswahl: automatische Vorauswahl, Scoring oder Ablehnung von Kandidaten.','Leistungsbewertung: KI-gestützte Bewertung von Mitarbeiter-KPIs mit Handlungsfolgen.','Beförderungsentscheidungen: KI-generierte Ranglisten oder Empfehlungen.','Verhaltensüberwachung zur Steuerung von Mitarbeitenden.'],
-                example:{label:'BeamTech-Beispiel', text:'KI scannt Lebensläufe, erstellt verbindliche Kandidaten-Rankings und empfiehlt "Nicht einladen" für 80 % der Bewerbungen → Hochrisiko (Anhang III Nr. 4). Reine Spamfilterung im Bewerbungspostfach → kein Hochrisiko.'},
+                question:'Wird das System für Entscheidungen in HR-Prozessen eingesetzt — Bewerberauswahl, Leistungsbewertung, Beförderung, Kündigung oder Mitarbeiterüberwachung?',
+                criteria:[
+                    '<strong>Bewerberauswahl & Recruiting:</strong> Automatische Vorauswahl, Scoring oder Ablehnung von Kandidaten.',
+                    '<strong>Beförderung / Kündigung:</strong> KI-gestützte Empfehlungen zu Karriereentscheidungen.',
+                    '<strong>Leistungsbewertung:</strong> KI-gestützte Bewertung von Mitarbeiter-KPIs mit Handlungsfolgen.',
+                    '<strong>Mitarbeiterüberwachung & Aufgabenverteilung:</strong> Verhaltensüberwachung oder automatische Zuweisung von Aufgaben.',
+                    '<strong>Wichtig:</strong> KI darf nicht allein endgültige Entscheidungen treffen — menschliche Aufsicht ist zwingend.'
+                ],
+                example:{label:'BeamTech-Beispiel', text:'BeamTech setzt KI ein, die Lebensläufe scannt, verbindliche Kandidaten-Rankings erstellt und "Nicht einladen" für 80 % der Bewerbungen empfiehlt → Hochrisiko (Anhang III Nr. 4), KI darf nicht allein entscheiden. Reine Spamfilterung im Bewerbungspostfach → kein Hochrisiko.'},
                 legalRef:'Anhang III Nr. 4 KI-VO',
                 yesNext:'end_hochrisiko', noNext:'end_safe'
             },
@@ -827,41 +892,68 @@
                 ]
             },
             'end_verboten': {
-                type:'result', resultClass:'result-banned', icon:'fa-ban',
-                title:'Verbotene Praktik — Einsatz unzulässig',
-                subtitle:'Art. 5 KI-VO: Absolutes Verbot ohne Ausnahmen.',
-                desc:'Ihr KI-Vorhaben fällt unter die verbotenen Praktiken des Art. 5 KI-VO. Der Einsatz ist unabhängig von Einwilligungserklärungen, Geschäftszweck oder technischen Schutzmaßnahmen rechtlich nicht gestattet.',
-                actions:[
-                    {type:'stop', icon:'fa-ban',                 text:'Sofortiger Stopp: Das System darf nicht eingesetzt, erworben oder in Auftrag gegeben werden.'},
-                    {type:'warn', icon:'fa-triangle-exclamation', text:'Sanktionen: Verstöße können Bußgelder von bis zu 35 Mio. EUR oder 7 % des weltweiten Jahresumsatzes nach sich ziehen (Art. 99 Abs. 3 KI-VO).'},
-                    {type:'info', icon:'fa-phone',                text:'Nächster Schritt: Kontaktieren Sie umgehend die Rechtsabteilung und informieren Sie Ihren Vorgesetzten über den Sachverhalt.'}
-                ]
-            },
+    type:'result', resultClass:'result-banned', icon:'fa-ban',
+    title:'Verbotene Praktik — Einsatz unzulässig',
+    subtitle:'Art. 5 KI-VO: Absolutes Verbot ohne Ausnahmen.',
+    desc:'Ihr KI-Vorhaben fällt unter die verbotenen Praktiken des Art. 5 KI-VO. Der Einsatz ist unabhängig von Einwilligungserklärungen, Geschäftszweck oder technischen Schutzmaßnahmen rechtlich nicht gestattet.',
+    actions:[
+        {type:'stop', icon:'fa-ban',                 text:'Sofortiger Stopp: Das System darf nicht eingesetzt, erworben oder in Auftrag gegeben werden.'},
+        {type:'warn', icon:'fa-triangle-exclamation', text:'Sanktionen: Verstöße können Bußgelder von bis zu 35 Mio. EUR oder 7 % des weltweiten Jahresumsatzes nach sich ziehen (Art. 99 Abs. 3 KI-VO).'}
+    ]
+},
             'end_hochrisiko': {
                 type:'result', resultClass:'result-high', icon:'fa-triangle-exclamation',
                 title:'Hochrisiko-KI-System',
-                subtitle:'Anhang III KI-VO: Erhöhte Sorgfalts- und Dokumentationspflichten.',
-                desc:'Ihr System ist als Hochrisiko-KI nach Anhang III KI-VO einzustufen. Der Einsatz ist grundsätzlich möglich — jedoch nur bei vollständiger Erfüllung der Anforderungen nach Art. 8–25 KI-VO.',
+                subtitle:'Art. 6 i.V.m. Anhang III KI-VO: Strenge Sorgfalts- und Dokumentationspflichten.',
+                desc:'Ihr System ist als Hochrisiko-KI nach Art. 6 i.V.m. Anhang III KI-VO einzustufen. Der Einsatz ist grundsätzlich möglich — jedoch nur bei vollständiger Erfüllung der Anforderungen nach Art. 8 ff. KI-VO. Wichtig: KI darf nicht allein endgültige Entscheidungen treffen.',
                 actions:[
-                    {type:'warn', icon:'fa-file-contract',        text:'Technische Dokumentation: Vollständige Risikoanalyse, Systemdokumentation und Konformitätsbewertung erforderlich (Art. 9, 11, 43 KI-VO).'},
-                    {type:'warn', icon:'fa-database',              text:'Datenqualität: Trainingsdaten müssen auf Bias geprüft, bereinigt und dokumentiert werden (Art. 10 KI-VO).'},
-                    {type:'warn', icon:'fa-person-chalkboard',     text:'Menschliche Aufsicht: Mechanismen zur menschlichen Kontrolle und Eingriffsmöglichkeit müssen implementiert und dokumentiert sein (Art. 14 KI-VO).'},
-                    {type:'info', icon:'fa-circle-info',           text:'Nächster Schritt: Beauftragen Sie das Compliance-Team mit einer vollständigen Konformitätsbewertung, bevor das System in Betrieb geht.'}
+                    {type:'warn', icon:'fa-shield-halved',         text:'Risikomanagementsystem (Art. 9): Kontinuierliche Identifikation, Analyse und Minderung von Risiken über den gesamten Lebenszyklus.'},
+                    {type:'warn', icon:'fa-database',              text:'Daten-Governance (Art. 10): Trainingsdaten müssen auf Bias geprüft, bereinigt und dokumentiert sein — repräsentativ und fehlerfrei.'},
+                    {type:'warn', icon:'fa-file-lines',            text:'Technische Dokumentation (Art. 11): Vollständige Systemdokumentation vor Inbetriebnahme erstellen und aktuell halten.'},
+                    {type:'warn', icon:'fa-list-check',            text:'Logging (Art. 12): Automatische Protokollierung des Systembetriebs zur Rückverfolgbarkeit über die gesamte Lebensdauer.'},
+                    {type:'warn', icon:'fa-eye',                   text:'Transparenz (Art. 13): Nutzer müssen die Systemfunktionsweise verstehen können — klare, verständliche Dokumentation.'},
+                    {type:'warn', icon:'fa-person-chalkboard',     text:'Human Oversight (Art. 14): Wirksame menschliche Aufsicht und Eingriffsmöglichkeit muss implementiert und dokumentiert sein.'},
+                    {type:'warn', icon:'fa-lock',                  text:'Robustheit & Sicherheit (Art. 15): Technische Maßnahmen gegen Fehler, Missbrauch und Angriffe über den gesamten Lebenszyklus.'},
+                    {type:'info', icon:'fa-circle-info',           text:'Nächster Schritt: Beauftragen Sie das Compliance-Team mit einer vollständigen Konformitätsbewertung (Art. 43 KI-VO), bevor das System in Betrieb geht.'}
                 ]
             },
             'end_safe': {
                 type:'result', resultClass:'result-safe', icon:'fa-circle-check',
                 title:'Einsatz grundsätzlich möglich',
-                desc:'Ihr KI-System ist weder verboten noch als Hochrisiko-System nach Anhang III KI-VO einzustufen. Der Einsatz ist unter Einhaltung der allgemeinen Transparenzpflichten zulässig.',
+                subtitle:'Kein Verbot, kein Hochrisiko — Transparenzpflichten beachten.',
+                desc:'Ihr KI-System ist weder verboten noch als Hochrisiko-System nach Anhang III KI-VO einzustufen. Der Einsatz ist unter Einhaltung der allgemeinen Transparenzpflichten nach Art. 50 KI-VO zulässig.',
                 actions:[
                     {type:'ok',   icon:'fa-check-circle',         text:'Grünes Licht: Kein spezifisches Verbot, keine Hochrisiko-Pflichten. Die Umsetzung kann geplant werden.'},
-                    {type:'info', icon:'fa-eye',                   text:'Transparenzpflicht (Art. 50): Sofern das System mit Menschen interagiert, muss die KI-Natur offengelegt werden (z. B. Chatbot-Kennzeichnung).'},
+                    {type:'info', icon:'fa-comment-dots',          text:'Transparenzpflicht Chatbots (Art. 50 KI-VO): KI-Systeme, die mit Menschen interagieren (z. B. Chatbots), müssen die KI-Natur offenlegen — Kennzeichnungspflicht.'},
+                    {type:'info', icon:'fa-photo-film',            text:'Transparenzpflicht Deepfakes (Art. 50 KI-VO): KI-generierte oder manipulierte Bild-, Audio- und Videoinhalte müssen als solche offengelegt werden.'},
                     {type:'info', icon:'fa-arrow-rotate-right',    text:'Empfehlung: Führen Sie diese Prüfung erneut durch, wenn sich Funktion, Einsatzbereich oder Datenbasis des Systems wesentlich ändern.'}
+                ]
+            },
+            'end_no_applicable': {
+                type:'result', resultClass:'result-noki', icon:'fa-circle-xmark',
+                title:'KI-VO nicht anwendbar — Kein territorialer/persönlicher Anwendungsbereich',
+                subtitle:'Art. 2 KI-VO: Die Verordnung greift nicht.',
+                desc:'Ihr Vorhaben fällt nicht in den persönlichen oder territorialen Anwendungsbereich der KI-VO nach Art. 2. Weder handelt es sich um einen Anbieter oder Nutzer in der EU, noch wird der Output in der EU verwendet. Die KI-VO findet keine Anwendung.',
+                actions:[
+                    {type:'ok',   icon:'fa-check',                text:'Keine Pflichten aus der KI-VO. Das Vorhaben ist von der EU-KI-Verordnung nicht betroffen.'},
+                    {type:'info', icon:'fa-globe',                 text:'Hinweis: Prüfen Sie, ob andere nationale oder internationale Rechtsvorschriften anwendbar sind (z. B. lokale KI-Gesetze, DSGVO für EU-Bürger-Daten).'},
+                    {type:'info', icon:'fa-arrow-rotate-right',    text:'Empfehlung: Führen Sie diese Prüfung erneut durch, falls sich der Einsatzbereich oder die Nutzergruppe ändert und ein EU-Bezug entsteht.'}
+                ]
+            },
+            'end_exception': {
+                type:'result', resultClass:'result-noki', icon:'fa-shield-halved',
+                title:'KI-VO nicht oder nur eingeschränkt anwendbar — Ausnahme greift',
+                subtitle:'Art. 2 Abs. 3–6 KI-VO: Ausnahme vom Anwendungsbereich.',
+                desc:'Ihr Vorhaben fällt unter eine der gesetzlich vorgesehenen Ausnahmen der KI-VO (rein private Nutzung, militärische Zwecke oder wissenschaftliche Forschung ohne Inverkehrbringen). Die KI-VO ist nicht oder nur eingeschränkt anwendbar.',
+                actions:[
+                    {type:'ok',   icon:'fa-check',                text:'Ausnahme greift: Die KI-VO entfaltet für dieses Vorhaben keine oder nur eingeschränkte Wirkung.'},
+                    {type:'warn', icon:'fa-triangle-exclamation',  text:'Enge Auslegung: Ausnahmen sind eng auszulegen. Sobald das System über den Ausnahmebereich hinaus eingesetzt wird (z. B. Forschungsergebnisse in Produkte überführt), greift die KI-VO vollständig.'},
+                    {type:'info', icon:'fa-circle-info',           text:'Empfehlung: Dokumentieren Sie den Ausnahmetatbestand sorgfältig. Bei Unsicherheit wenden Sie sich an die Rechtsabteilung.'}
                 ]
             }
         };
 
-        const totalSteps = { a:6, b:6, c:2 };
+        const totalSteps = { a:8, b:6, c:2 };
         const phaseOrder = ['a','b','c'];
         let visitedPhases = new Set();
         let donePhases    = new Set();
@@ -1038,7 +1130,7 @@
                 fillBar.style.width='0%';
                 progText.textContent='Prüfung starten';
                 ['a','b','c'].forEach(ph => { document.getElementById('pill-'+ph).className='phase-pill'; });
-                loadStep('a1');
+                loadStep('a0');
             };
         }
 
@@ -1193,7 +1285,7 @@ modalSubmitBtn.addEventListener('click', () => {
             datum:        new Date().toLocaleString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}),
             risikoklasse: currentRiskLabel,
             titel:        currentResultTitle,
-            user:         'Martin Müller',
+            user:         'Martin Keller',
             status:       'Offen',
             projektname:    document.getElementById('f-projekt').value.trim(),
             abteilung:      '—',
@@ -1222,7 +1314,7 @@ modalSubmitBtn.addEventListener('click', () => {
     }, 900);
 });
 
-        loadStep('a1');
+        loadStep('a0');
     });
     </script>
 
