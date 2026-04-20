@@ -312,17 +312,9 @@
                 </button>
             </div>
 
-            <div class="modal-body">
-                <div class="video-placeholder">
-                    <div class="video-placeholder-inner">
-                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                        <span class="video-label">Video wird hier eingebettet</span>
-                        <!--
-                            Platzhalter für iframe – src ergänzen, um ein echtes Video einzubinden:
-                            <iframe src="https://www.youtube-nocookie.com/embed/VIDEO_ID" allowfullscreen></iframe>
-                        -->
+           <div class="modal-body">
+                <div class="video-placeholder" id="video-container">
                     </div>
-                </div>
             </div>
 
             <div class="modal-footer">
@@ -341,11 +333,36 @@
     <script>
         function openModal(title) {
             document.getElementById('modal-title').textContent = title;
+            const videoContainer = document.getElementById('video-container');
+
+            // Wenn auf "Hochrisiko-KI" geklickt wird, lade DEIN YouTube Video
+            if (title === 'Hochrisiko-KI') {
+                videoContainer.innerHTML = `
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/XHyhhzfH4JU?autoplay=1&rel=0" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen 
+                        style="position:absolute; inset:0; width:100%; height:100%; border:none;">
+                    </iframe>`;
+            } else {
+                // Für alle anderen Klicks (z.B. "Verboten") zeige den Standard-Platzhalter
+                videoContainer.innerHTML = `
+                    <div class="video-placeholder-inner" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; background:linear-gradient(135deg, #0d1b2e 0%, #1a3a6e 100%);">
+                        <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                        <span class="video-label">Kein Video für ${title} verfügbar</span>
+                    </div>`;
+            }
+
             document.getElementById('modal-overlay').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
+            // WICHTIG: Löscht das Video beim Schließen, damit der Ton stoppt!
+            document.getElementById('video-container').innerHTML = ''; 
+            
             document.getElementById('modal-overlay').classList.remove('active');
             document.body.style.overflow = '';
         }
