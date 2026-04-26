@@ -728,7 +728,7 @@
                     '<strong>Nicht erfasst:</strong> Physische Zustände (Verletzungen, Schmerzen), reine Bewegungs- oder Gestenerkennung ohne Emotionsableitung.'
                 ],
                 example:{label:'BeamTech-Beispiel', text:'Die IT-Abteilung stattet Beamer-Kameras in internen Konferenzräumen mit KI aus, die während Meetings die Mimik der Mitarbeiter analysiert und Emotionen wie Wut, Frustration oder Stress erkennt, um das Betriebsklima zu messen.'},
-                warning:'Ausnahme: Eng begrenzte sicherheitsrelevante Kontexte. Im Zweifel Rechtsabteilung konsultieren.',
+                warning:'Ausnahme: Einsatz für sicherheitsrelevante Kontexte. Im Zweifel bitte die Rechtsabteilung konsultieren.',
                 legalRef:'Art. 5 Abs. 1 lit. f KI-VO',
                 yesNext:'end_verboten', noNext:'a6'
             },
@@ -750,7 +750,7 @@
             'part_b_start': {
                 type:'milestone', phase:'b',
                 title:'✓ Keine verbotene Praktik festgestellt',
-                text:'Ihr KI-Vorhaben verstößt nicht gegen die Verbotstatbestände des Art. 5 KI-VO. Nun prüfen wir, ob es als <strong>Hochrisiko-KI-System nach Art. 6 i.V.m. Anhang III</strong> einzustufen ist mit entsprechend erhöhten Sorgfaltspflichten.',
+                text:'Ihr KI-Vorhaben verstößt nicht gegen die Verbotstatbestände der KI-VO. Nun prüfen wir, ob es als <strong>Hochrisiko-KI-System </strong> einzustufen ist mit entsprechend erhöhten Sorgfaltspflichten.',
                 nextPhaseTitle:'Teil B: Hochrisiko-KI (Art. 6 i.V.m. Anhang III KI-VO)',
                 nextPhaseDesc:'2 Prüfschritte: Biometrische Anwendungen · Beschäftigung & Personalmanagement',
                 next:'b1'
@@ -767,7 +767,7 @@
                     '<strong>Emotionserkennung:</strong> Ableitung von Emotionen wie Glück, Trauer oder Wut aus biometrischen Daten statt einer bloßen Analyse physischer Zustände oder reiner Bewegungen.',
                     '<strong>Nicht hochriskant:</strong> Reine 1-zu-1-Verifikation (z. B. Entsperren per Gesicht) oder Systeme ausschließlich für Cybersicherheitszwecke.'
                 ],
-                example:{label:'BeamTech-Beispiel', text:'Der Beamer erkennt automatisch alle Personen im Raum, indem er deren Gesichter mit der Mitarbeiterdatenbank abgleicht, um eine automatische Anwesenheitsliste zu führen (1-zu-n-Identifizierung) → Hochrisiko-System. Reines Face-Unlock für Laptop-Zugang → kein Hochrisiko.'},
+                example:{label:'BeamTech-Beispiel', text:'Der Beamer erkennt automatisch alle Personen im Raum, indem er deren Gesichter mit der Mitarbeiterdatenbank abgleicht, um eine automatische Anwesenheitsliste zu führen (1-zu-n-Identifizierung).  Reines Face-Unlock für Laptop-Zugang → kein Hochrisiko.'},
                 legalRef:'Art. 6 i.V.m. Anhang III Nr. 1 KI-VO',
                 yesNext:'end_hochrisiko', noNext:'b2'
             },
@@ -783,7 +783,7 @@
                     '<strong>Verhaltens- und Leistungskontrolle:</strong> KI-gestützte Überwachung und Bewertung von Mitarbeiter-KPIs, einschließlich vorbereitender Systeme ohne finale KI-Entscheidung.',
                     '<strong>Wichtig:</strong> Die KI darf nicht allein endgültige Entscheidungen treffen, da eine menschliche Aufsicht zwingend erforderlich ist.'
                 ],
-                example:{label:'BeamTech-Beispiel', text:'Die KI teilt Technikern automatisch ihre täglichen Routen und Service-Aufträge zu und bewertet dabei, welcher Techniker für welche Aufgabe „am fähigsten" ist → Hochrisiko-System (Aufgabenzuweisung + Leistungsbewertung). Reine Spamfilterung im Bewerbungspostfach → kein Hochrisiko.'},
+                example:{label:'BeamTech-Beispiel', text:'Die KI teilt Technikern automatisch ihre täglichen Routen und Service-Aufträge zu und bewertet dabei, welcher Techniker für welche Aufgabe „am fähigsten" ist. Reine Spamfilterung im Bewerbungspostfach → kein Hochrisiko.'},
                 legalRef:'Art. 6 i.V.m. Anhang III Nr. 4 KI-VO',
                 yesNext:'end_hochrisiko', noNext:'end_safe'
             },
@@ -802,37 +802,29 @@
     type:'result', resultClass:'result-banned', icon:'fa-ban',
     title:'Verbotene Praktik - Einsatz unzulässig',
     subtitle:'Art. 5 KI-VO: Absolutes Verbot ohne Ausnahmen.',
-    desc:'Ihr KI-Vorhaben fällt unter die verbotenen Praktiken des Art. 5 KI-VO. Der Einsatz ist unabhängig von Einwilligungserklärungen, Geschäftszweck oder technischen Schutzmaßnahmen rechtlich nicht gestattet.',
+    desc:'Ihr KI-Vorhaben fällt unter die verbotenen Praktiken der KI-VO. Der Einsatz ist unabhängig von Einwilligungserklärungen, Geschäftszweck oder technischen Schutzmaßnahmen rechtlich nicht gestattet.',
     actions:[
         {type:'stop', icon:'fa-ban',                 text:'Sofortiger Stopp: Das System darf nicht eingesetzt, erworben oder in Auftrag gegeben werden.'},
-        {type:'warn', icon:'fa-triangle-exclamation', text:'Sanktionen: Verstöße können Bußgelder von bis zu 35 Mio. EUR oder 7 % des weltweiten Jahresumsatzes nach sich ziehen (Art. 99 Abs. 3 KI-VO).'}
+      
     ]
 },
             'end_hochrisiko': {
                 type:'result', resultClass:'result-high', icon:'fa-triangle-exclamation',
                 title:'Hochrisiko-KI-System',
                 subtitle:'Art. 6 i.V.m. Anhang III KI-VO: Strenge Sorgfalts- und Dokumentationspflichten.',
-                desc:'Das System ist als Hochrisiko-KI nach Art. 6 i.V.m. Anhang III KI-VO einzustufen. Der Einsatz ist grundsätzlich möglich, sofern die Anforderungen nach Art. 8 ff. KI-VO vollständig erfüllt werden. Wichtig ist dabei, dass die KI keine endgültigen Entscheidungen allein treffen darf.',
+                desc:'Das System ist als Hochrisiko-KI einzustufen. Der Einsatz ist grundsätzlich möglich, sofern die Anforderungen nach der KI-VO vollständig erfüllt werden. Wichtig ist dabei, dass die KI keine endgültigen Entscheidungen allein treffen darf.',
                 actions:[
-                    {type:'warn', icon:'fa-shield-halved',         text:'Risikomanagementsystem (Art. 9): Kontinuierliche Identifikation, Analyse und Minderung von Risiken über den gesamten Lebenszyklus.'},
-                    {type:'warn', icon:'fa-database',              text:'Daten-Governance (Art. 10): Trainingsdaten müssen auf Bias geprüft, bereinigt und dokumentiert sein, wobei sie repräsentativ und fehlerfrei sein müssen.'},
-                    {type:'warn', icon:'fa-file-lines',            text:'Technische Dokumentation (Art. 11): Vollständige Systemdokumentation vor Inbetriebnahme erstellen und aktuell halten.'},
-                    {type:'warn', icon:'fa-list-check',            text:'Logging (Art. 12): Automatische Protokollierung des Systembetriebs zur Rückverfolgbarkeit über die gesamte Lebensdauer.'},
-                    {type:'warn', icon:'fa-eye',                   text:'Transparenz (Art. 13): Nutzer müssen die Systemfunktionsweise durch eine klare und verständliche Dokumentation verstehen können.'},
-                    {type:'warn', icon:'fa-person-chalkboard',     text:'Human Oversight (Art. 14): Wirksame menschliche Aufsicht und Eingriffsmöglichkeit muss implementiert und dokumentiert sein.'},
-                    {type:'warn', icon:'fa-lock',                  text:'Robustheit & Sicherheit (Art. 15): Technische Maßnahmen gegen Fehler, Missbrauch und Angriffe über den gesamten Lebenszyklus.'},
-                    {type:'info', icon:'fa-circle-info',           text:'Nächster Schritt: Beauftragen Sie das Compliance-Team mit einer vollständigen Konformitätsbewertung (Art. 43 KI-VO), bevor das System in Betrieb geht.'}
+                    
+                    {type:'info', icon:'fa-circle-info',           text:'Nächster Schritt: Beauftragen Sie das Compliance-Team mit einer vollständigen Konformitätsbewertung, bevor das System in Betrieb geht.'}
                 ]
             },
             'end_safe': {
                 type:'result', resultClass:'result-safe', icon:'fa-circle-check',
                 title:'Einsatz grundsätzlich möglich',
                 subtitle:'Kein Verbot, kein Hochrisiko, aber Transparenzpflichten beachten!',
-                desc:'Ihr KI-System ist weder verboten noch als Hochrisiko-System nach Anhang III KI-VO einzustufen. Der Einsatz ist unter Einhaltung der allgemeinen Transparenzpflichten nach Art. 50 KI-VO zulässig.',
+                desc:'Ihr KI-System ist weder verboten noch als Hochrisiko-System einzustufen.',
                 actions:[
                     {type:'ok',   icon:'fa-check-circle',         text:'Grünes Licht: Kein spezifisches Verbot, keine Hochrisiko-Pflichten. Die Umsetzung kann geplant werden.'},
-                    {type:'info', icon:'fa-comment-dots',          text:'Transparenzpflicht Chatbots (Art. 50 KI-VO): KI-Systeme, die mit Menschen interagieren (z. B. Chatbots), müssen ihre KI-Natur durch eine Kennzeichnungspflicht offenlegen.'},
-                    {type:'info', icon:'fa-photo-film',            text:'Transparenzpflicht Deepfakes (Art. 50 KI-VO): KI-generierte oder manipulierte Bild-, Audio- und Videoinhalte müssen als solche offengelegt werden.'},
                     {type:'info', icon:'fa-arrow-rotate-right',    text:'Empfehlung: Führen Sie diese Prüfung erneut durch, wenn sich Funktion, Einsatzbereich oder Datenbasis des Systems wesentlich ändern.'}
                 ]
             },
