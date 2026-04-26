@@ -35,7 +35,7 @@ Alle vier Tatbestandsmerkmale müssen kumulativ vorliegen:
 3. Täuschende Techniken: Präsentation falscher oder irreführender Informationen mit der Absicht oder dem Effekt der Verhaltensbeeinflussung.
 4. Schadenspotenzial: Erheblicher physischer, psychischer oder finanzieller Schaden möglich (schwerwiegend und irreversibel). Geringfügige Folgen wie Abonnements oder lange Social-Media-Nutzung fallen NICHT darunter.
 Hinweis: Da Manipulation keine menschliche Absicht erfordert, greift das Verbot auch bei einer eigenständigen Manipulation durch die KI.
-→ JA: Ergebnis = VERBOTENE PRAKTIK (Art. 5)
+→ JA: Ergebnis = VERBOTENE PRAKTIK
 → NEIN: weiter zum nächsten Prüfschritt
 
 **Ausnutzung vulnerabler Gruppen?**
@@ -45,7 +45,7 @@ Nutzt das System gezielt besondere Schwächen oder Schutzbedürftigkeit bestimmt
 - Soziale/wirtschaftliche Lage: Personen in extremer Armut oder ethnische/religiöse Minderheiten.
 - Ausnutzung: Das System nutzt die geringe Widerstandsfähigkeit gezielt zur wesentlichen Verhaltensänderung.
 - Schadenspotenzial: Erheblicher physischer, psychischer oder finanzieller Schaden möglich (schwerwiegend und irreversibel).
-→ JA: Ergebnis = VERBOTENE PRAKTIK (Art. 5)
+→ JA: Ergebnis = VERBOTENE PRAKTIK
 → NEIN: weiter zum nächsten Prüfschritt
 
 **Social Scoring?**
@@ -55,7 +55,7 @@ Bewertet oder stuft das System Personen anhand ihres sozialen Verhaltens oder pe
 - Bewertungsgrundlage: Soziales Verhalten (Reaktionen/Aktionen gegenüber anderen) ODER persönliche/Persönlichkeitsmerkmale.
 - Zeitliche Dimension: Beobachtung über eine gewisse Dauer, keine reine Momentaufnahme.
 - Nachteilige Auswirkung: Personen werden aufgrund ihres Scores schlechter behandelt als andere (z. B. häufigere Kontrollen), auch ohne konkreten Schaden.
-→ JA: Ergebnis = VERBOTENE PRAKTIK (Art. 5)
+→ JA: Ergebnis = VERBOTENE PRAKTIK
 → NEIN: weiter zum nächsten Prüfschritt
 
 **Aufbau von Gesichtserkennungsdatenbanken durch Scraping?**
@@ -64,7 +64,7 @@ Sammelt das System ungefragt Gesichtsbilder aus dem Internet oder Videoüberwach
 - Ziel: Erstellung oder Erweiterung einer Gesichtserkennungsdatenbank.
 - Keine wirksame Einwilligung der betroffenen Personen.
 - Kein Verbot: Gezieltes Sammeln mit wirksamer Einwilligung oder Scraping biometrischer Daten ohne Gesichtsbilder (z. B. reine Stimmanalyse) sind zulässig.
-→ JA: Ergebnis = VERBOTENE PRAKTIK (Art. 5)
+→ JA: Ergebnis = VERBOTENE PRAKTIK
 → NEIN: weiter zum nächsten Prüfschritt
 
 **Emotionserkennung am Arbeitsplatz oder in Bildungseinrichtungen?**
@@ -73,7 +73,7 @@ Erkennt oder leitet das System Emotionen oder Absichten von natürlichen Persone
 - Einsatz am Arbeitsplatz (Meetings, Bewerbungsgespräche, Produktionsstätten) oder in Bildungseinrichtungen (Schulen, Universitäten, Online-Kurse).
 - Nicht erfasst: Physische Zustände (Verletzungen, Schmerzen), reine Bewegungs- oder Gestenerkennung ohne Emotionsableitung.
 - Ausnahme: Eng begrenzte sicherheitsrelevante Kontexte — im Zweifel Rechtsabteilung konsultieren.
-→ JA: Ergebnis = VERBOTENE PRAKTIK (Art. 5)
+→ JA: Ergebnis = VERBOTENE PRAKTIK
 → NEIN: weiter zum nächsten Prüfschritt
 
 **Biometrische Kategorisierung nach sensiblen Merkmalen?**
@@ -81,7 +81,7 @@ Ordnet das System Personen anhand biometrischer Daten sensiblen Kategorien wie R
 - Biometrische Daten: Physische, physiologische oder verhaltenstypische Merkmale (Gesichtsbilder, Fingerabdrücke, Ganganalyse).
 - Sensible Kategorien: Geschlecht, Religion, Zugehörigkeit zu nationalen Minderheiten, sexuelle oder politische Ausrichtung, Tätowierungen, Sprache.
 - Ausnahme: Kennzeichnung oder Filterung rechtmäßig erhobener biometrischer Daten (z. B. Sortieren nach Haar- oder Augenfarbe aus einer bestehenden Datenbank) ist zulässig.
-→ JA: Ergebnis = VERBOTENE PRAKTIK (Art. 5)
+→ JA: Ergebnis = VERBOTENE PRAKTIK
 → NEIN: Keine verbotene Praktik festgestellt — weiter mit Teil B
 
 ---
@@ -94,7 +94,7 @@ Dient das System der biometrischen Fernidentifizierung, Emotionserkennung oder b
 - Biometrische Kategorisierung: Einstufung von Personen in Kategorien anhand biometrischer Merkmale (sofern nicht nur technisch notwendige Ergänzung eines anderen Dienstes).
 - Emotionserkennung: Ableitung von Emotionen wie Glück, Trauer oder Wut aus biometrischen Daten (in nicht verbotenen Kontexten, z. B. außerhalb von Arbeitsplatz und Schule).
 - Nicht hochriskant: Reine 1-zu-1-Verifikation (z. B. Face-Unlock am Smartphone) oder Systeme ausschließlich für Cybersicherheitszwecke.
-→ JA: Ergebnis = HOCHRISIKO-KI (Art. 6)
+→ JA: Ergebnis = HOCHRISIKO-KI
 → NEIN: weiter zum nächsten Prüfschritt
 
 **Beschäftigung & Personalmanagement?**
@@ -104,16 +104,16 @@ Wird das System für Entscheidungen in HR-Prozessen wie Bewerberauswahl, Arbeits
 - Aufgabenzuweisung: Automatische Zuteilung von Aufgaben oder Routenplanung (z. B. KI-gestützte Disposition).
 - Verhaltens- und Leistungskontrolle: KI-gestützte Überwachung und Bewertung von Mitarbeiter-KPIs, einschließlich vorbereitender Systeme ohne finale KI-Entscheidung.
 - Wichtig: Die KI darf nicht allein endgültige Entscheidungen treffen — menschliche Aufsicht ist zwingend erforderlich.
-→ JA: Ergebnis = HOCHRISIKO-KI (Art. 6)
+→ JA: Ergebnis = HOCHRISIKO-KI
 → NEIN: Ergebnis = EINSATZ GRUNDSÄTZLICH MÖGLICH (Transparenzpflichten beachten)
 
 ---
 
 ## MÖGLICHE ERGEBNISSE
 
-1. **VERBOTENE PRAKTIK (Art. 5)** — absolutes Verbot, keine Ausnahmen möglich. Sofortiger Stopp erforderlich. Bußgelder bis zu 35 Mio. EUR oder 7 % des weltweiten Jahresumsatzes möglich.
+1. **VERBOTENE PRAKTIK** — absolutes Verbot, keine Ausnahmen möglich. Sofortiger Stopp erforderlich. Bußgelder bis zu 35 Mio. EUR oder 7 % des weltweiten Jahresumsatzes möglich.
 
-2. **HOCHRISIKO-KI (Art. 6)** — Einsatz möglich, aber strenge Pflichten:
+2. **HOCHRISIKO-KI** — Einsatz möglich, aber strenge Pflichten:
    - Risikomanagementsystem einrichten
    - Daten-Governance sicherstellen
    - Technische Dokumentation erstellen
@@ -145,7 +145,7 @@ Biometrische Kategorisierung nach sensiblen Merkmalen: ✅ Ja / ❌ Nein — [Be
 Biometrische Anwendung: ✅ Ja / ❌ Nein — [Begründung]
 Beschäftigung & Personalmanagement: ✅ Ja / ❌ Nein — [Begründung]
 
-**Abschließendes Ergebnis:** VERBOTENE PRAKTIK (Art. 5) / HOCHRISIKO-KI (Art. 6) / EINSATZ GRUNDSÄTZLICH MÖGLICH
+**Abschließendes Ergebnis:** VERBOTENE PRAKTIK / HOCHRISIKO-KI / EINSATZ GRUNDSÄTZLICH MÖGLICH
 
 **Erforderliche Maßnahmen:** Aufzählung der konkreten Handlungsschritte in verständlicher Sprache, ohne Gesetzesangaben (oder "Keine besonderen Pflichten")
 
